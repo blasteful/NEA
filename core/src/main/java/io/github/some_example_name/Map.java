@@ -64,7 +64,6 @@ public class Map {
                     map[x][y].setType(Tile.Type.ROCK);
                 }
             }
-
             if (structure == 3) {
                 // water pool
                 int radius = MathUtils.random(2, 4);
@@ -82,7 +81,10 @@ public class Map {
                             float r = radius + MathUtils.random(-1f, 1f);
 
                             if (dist <= r) {
+
                                 map[x][y].setType(Tile.Type.WATER);
+
+
                             }else if (dist <= r + 1.5f && MathUtils.random() > 0.2f) {
                                 map[x][y].setType(Tile.Type.SAND);
                             }
@@ -139,7 +141,7 @@ public class Map {
 
     public boolean pathfind() {
         resetPathfinding();
-        entrance.gcost = 0;  // Initialize entrance
+        entrance.gcost = 0;
 
         openlist = new ArrayList<>();
         closedlist = new ArrayList<>();
@@ -148,7 +150,7 @@ public class Map {
         boolean pathFound = false;
 
         while (!openlist.isEmpty()) {
-            // Find tile with lowest fcost
+
             Tile current = openlist.get(0);
             for (int i = 1; i < openlist.size(); i++) {
                 if (openlist.get(i).fcost() < current.fcost()) {
@@ -164,7 +166,7 @@ public class Map {
             openlist.remove(current);
             closedlist.add(current);
 
-            // Check all 4 neighbors
+
             for (int i = 0; i < 4; i++) {
                 int newx = current.x + dx[i];
                 int newy = current.y + dy[i];

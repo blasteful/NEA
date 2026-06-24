@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
@@ -17,9 +20,13 @@ public class Main extends ApplicationAdapter {
     private Map map;
     private  ShapeRenderer sr;
     private Mouseclick ms;
+    private Monster mon;
+    List<Monster> Monsters = new ArrayList<>();
 
-    int sizex = 32;
-    int sizey = 24;
+    int sizex = 64;
+    int sizey = 48;
+    int mode;
+
 
     @Override
     public void create() {
@@ -29,6 +36,14 @@ public class Main extends ApplicationAdapter {
         sr = new ShapeRenderer();
         ms = new Mouseclick(sizex, sizey, map.getMap());
 
+        for (int i = 0; i < 4; i++) {
+            Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.II, map));
+        }
+
+
+
+
+        mode = 1;
 
     }
 
@@ -36,17 +51,28 @@ public class Main extends ApplicationAdapter {
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
+        for (Monster m : Monsters) {
+            m.Move(map);
+        }
 
+        if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            if(mode==1) {
+                mode = 2;
+            }else {
+                mode = 1;
 
-        if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+            }
+        }
+
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             Tile t = ms.getTile();
             if(t == null) return;
             if(t.type == Tile.Type.ENTRANCE || t.type == Tile.Type.EXIT) {
                 return;
             }
             Tile.Type originalType = t.originalType;
-            t.setType(Tile.Type.DISTRACTION);
-            t.originalType = Tile.Type.DISTRACTION;
+            t.setType(Tile.Type.ROCK);
+            t.originalType = Tile.Type.ROCK;
 
             if(!map.pathfind()) {
                 t.type = originalType;
@@ -55,6 +81,25 @@ public class Main extends ApplicationAdapter {
                 System.out.println("would block path");
             }
         }
+
+        if(Gdx.input.isKeyPressed(Input.Keys.M)) {
+            Tile t = ms.getTile();
+            if(t == null) return;
+            if(t.type == Tile.Type.ENTRANCE || t.type == Tile.Type.EXIT) {
+                return;
+            }
+            Tile.Type originalType = t.originalType;
+            t.setType(Tile.Type.DIRT);
+            t.originalType = Tile.Type.DIRT;
+
+            if(!map.pathfind()) {
+                t.type = originalType;
+                t.originalType  = originalType;
+                map.pathfind();
+                System.out.println("would block path");
+            }
+        }
+
 
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             Tile t = ms.getTile();
@@ -83,14 +128,24 @@ public class Main extends ApplicationAdapter {
             System.out.println("Walk damage: " + t.getWalkingDamage());
             System.out.println("Walkable: " + t.type.walkable );
             System.out.println("Previously a " + t.previous+ " Tile" );
+            System.out.println(t.parent);
+            System.out.println(t.child);
             System.out.println();
 
         }
 
 
         sr.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.renderMap(sr, map.getMap());
+        if(mode==1) {
+            renderer.renderMap(sr, map.getMap());
+            renderer.renderMonsters(Monsters, sr, map);
+
+        } if (mode==2) {
+            renderer.renderBMap(sr, map.getMap());
+
+        }
         sr.end();
+
 
 
 

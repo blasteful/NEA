@@ -30,8 +30,10 @@ public class Tile {
         GRASS(true, -10, 4, 0),
         DISTRACTION(true, -10000, 4, 0),
         ENTRANCE(true, -1 , 10, 0),
+        THORNS(true, 1000000, 3, 5),
         EXIT(true, -1 , 10, 0),
-        PATH(true, 10 , 10, 0);
+        PATH(true, 10 , 10, 0),
+        DEEPWATER(false, -1, 10, 0);
 
 
         public final boolean walkable;
