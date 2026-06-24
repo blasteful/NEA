@@ -234,6 +234,8 @@ public class Map {
         }
 
         Tile current = exit;
+        Tile child = null;
+
         while (current != null) {
             if (current.type != Tile.Type.ENTRANCE && current.type != Tile.Type.EXIT) {
                 Tile.Type temp = current.type;
@@ -241,6 +243,8 @@ public class Map {
                 current.previous = temp;
             }
             current.path = true;
+            current.child = child;
+            child = current;
             current = current.parent;
         }
     }

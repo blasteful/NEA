@@ -2,11 +2,40 @@ package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class Renderer {
+
+
+    private SpriteBatch spriteBatch;
+    private HashMap<MonsterData.Creature, Texture> monsterTextures;
+
+    public Renderer() {
+        spriteBatch = new SpriteBatch();
+        monsterTextures = new HashMap<>();
+        loadMonsterTextures();
+    }
+
+    private void loadMonsterTextures() {
+        for (MonsterData.Creature creature : MonsterData.Creature.values()) {
+            MonsterData.MonsterDataStorage stats = MonsterData.MonsterDataStorage.getStats(creature);
+
+            if (stats != null && !stats.imagepath.equals("Nil")) {
+                try {
+                    monsterTextures.put(creature, new Texture(Gdx.files.internal(stats.imagepath)));
+                } catch (Exception e) {
+                    System.out.println("Failed to load texture: " + stats.imagepath);
+                }
+            } else {
+                System.out.println("No image path for: " + creature.name());
+            }
+        }
+    }
 
     public void renderBMap(ShapeRenderer sr, Tile[][] map) {
 
@@ -172,26 +201,43 @@ public class Renderer {
     }
 
     public void renderMonsters(List<Monster> mon, ShapeRenderer sr, Map map) {
-
-
-
-
-
-        sr.setColor(new Color(Color.RED));
         sr.end();
-        sr.begin(ShapeRenderer.ShapeType.Filled);
+
+        spriteBatch.begin();
+
+        float tileWidth = (float) Gdx.graphics.getWidth() / map.sizex;
+        float tileHeight = (float) Gdx.graphics.getHeight() / map.sizey;
+        float scale;
+
 
         for(Monster m : mon) {
+            Texture texture = monsterTextures.get(m.creature);
 
-            sr.circle(m.x * ((float) Gdx.graphics.getWidth() / map.sizex) + 9,m.y * ((float) Gdx.graphics.getHeight() / map.sizey) + 9,5);
+            if (texture != null) {
+                if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.IV) {
+                     scale = 5;
+                } else {
+                     scale = 1.5f;
+                }
+
+                float width = tileWidth * scale;
+                float height = tileHeight * scale;
+                float screenX = m.x * tileWidth + (tileWidth - width) / 2;
+                float screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 5;
+
+                spriteBatch.draw(texture, screenX, screenY, width, height);
+            }
         }
 
-        sr.end();
+        spriteBatch.end();
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+    }
 
-
-
-
-
+    public void dispose() {
+        spriteBatch.dispose();
+        for (Texture texture : monsterTextures.values()) {
+            texture.dispose();
+        }
     }
 
 

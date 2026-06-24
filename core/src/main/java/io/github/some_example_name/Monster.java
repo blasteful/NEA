@@ -5,9 +5,11 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Monster{
 
-    int x;
-    int y;
+    float x;
+    float y;
     Tile current;
+
+    float speed;
 
     MonsterData.Creature creature;
 
@@ -27,37 +29,50 @@ public class Monster{
             }
         }
 
+        int basespeed = MonsterData.MonsterDataStorage.getStats(creature).speed;
+        speed = (float) basespeed / 200;
+        System.out.println(speed);
         Start(map);
 
     }
 
     public void Start(Map map) {
-        x = map.exit.x;
-        y = map.exit.y;
-        current = map.exit;
+        x = map.entrance.x;
+        y = map.entrance.y;
+        current = map.entrance;
     }
 
     public void Move(Map map) {
 
+        if(current == map.exit) {
+            return;
+        }
+
         boolean nextitle = true;
-        int targetx = current.parent.x;
-        int targety = current.parent.y;
+        if(current.child != null) {
+            int targetx = current.child.x;
+            int targety = current.child.y;
 
-        if(x > targetx) {
-            x = x-1;
-        } if(x < targetx) {
-            x = x+1;
+            if(x > targetx) {
+                x = (x-speed);
+            } if(x < targetx) {
+                x = (x+speed);
+            }
+
+            if(y > targety) {
+                y = (y-speed);
+            } if(y < targety) {
+                y = (y+speed);
+            }
+
+            float distance = Math.abs(x - targetx) + Math.abs(y - targety);
+            if(distance < 0.2) {
+                current = current.child;
+
+            }
+
         }
 
-        if(y > targety) {
-            y = y-1;
-        } if(y < targety) {
-            y = y+1;
-        }
-
-        if(x == current.parent.x && y == current.parent.y) {
-            current = current.parent;
-        }
 
 
 

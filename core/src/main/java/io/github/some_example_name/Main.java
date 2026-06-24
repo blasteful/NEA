@@ -23,8 +23,8 @@ public class Main extends ApplicationAdapter {
     private Monster mon;
     List<Monster> Monsters = new ArrayList<>();
 
-    int sizex = 64;
-    int sizey = 48;
+    int sizex = 32;
+    int sizey = 24;
     int mode;
 
 
@@ -37,7 +37,8 @@ public class Main extends ApplicationAdapter {
         ms = new Mouseclick(sizex, sizey, map.getMap());
 
         for (int i = 0; i < 4; i++) {
-            Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.II, map));
+            Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map));
+            Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
         }
 
 
@@ -102,21 +103,9 @@ public class Main extends ApplicationAdapter {
 
 
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            Tile t = ms.getTile();
-            if(t == null) return;
-            if(t.type == Tile.Type.ENTRANCE || t.type == Tile.Type.EXIT) {
-                return;
-            }
-            Tile.Type originalType = t.originalType;
-            t.setType(Tile.Type.ROCK);
-            t.originalType = Tile.Type.ROCK;
 
-            if(!map.pathfind()) {
-                t.type = originalType;
-                t.originalType  = originalType;
-                map.pathfind();
-                System.out.println("would block path");
-            }
+
+            Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
         }
 
 
@@ -128,8 +117,8 @@ public class Main extends ApplicationAdapter {
             System.out.println("Walk damage: " + t.getWalkingDamage());
             System.out.println("Walkable: " + t.type.walkable );
             System.out.println("Previously a " + t.previous+ " Tile" );
-            System.out.println(t.parent);
-            System.out.println(t.child);
+            System.out.println("Parent: " + t.parent);
+            System.out.println("Child: " + t.child);
             System.out.println();
 
         }

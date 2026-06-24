@@ -94,16 +94,16 @@ public class MonsterData {
         static Map<Creature, MonsterDataStorage> stats = new HashMap<>();
 
         static {
-            stats.put(Creature.Zombie, new MonsterDataStorage(150, 10, Tier.I, Genre.Ground, "Nil", Gimmick.Nil));
-            stats.put(Creature.Skeleton, new MonsterDataStorage(50, 6, Tier.I, Genre.Ground, "Nil", Gimmick.Nil));
-            stats.put(Creature.Goblin, new MonsterDataStorage(100, 8, Tier.I, Genre.Ground, "Nil", Gimmick.Nil));
+            stats.put(Creature.Zombie, new MonsterDataStorage(150, 10, Tier.I, Genre.Ground, "zombie.png", Gimmick.Nil));
+            stats.put(Creature.Skeleton, new MonsterDataStorage(50, 6, Tier.I, Genre.Ground, "skeleton.png", Gimmick.Nil));
+            stats.put(Creature.Goblin, new MonsterDataStorage(100, 8, Tier.I, Genre.Ground, "goblin.png", Gimmick.Nil));
 
             stats.put(Creature.Cyclops, new MonsterDataStorage(300, 4, Tier.II, Genre.Ground, "Nil", Gimmick.Nil));
             stats.put(Creature.Troll, new MonsterDataStorage(200, 12, Tier.II, Genre.Ground, "Nil", Gimmick.Nil));
 
             stats.put(Creature.Minotaur, new MonsterDataStorage(450, 8, Tier.III, Genre.Ground, "Nil", Gimmick.Charge));
 
-            stats.put(Creature.Golem, new MonsterDataStorage(2500, 3, Tier.IV, Genre.Ground, "Nil", Gimmick.Harden));
+            stats.put(Creature.Golem, new MonsterDataStorage(2500, 3, Tier.IV, Genre.Ground, "golem.png", Gimmick.Harden));
 
 
             stats.put(Creature.Bat, new MonsterDataStorage(50, 10, Tier.I, Genre.Flying, "Nil", Gimmick.Nil));
