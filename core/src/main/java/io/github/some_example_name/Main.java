@@ -23,8 +23,11 @@ public class Main extends ApplicationAdapter {
     private Monster mon;
     List<Monster> Monsters = new ArrayList<>();
 
-    int sizex = 32;
-    int sizey = 24;
+    private float frametimer = 0f;
+    private float intervals = 0.3f;
+
+    int sizex = 64;
+    int sizey = 48;
     int mode;
 
 
@@ -35,6 +38,8 @@ public class Main extends ApplicationAdapter {
         map.pathfind();
         sr = new ShapeRenderer();
         ms = new Mouseclick(sizex, sizey, map.getMap());
+
+        int basehp = 100;
 
         for (int i = 0; i < 4; i++) {
             Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map));
@@ -52,9 +57,35 @@ public class Main extends ApplicationAdapter {
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
+        frametimer += Gdx.graphics.getDeltaTime();
+        List<Monster> toRemove = new ArrayList<>();
+
+
         for (Monster m : Monsters) {
-            m.Move(map);
+            boolean end = m.Move(map);
+            if(end) {
+                toRemove.add(m);
+            }
         }
+
+
+        if(frametimer >= intervals) {
+            frametimer = 0f;
+            Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
+
+            for (Monster m : Monsters) {
+                if (m.frame == 1) {
+                    m.setFrame(2);
+                } else {
+                    m.setFrame(1);
+                }
+            }
+        }
+
+        Monsters.removeAll(toRemove);
+
+
+
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             if(mode==1) {

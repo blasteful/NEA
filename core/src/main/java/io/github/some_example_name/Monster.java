@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 public class Monster{
 
+    int frame = 1;
     float x;
     float y;
     Tile current;
@@ -29,7 +30,7 @@ public class Monster{
             }
         }
 
-        int basespeed = MonsterData.MonsterDataStorage.getStats(creature).speed;
+        float basespeed = MonsterData.MonsterDataStorage.getStats(creature).speed;
         speed = (float) basespeed / 200;
         System.out.println(speed);
         Start(map);
@@ -42,10 +43,10 @@ public class Monster{
         current = map.entrance;
     }
 
-    public void Move(Map map) {
+    public boolean Move(Map map) {
 
         if(current == map.exit) {
-            return;
+            return(true);
         }
 
         boolean nextitle = true;
@@ -74,7 +75,7 @@ public class Monster{
         }
 
 
-
+        return(false);
 
 
 
@@ -84,4 +85,7 @@ public class Monster{
         System.out.println(creature);
     }
 
+    public void setFrame(int frame) {
+        this.frame = frame;
+    }
 }

@@ -14,10 +14,12 @@ public class Renderer {
 
     private SpriteBatch spriteBatch;
     private HashMap<MonsterData.Creature, Texture> monsterTextures;
+    private HashMap<MonsterData.Creature, Texture> monsterTextures2;
 
     public Renderer() {
         spriteBatch = new SpriteBatch();
         monsterTextures = new HashMap<>();
+        monsterTextures2 = new HashMap<>();
         loadMonsterTextures();
     }
 
@@ -28,13 +30,28 @@ public class Renderer {
             if (stats != null && !stats.imagepath.equals("Nil")) {
                 try {
                     monsterTextures.put(creature, new Texture(Gdx.files.internal(stats.imagepath)));
+
                 } catch (Exception e) {
                     System.out.println("Failed to load texture: " + stats.imagepath);
                 }
             } else {
                 System.out.println("No image path for: " + creature.name());
             }
+
+            if (stats != null && !stats.imagepath2.equals("Nil")) {
+                try {
+                    monsterTextures2.put(creature, new Texture(Gdx.files.internal(stats.imagepath2)));
+                } catch (Exception e) {
+                    System.out.println("Failed to load texture2: " + stats.imagepath2);
+                }
+            } else {
+                System.out.println("No image path2 for: " + creature.name());
+            }
+
         }
+
+
+
     }
 
     public void renderBMap(ShapeRenderer sr, Tile[][] map) {
@@ -211,19 +228,29 @@ public class Renderer {
 
 
         for(Monster m : mon) {
-            Texture texture = monsterTextures.get(m.creature);
+
+            Texture texture;
+
+            if(m.frame == 1) {
+                 texture = monsterTextures.get(m.creature);
+            }
+            if(m.frame == 2) {
+                 texture = monsterTextures2.get(m.creature);
+            } else {
+                texture = monsterTextures.get(m.creature);
+            }
 
             if (texture != null) {
                 if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.IV) {
                      scale = 5;
                 } else {
-                     scale = 1.5f;
+                     scale = 2f;
                 }
 
                 float width = tileWidth * scale;
                 float height = tileHeight * scale;
                 float screenX = m.x * tileWidth + (tileWidth - width) / 2;
-                float screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 5;
+                float screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 25;
 
                 spriteBatch.draw(texture, screenX, screenY, width, height);
             }
@@ -238,6 +265,10 @@ public class Renderer {
         for (Texture texture : monsterTextures.values()) {
             texture.dispose();
         }
+        for (Texture texture : monsterTextures2.values()) {
+            texture.dispose();
+        }
+
     }
 
 
