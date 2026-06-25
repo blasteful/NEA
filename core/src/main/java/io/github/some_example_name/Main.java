@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.ArrayList;
@@ -43,7 +44,8 @@ public class Main extends ApplicationAdapter {
 
         for (int i = 0; i < 4; i++) {
             Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map));
-            Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
+            Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map));
+            Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map));
         }
 
 
@@ -71,7 +73,13 @@ public class Main extends ApplicationAdapter {
 
         if(frametimer >= intervals) {
             frametimer = 0f;
-            Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
+            int ran = MathUtils.random(0,4);
+            if(ran == 0) {
+                Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
+            } else {
+                Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map));
+            }
+
 
             for (Monster m : Monsters) {
                 if (m.frame == 1) {

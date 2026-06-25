@@ -116,10 +116,10 @@ public class MonsterData {
 
             stats.put(Creature.Spirit, new MonsterDataStorage(100, 100, Tier.III, Genre.Flying, "Nil", "", Gimmick.Resonate));
 
-            stats.put(Creature.Dragon, new MonsterDataStorage(2000, 6, Tier.IV, Genre.Flying, "Nil", "", Gimmick.Fire_Breath));
+            stats.put(Creature.Dragon, new MonsterDataStorage(2000, 2.5f, Tier.IV, Genre.Flying, "dragon1.png", "dragon2.png", Gimmick.Fire_Breath));
 
 
-            stats.put(Creature.Ant, new MonsterDataStorage(30, 8, Tier.I, Genre.Swarm, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Ant, new MonsterDataStorage(30, 1, Tier.I, Genre.Swarm, "ant1.png", "ant1.png", Gimmick.Nil));
             stats.put(Creature.Fly, new MonsterDataStorage(30, 4, Tier.I, Genre.Swarm, "Nil", "", Gimmick.Float));
 
             stats.put(Creature.Spider, new MonsterDataStorage(30, 18, Tier.II, Genre.Swarm, "Nil", "", Gimmick.Nil));

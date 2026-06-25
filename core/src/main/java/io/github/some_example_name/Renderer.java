@@ -242,15 +242,29 @@ public class Renderer {
 
             if (texture != null) {
                 if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.IV) {
-                     scale = 5;
+                    scale = 5;
                 } else {
                      scale = 2f;
+                }
+                if(MonsterData.MonsterDataStorage.getStats(m.creature).genre == MonsterData.Genre.Swarm) {
+                    scale = 1;
                 }
 
                 float width = tileWidth * scale;
                 float height = tileHeight * scale;
                 float screenX = m.x * tileWidth + (tileWidth - width) / 2;
-                float screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 25;
+
+                float screenY;
+
+                if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.IV) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50;
+                } else {
+                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 20;
+                }
+               if(MonsterData.MonsterDataStorage.getStats(m.creature).genre == MonsterData.Genre.Swarm) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 1;
+                }
+
 
                 spriteBatch.draw(texture, screenX, screenY, width, height);
             }
