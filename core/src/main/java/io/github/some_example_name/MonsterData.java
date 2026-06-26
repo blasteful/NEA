@@ -34,7 +34,9 @@ public class MonsterData {
         Ghost,
         Poltergeist,
         Memory,
-        Doppleganger
+        Doppleganger,
+
+        Razvan
 
 
     }
@@ -61,6 +63,7 @@ public class MonsterData {
         Swarm,
         Ground,
         Ethereal,
+        Secret
     }
 
     public enum Tier {
@@ -105,7 +108,7 @@ public class MonsterData {
 
             stats.put(Creature.Minotaur, new MonsterDataStorage(450, 8, Tier.III, Genre.Ground, "Nil", "", Gimmick.Charge));
 
-            stats.put(Creature.Golem, new MonsterDataStorage(2500, 2f, Tier.IV, Genre.Ground, "golem1.png", "golem2.png", Gimmick.Harden));
+            stats.put(Creature.Golem, new MonsterDataStorage(2500, 2, Tier.IV, Genre.Ground, "golem1.png", "golem2.png", Gimmick.Harden));
 
 
             stats.put(Creature.Bat, new MonsterDataStorage(50, 10, Tier.I, Genre.Flying, "Nil", "", Gimmick.Nil));
@@ -140,6 +143,9 @@ public class MonsterData {
             stats.put(Creature.Memory, new MonsterDataStorage(250, 8, Tier.III, Genre.Ethereal, "Nil", "", Gimmick.Teleport));
 
             stats.put(Creature.Doppleganger, new MonsterDataStorage(750, 6, Tier.IV, Genre.Ethereal, "Nil", "", Gimmick.Split));
+
+
+            stats.put(Creature.Razvan, new MonsterDataStorage(1000000, 100, Tier.IV, Genre.Secret, "Nil", "", Gimmick.Nil));
         }
 
 

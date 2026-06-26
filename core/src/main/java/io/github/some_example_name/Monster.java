@@ -32,7 +32,6 @@ public class Monster{
 
         float basespeed = MonsterData.MonsterDataStorage.getStats(creature).speed;
         speed = (float) basespeed / 200;
-        System.out.println(speed);
         Start(map);
 
     }

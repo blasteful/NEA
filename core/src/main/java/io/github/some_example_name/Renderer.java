@@ -49,12 +49,9 @@ public class Renderer {
             }
 
         }
-
-
-
     }
 
-    public void renderBMap(ShapeRenderer sr, Tile[][] map) {
+    public void renderBMap(ShapeRenderer sr, Tile[][] map, Tile hover) {
 
         float tilewidth = (float) Gdx.graphics.getWidth() / map.length;
         float tileheight = (float) Gdx.graphics.getHeight() / map[0].length;
@@ -107,7 +104,9 @@ public class Renderer {
                 }
 
 
-
+                if(t == hover && t.type.walkable) {
+                    sr.setColor(Color.BLACK);
+                }
 
                 sr.rect(i * tilewidth,j * tileheight, tilewidth, tileheight);
 

@@ -3,7 +3,9 @@ package io.github.some_example_name;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -16,13 +18,18 @@ import java.util.List;
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image;
+    private BitmapFont font;
 
     private Renderer renderer;
     private Map map;
     private  ShapeRenderer sr;
     private Mouseclick ms;
     private Monster mon;
+    private WaveDirector wd;
+
     List<Monster> Monsters = new ArrayList<>();
+    List<Monster> toSpawn = new ArrayList<>();
+
 
     private float frametimer = 0f;
     private float intervals = 0.3f;
@@ -31,26 +38,39 @@ public class Main extends ApplicationAdapter {
     int sizey = 48;
     int mode;
 
+    public enum Phase {
+        BUILD,
+        FIGHT,
+        Nil,
+    }
+
+    Phase phase = Phase.BUILD;
+
+    int wave;
+
+
 
     @Override
     public void create() {
+
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+        wd = new WaveDirector();
+        font.setColor(Color.WHITE);
+        font.getData().setScale(2f);
+
+
+
         renderer = new Renderer();
         map = new Map(sizex,sizey);
         map.pathfind();
         sr = new ShapeRenderer();
         ms = new Mouseclick(sizex, sizey, map.getMap());
 
+
+
         int basehp = 100;
-
-        for (int i = 0; i < 4; i++) {
-            Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map));
-            Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map));
-            Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map));
-        }
-
-
-
-
+        wave = 1;
         mode = 1;
 
     }
@@ -61,7 +81,7 @@ public class Main extends ApplicationAdapter {
 
         frametimer += Gdx.graphics.getDeltaTime();
         List<Monster> toRemove = new ArrayList<>();
-
+        List<Monster> toRemoveFromSpawn = new ArrayList<>();
 
         for (Monster m : Monsters) {
             boolean end = m.Move(map);
@@ -70,17 +90,13 @@ public class Main extends ApplicationAdapter {
             }
         }
 
+        for (Monster m : toSpawn) {
+            Monsters.add(m);
+            toRemoveFromSpawn.add(m);
+        }
 
         if(frametimer >= intervals) {
             frametimer = 0f;
-            int ran = MathUtils.random(0,4);
-            if(ran == 0) {
-                Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
-            } else {
-                Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map));
-            }
-
-
             for (Monster m : Monsters) {
                 if (m.frame == 1) {
                     m.setFrame(2);
@@ -93,18 +109,32 @@ public class Main extends ApplicationAdapter {
         Monsters.removeAll(toRemove);
 
 
-
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-            if(mode==1) {
-                mode = 2;
-            }else {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Z) && phase == Phase.BUILD) {
+            if(mode == 2) {
                 mode = 1;
-
+            } else {
+                mode = 2;
             }
         }
 
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+        System.out.println(Monsters);
+
+        if(Monsters.isEmpty() && phase == Phase.FIGHT) {
+            phase = Phase.BUILD;
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && phase == Phase.BUILD) {
+            phase = Phase.FIGHT;
+            toSpawn = wd.createWave(wave, map);
+        }
+
+
+
+        toSpawn.removeAll(toRemoveFromSpawn);
+
+
+
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && mode == 1) {
             Tile t = ms.getTile();
             if(t == null) return;
             if(t.type == Tile.Type.ENTRANCE || t.type == Tile.Type.EXIT) {
@@ -113,6 +143,24 @@ public class Main extends ApplicationAdapter {
             Tile.Type originalType = t.originalType;
             t.setType(Tile.Type.ROCK);
             t.originalType = Tile.Type.ROCK;
+
+            if(!map.pathfind()) {
+                t.type = originalType;
+                t.originalType  = originalType;
+                map.pathfind();
+                System.out.println("would block path");
+            }
+        }
+
+        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT) && mode == 2 && ms.getTile().type != Tile.Type.ROCK) {
+            Tile t = ms.getTile();
+            if(t == null) return;
+            if(t.type == Tile.Type.ENTRANCE || t.type == Tile.Type.EXIT) {
+                return;
+            }
+            Tile.Type originalType = t.originalType;
+            t.setType(Tile.Type.DEEPWATER);
+            t.originalType = Tile.Type.DEEPWATER;
 
             if(!map.pathfind()) {
                 t.type = originalType;
@@ -141,11 +189,7 @@ public class Main extends ApplicationAdapter {
         }
 
 
-        if(Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
 
-
-            Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
-        }
 
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
@@ -169,11 +213,14 @@ public class Main extends ApplicationAdapter {
             renderer.renderMonsters(Monsters, sr, map);
 
         } if (mode==2) {
-            renderer.renderBMap(sr, map.getMap());
+            renderer.renderBMap(sr, map.getMap(), ms.getTile());
 
         }
         sr.end();
 
+        batch.begin();
+        font.draw(batch, "PHASE: " + phase, ((float) Gdx.graphics.getWidth() / 2 - 100), 950); // (x, y) position
+        batch.end();
 
 
 
