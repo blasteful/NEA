@@ -76,7 +76,7 @@ public class Main extends ApplicationAdapter {
         int basehp = 100;
         wave = 1;
         mode = 1;
-        Monsters.add(new Monster(MonsterData.Genre.Secret, MonsterData.Tier.IV, map));
+
 
     }
 
@@ -96,6 +96,8 @@ public class Main extends ApplicationAdapter {
 
         for (Monster m : Monsters) {
             boolean end = m.Move(map);
+            m.update(Gdx.graphics.getDeltaTime());
+            m.gimmickhandler();
             if(end) {
                 toRemove.add(m);
                 hp --;
@@ -144,6 +146,11 @@ public class Main extends ApplicationAdapter {
             phase = Phase.BUILD;
             wave++;
         }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
+            Monsters.add(new Monster(MonsterData.Genre.Ethereal, MonsterData.Tier.III, map));
+        }
+
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && phase == Phase.BUILD) {
             phase = Phase.FIGHT;

@@ -9,7 +9,7 @@ public class MonsterData {
         Zombie,
         Skeleton,
         Goblin,
-        Troll,
+        Ogre,
         Cyclops,
         Minotaur,
         Golem,
@@ -22,14 +22,14 @@ public class MonsterData {
         Dragon,
 
         Ant,
-        Fly,
+        Gnome,
         Spider,
         Rat,
         Dip,
         Mole,
         Brood_Mother,
 
-        Mirage,
+        Bolt,
         Spectre,
         Ghost,
         Poltergeist,
@@ -103,16 +103,16 @@ public class MonsterData {
             stats.put(Creature.Skeleton, new MonsterDataStorage(50, 3, Tier.I, Genre.Ground, "skeleton1.png", "skeleton2.png", Gimmick.Nil));
             stats.put(Creature.Goblin, new MonsterDataStorage(100, 4, Tier.I, Genre.Ground, "goblin1.png", "goblin2.png", Gimmick.Nil));
 
-            stats.put(Creature.Cyclops, new MonsterDataStorage(300, 4, Tier.II, Genre.Ground, "Nil", "", Gimmick.Nil));
-            stats.put(Creature.Troll, new MonsterDataStorage(200, 12, Tier.II, Genre.Ground, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Cyclops, new MonsterDataStorage(300, 4, Tier.II, Genre.Ground, "cyclops1.png", "cyclops2.png", Gimmick.Nil));
+            stats.put(Creature.Ogre, new MonsterDataStorage(200, 3, Tier.II, Genre.Ground, "ogre1.png", "ogre2.png", Gimmick.Nil));
 
-            stats.put(Creature.Minotaur, new MonsterDataStorage(450, 8, Tier.III, Genre.Ground, "Nil", "", Gimmick.Charge));
+            stats.put(Creature.Minotaur, new MonsterDataStorage(450, 8, Tier.III, Genre.Ground, "minotaur1.png", "minotaur2.png", Gimmick.Charge));
 
             stats.put(Creature.Golem, new MonsterDataStorage(2500, 2, Tier.IV, Genre.Ground, "golem1.png", "golem2.png", Gimmick.Harden));
 
 
-            stats.put(Creature.Bat, new MonsterDataStorage(50, 10, Tier.I, Genre.Flying, "Nil", "", Gimmick.Nil));
-            stats.put(Creature.Watcher, new MonsterDataStorage(125, 6, Tier.I, Genre.Flying, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Bat, new MonsterDataStorage(50, 10, Tier.I, Genre.Flying, "bat1.png", "bat2.png", Gimmick.Nil));
+            stats.put(Creature.Watcher, new MonsterDataStorage(125, 6, Tier.I, Genre.Flying, "watcher1.png", "watcher2.png", Gimmick.Nil));
 
             stats.put(Creature.Harpy, new MonsterDataStorage(200, 6, Tier.II, Genre.Flying, "Nil", "", Gimmick.Nil));
             stats.put(Creature.Wyvern, new MonsterDataStorage(125, 20, Tier.II, Genre.Flying, "Nil", "", Gimmick.Nil));
@@ -122,8 +122,8 @@ public class MonsterData {
             stats.put(Creature.Dragon, new MonsterDataStorage(2000, 2.5f, Tier.IV, Genre.Flying, "dragon1.png", "dragon2.png", Gimmick.Fire_Breath));
 
 
-            stats.put(Creature.Ant, new MonsterDataStorage(30, 1, Tier.I, Genre.Swarm, "ant1.png", "ant1.png", Gimmick.Nil));
-            stats.put(Creature.Fly, new MonsterDataStorage(30, 4, Tier.I, Genre.Swarm, "Nil", "", Gimmick.Float));
+            stats.put(Creature.Ant, new MonsterDataStorage(30, 3, Tier.I, Genre.Swarm, "ant1.png", "ant1.png", Gimmick.Nil));
+            stats.put(Creature.Gnome, new MonsterDataStorage(30, 4, Tier.I, Genre.Swarm, "gnome1.png", "gnome2.png", Gimmick.Nil));
 
             stats.put(Creature.Spider, new MonsterDataStorage(30, 18, Tier.II, Genre.Swarm, "Nil", "", Gimmick.Nil));
             stats.put(Creature.Rat, new MonsterDataStorage(60, 6, Tier.II, Genre.Swarm, "Nil", "", Gimmick.Nil));
@@ -134,8 +134,8 @@ public class MonsterData {
             stats.put(Creature.Brood_Mother, new MonsterDataStorage(1500, 6, Tier.IV, Genre.Swarm, "Nil", "", Gimmick.Summoner));
 
 
-            stats.put(Creature.Mirage, new MonsterDataStorage(1, 12, Tier.I, Genre.Ethereal, "Nil", "", Gimmick.Holy_Mantle));
-            stats.put(Creature.Spectre, new MonsterDataStorage(150, 16, Tier.I, Genre.Ethereal, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Bolt, new MonsterDataStorage(1, 12, Tier.I, Genre.Ethereal, "bolt1.png", "bolt2.png", Gimmick.Nil));
+            stats.put(Creature.Spectre, new MonsterDataStorage(1, 16, Tier.I, Genre.Ethereal, "spectre1.png", "spectre2.png", Gimmick.Holy_Mantle));
 
             stats.put(Creature.Ghost, new MonsterDataStorage(1, 16, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holier_Mantle));
             stats.put(Creature.Poltergeist, new MonsterDataStorage(1, 6, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holiest_Mantle));

@@ -12,17 +12,43 @@ public class WaveDirector {
     private Monster mon;
     Map map;
 
+    private boolean inRange(int value, int min, int max) {
+        return value >= min && value <= max;
+    }
+
     public List<Monster> createWave(int wavenum, Map map) {
 
         List<Monster> toSpawn = new ArrayList<>();
 
         budget = 10 * wavenum;
-        int ran = MathUtils.random(10,25);
+        int ran = MathUtils.random(5 + budget/2,25 + budget/2);
         int ran2 = MathUtils.random(1,3);
 
+        toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.III, map));
+
         for (int i = 0; i < ran; i++) {
-            toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
+
+            int randomspawn = MathUtils.random(1,100);
+
+            if(inRange(randomspawn, 0, 40)) {
+                toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map));
+            }
+            if(inRange(randomspawn, 41, 75)) {
+                int rand = MathUtils.random(1,3);
+                if(rand==3) {
+                    toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.II, map));
+                } else {
+                    toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
+                }
+            }
+            if(inRange(randomspawn, 76, 95)) {
+                toSpawn.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.I, map));
+            }
+            if(inRange(randomspawn, 96, 100)) {
+                toSpawn.add(new Monster(MonsterData.Genre.Ethereal, MonsterData.Tier.I, map));
+            }
         }
+
 
         if (ran2 == 1) {
             toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map));
@@ -35,4 +61,7 @@ public class WaveDirector {
 
 
     }
+
+
+
 }

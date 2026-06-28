@@ -10,9 +10,16 @@ public class Monster{
     float y;
     Tile current;
 
+    float cooldown = 0f;
+    boolean charging = false;
+    int holymantle;
+
+    float baseSpeed;
+    float speed;
+
     int hp;
 
-    float speed;
+
     MonsterData.Creature creature;
 
     public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map) {
@@ -31,9 +38,20 @@ public class Monster{
             }
         }
 
+        if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holy_Mantle) {
+            holymantle = 1;
+        }
+        if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holier_Mantle) {
+            holymantle = 2;
+        }
+        if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holiest_Mantle) {
+            holymantle = 3;
+        }
+
+
         hp = MonsterData.MonsterDataStorage.getStats(creature).health;
-        float basespeed = MonsterData.MonsterDataStorage.getStats(creature).speed;
-        speed = (float) basespeed / 200;
+        baseSpeed = MonsterData.MonsterDataStorage.getStats(creature).speed / 200f;
+        speed = baseSpeed;
         Start(map);
 
     }
@@ -75,11 +93,34 @@ public class Monster{
 
         }
 
-
         return(false);
+    }
 
+    public void update(float deltaTime) {
+        if(cooldown > 0) {
+            cooldown -= deltaTime;
+        }
+    }
 
+    public void gimmickhandler() {
 
+        if(holymantle > 0 && hp <= 0) {
+                    hp = 1;
+                    holymantle --;
+        }
+        if(cooldown <= 0) {
+            if (MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Charge) {
+                if (charging) {
+                    speed = baseSpeed;
+                    charging = false;
+                    cooldown = 10f;
+                } else {
+                    speed = baseSpeed * 6;
+                    charging = true;
+                    cooldown = 0.5f;
+                }
+            }
+        }
     }
 
     public void check() {

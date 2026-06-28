@@ -267,12 +267,18 @@ public class Renderer {
 
             if (texture != null) {
                 if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.IV) {
-                    scale = 5;
+                    scale = 10;
                 } else {
                      scale = 2f;
                 }
                 if(MonsterData.MonsterDataStorage.getStats(m.creature).genre == MonsterData.Genre.Swarm) {
                     scale = 1;
+                }
+                if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.II) {
+                    scale = 4;
+                }
+                if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.III) {
+                    scale = 4.5f;
                 }
 
                 float width = tileWidth * scale;
@@ -282,12 +288,18 @@ public class Renderer {
                 float screenY;
 
                 if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.IV) {
-                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50;
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 150;
                 } else {
                      screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 20;
                 }
                if(MonsterData.MonsterDataStorage.getStats(m.creature).genre == MonsterData.Genre.Swarm) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 1;
+                }
+                if(m.creature == MonsterData.Creature.Cyclops || m.creature == MonsterData.Creature.Ogre) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 35;
+                }
+                if(m.creature == MonsterData.Creature.Minotaur) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 45;
                 }
 
 
