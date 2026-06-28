@@ -10,8 +10,9 @@ public class Monster{
     float y;
     Tile current;
 
-    float speed;
+    int hp;
 
+    float speed;
     MonsterData.Creature creature;
 
     public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map) {
@@ -30,6 +31,7 @@ public class Monster{
             }
         }
 
+        hp = MonsterData.MonsterDataStorage.getStats(creature).health;
         float basespeed = MonsterData.MonsterDataStorage.getStats(creature).speed;
         speed = (float) basespeed / 200;
         Start(map);

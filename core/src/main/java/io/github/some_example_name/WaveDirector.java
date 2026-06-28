@@ -8,11 +8,13 @@ import java.util.List;
 public class WaveDirector {
 
     int budget = 0;
-    List<Monster> toSpawn = new ArrayList<>();
+
     private Monster mon;
     Map map;
 
     public List<Monster> createWave(int wavenum, Map map) {
+
+        List<Monster> toSpawn = new ArrayList<>();
 
         budget = 10 * wavenum;
         int ran = MathUtils.random(10,25);
@@ -22,10 +24,9 @@ public class WaveDirector {
             toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
         }
 
-        if(ran2==1) {
+        if (ran2 == 1) {
             toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map));
-        }
-        if(ran==2){
+        } else if (ran2 == 2) {
             toSpawn.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map));
         }
 

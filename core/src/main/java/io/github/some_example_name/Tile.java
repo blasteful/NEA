@@ -8,6 +8,7 @@ public class Tile {
 
     Tile child;
     Tile parent;
+    Tower tower;
     boolean path = false;
 
     int hcost;
@@ -21,7 +22,7 @@ public class Tile {
     public enum Type {
         DIRT(true, 30, 10, 0),
         SAND(true, 5, 10, 0),
-        TOWER(false, -1, -1, 0),
+        PLACED_TOWER(false, -1, -1, 0),
         BARRICADE(true, 2, 3, 10),
         ROCK(false, -1, 0, 0),
         WATER(true, 1500, 3, 0),

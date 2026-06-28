@@ -51,7 +51,7 @@ public class Renderer {
         }
     }
 
-    public void renderBMap(ShapeRenderer sr, Tile[][] map, Tile hover) {
+    public void renderBMap(ShapeRenderer sr, Tile[][] map, Tile hover, TowerData.Tower selected) {
 
         float tilewidth = (float) Gdx.graphics.getWidth() / map.length;
         float tileheight = (float) Gdx.graphics.getHeight() / map[0].length;
@@ -65,7 +65,15 @@ public class Renderer {
                 if(t.type == Tile.Type.THORNS) {
                     sr.setColor(106/255f, 238/255f, 255/255f, 1f);
                 }
-
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Detonator) {
+                    sr.setColor(new Color(Color.RED));
+                }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Turret) {
+                    sr.setColor(new Color(Color.SALMON));
+                }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
+                    sr.setColor(new Color(Color.PURPLE));
+                }
                 if(t.type == Tile.Type.GRASS) {
                     sr.setColor(106/255f, 238/255f, 255/255f, 1f);
                 }
@@ -105,7 +113,16 @@ public class Renderer {
 
 
                 if(t == hover && t.type.walkable) {
-                    sr.setColor(Color.BLACK);
+                    if(selected == TowerData.Tower.Detonator) {
+                        sr.setColor(Color.RED);
+                    }
+                    if(selected == TowerData.Tower.Spire) {
+                        sr.setColor(Color.PURPLE);
+                    }
+                    if(selected == TowerData.Tower.Turret) {
+                        sr.setColor(Color.SALMON);
+                    }
+
                 }
 
                 sr.rect(i * tilewidth,j * tileheight, tilewidth, tileheight);
@@ -169,6 +186,15 @@ public class Renderer {
                 }
                 if(t.type == Tile.Type.ENTRANCE) {
                     sr.setColor(new Color(Color.GREEN));
+                }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Detonator) {
+                    sr.setColor(new Color(Color.RED));
+                }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Turret) {
+                    sr.setColor(new Color(Color.SALMON));
+                }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
+                    sr.setColor(new Color(Color.PURPLE));
                 }
                 if(t.type == Tile.Type.EXIT) {
                     sr.setColor(new Color(Color.RED));

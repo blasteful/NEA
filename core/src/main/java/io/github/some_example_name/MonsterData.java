@@ -145,7 +145,7 @@ public class MonsterData {
             stats.put(Creature.Doppleganger, new MonsterDataStorage(750, 6, Tier.IV, Genre.Ethereal, "Nil", "", Gimmick.Split));
 
 
-            stats.put(Creature.Razvan, new MonsterDataStorage(1000000, 100, Tier.IV, Genre.Secret, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Razvan, new MonsterDataStorage(1000000, 2, Tier.IV, Genre.Secret, "raz1.png", "raz2.png", Gimmick.Nil));
         }
 
 
