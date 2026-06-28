@@ -281,6 +281,10 @@ public class Renderer {
                     scale = 4.5f;
                 }
 
+                if(m.creature == MonsterData.Creature.Watcher) {
+                    scale = 1.5f;
+                }
+
                 float width = tileWidth * scale;
                 float height = tileHeight * scale;
                 float screenX = m.x * tileWidth + (tileWidth - width) / 2;
@@ -288,7 +292,7 @@ public class Renderer {
                 float screenY;
 
                 if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.IV) {
-                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 150;
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 90;
                 } else {
                      screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 20;
                 }
