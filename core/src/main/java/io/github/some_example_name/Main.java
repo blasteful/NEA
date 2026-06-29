@@ -45,6 +45,7 @@ public class Main extends ApplicationAdapter {
     int mode;
 
     TowerData.Tower selected;
+    Weather.Weather_events selected_event;
 
     public enum Phase {
         BUILD,
@@ -94,8 +95,9 @@ public class Main extends ApplicationAdapter {
         } else {
 
 
-            weather.setCurrent_event(Weather.Weather_events.Snow);
-            weather.event_handler();
+
+
+            selected_event = weather.getCurrent_event();
             float delta = Gdx.graphics.getDeltaTime();
             frametimer += delta;
             spawnTimer += delta;
@@ -153,6 +155,8 @@ public class Main extends ApplicationAdapter {
             if (Monsters.isEmpty() && toSpawn.isEmpty() && phase == Phase.FIGHT) {
                 phase = Phase.BUILD;
                 wave++;
+                weather.setCurrent_event(Weather.Weather_events.Avalanche);
+                weather.event_handler();
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
@@ -283,6 +287,7 @@ public class Main extends ApplicationAdapter {
             font.draw(batch, "WAVE: " + wave, ((float) Gdx.graphics.getWidth() / 2 + 500), 950);
             font.draw(batch, "CASH: " + cash, ((float) Gdx.graphics.getWidth() / 2 + 500), 920);
             font.draw(batch, "HP: " + hp, ((float) Gdx.graphics.getWidth() / 2 + 500), 890);
+            font.draw(batch, "" + selected_event, ((float) Gdx.graphics.getWidth() / 2 + 500), 860);
             batch.end();
 
             if (mode == 2) {

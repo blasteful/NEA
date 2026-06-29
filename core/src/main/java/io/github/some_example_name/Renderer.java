@@ -283,7 +283,12 @@ public class Renderer {
                 if(MonsterData.MonsterDataStorage.getStats(m.creature).tier == MonsterData.Tier.III) {
                     scale = 4.5f;
                 }
-
+                if(m.creature == MonsterData.Creature.Goblin) {
+                    scale = 1.75f;
+                }
+                if(m.creature == MonsterData.Creature.Skeleton) {
+                    scale = 2.25f;
+                }
                 if(m.creature == MonsterData.Creature.Watcher) {
                     scale = 1.5f;
                 }
