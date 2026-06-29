@@ -34,7 +34,8 @@ public class Tile {
         THORNS(true, 1000000, 3, 5),
         EXIT(true, -1 , 10, 0),
         PATH(true, 10 , 10, 0),
-        DEEPWATER(false, -1, 10, 0);
+        DEEPWATER(false, -1, 10, 0),
+        SNOW(true, 20, 5, 0);
 
 
         public final boolean walkable;

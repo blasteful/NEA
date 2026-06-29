@@ -165,6 +165,9 @@ public class Renderer {
                 if(t.type == Tile.Type.THORNS) {
                     sr.setColor(76/255f, 99/255f, 64/255f, 1f);
                 }
+                if(t.type == Tile.Type.SNOW) {
+                    sr.setColor(Color.LIGHT_GRAY);
+                }
 
                 if(t.type == Tile.Type.GRASS) {
                     sr.setColor(new Color(Color.GRAY));

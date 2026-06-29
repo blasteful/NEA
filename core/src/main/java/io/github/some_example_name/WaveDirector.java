@@ -24,19 +24,21 @@ public class WaveDirector {
         int ran = MathUtils.random(5 + budget/2,25 + budget/2);
         int ran2 = MathUtils.random(1,3);
 
-        toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map));
-
         for (int i = 0; i < ran; i++) {
 
             int randomspawn = MathUtils.random(1,100);
+
+
 
             if(inRange(randomspawn, 0, 40)) {
                 toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map));
             }
             if(inRange(randomspawn, 41, 75)) {
-                int rand = MathUtils.random(1,3);
+                int rand = MathUtils.random(1,5);
                 if(rand==3) {
                     toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.II, map));
+                } if(ran==2) {
+                    toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.III, map));
                 } else {
                     toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
                 }
