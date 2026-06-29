@@ -32,7 +32,7 @@ public class MonsterData {
         Bolt,
         Spectre,
         Ghost,
-        Poltergeist,
+        JellyFish,
         Memory,
         Doppleganger,
 
@@ -131,14 +131,14 @@ public class MonsterData {
 
             stats.put(Creature.Mole, new MonsterDataStorage(250, 6, Tier.III, Genre.Swarm, "Nil", "", Gimmick.Quick_Start));
 
-            stats.put(Creature.Brood_Mother, new MonsterDataStorage(1500, 6, Tier.IV, Genre.Swarm, "Nil", "", Gimmick.Summoner));
+            stats.put(Creature.Brood_Mother, new MonsterDataStorage(1500, 6, Tier.IV, Genre.Swarm, "brood1.png", "brood2.png", Gimmick.Summoner));
 
 
             stats.put(Creature.Bolt, new MonsterDataStorage(1, 12, Tier.I, Genre.Ethereal, "bolt1.png", "bolt2.png", Gimmick.Nil));
             stats.put(Creature.Spectre, new MonsterDataStorage(1, 16, Tier.I, Genre.Ethereal, "spectre1.png", "spectre2.png", Gimmick.Holy_Mantle));
 
             stats.put(Creature.Ghost, new MonsterDataStorage(1, 16, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holier_Mantle));
-            stats.put(Creature.Poltergeist, new MonsterDataStorage(1, 6, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holiest_Mantle));
+            stats.put(Creature.JellyFish, new MonsterDataStorage(1, 6, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holiest_Mantle));
 
             stats.put(Creature.Memory, new MonsterDataStorage(250, 8, Tier.III, Genre.Ethereal, "Nil", "", Gimmick.Teleport));
 

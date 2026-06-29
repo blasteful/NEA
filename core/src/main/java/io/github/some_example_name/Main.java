@@ -44,8 +44,10 @@ public class Main extends ApplicationAdapter {
     int sizey = 48;
     int mode;
 
+    int renderer_type = 2;
+
     TowerData.Tower selected;
-    Weather.Weather_events selected_event;
+    Weather.Weather_events selected_event = Weather.Weather_events.Sunny;
 
     public enum Phase {
         BUILD,
@@ -95,9 +97,6 @@ public class Main extends ApplicationAdapter {
         } else {
 
 
-
-
-            selected_event = weather.getCurrent_event();
             float delta = Gdx.graphics.getDeltaTime();
             frametimer += delta;
             spawnTimer += delta;
@@ -156,6 +155,7 @@ public class Main extends ApplicationAdapter {
                 phase = Phase.BUILD;
                 wave++;
                 weather.setCurrent_event(Weather.Weather_events.Avalanche);
+                selected_event = weather.getCurrent_event();
                 weather.event_handler();
             }
 
@@ -272,7 +272,13 @@ public class Main extends ApplicationAdapter {
 
             sr.begin(ShapeRenderer.ShapeType.Filled);
             if (mode == 1) {
-                renderer.renderMap(sr, map.getMap());
+                if(renderer_type == 1) {
+                    renderer.renderMap(sr, map.getMap());
+                }
+                if(renderer_type == 2) {
+                    renderer.renderSpritesMap(map.getMap());
+
+                }
                 renderer.renderMonsters(Monsters, sr, map);
 
             }

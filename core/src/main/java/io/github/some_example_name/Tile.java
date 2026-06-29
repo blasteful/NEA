@@ -20,34 +20,36 @@ public class Tile {
 
 
     public enum Type {
-        DIRT(true, 30, 10, 0),
-        SAND(true, 5, 10, 0),
-        PLACED_TOWER(false, -1, -1, 0),
-        BARRICADE(true, 2, 3, 10),
-        ROCK(false, -1, 0, 0),
-        WATER(true, 1500, 3, 0),
-        BASALT(true, 5, 16, 0),
-        MUD(true, 100, 4, 0),
-        GRASS(true, -10, 4, 0),
-        DISTRACTION(true, -10000, 4, 0),
-        ENTRANCE(true, -1 , 10, 0),
-        THORNS(true, 1000000, 3, 5),
-        EXIT(true, -1 , 10, 0),
-        PATH(true, 10 , 10, 0),
-        DEEPWATER(false, -1, 10, 0),
-        SNOW(true, 20, 5, 0);
+        DIRT(true, 30, 10, 0, "Tiles/grass.png"),
+        SAND(true, 5, 10, 0, "Tiles/sand.png"),
+        PLACED_TOWER(false, -1, -1, 0, "Tiles/nil.png"),
+        BARRICADE(true, 2, 3, 10, "Tiles/nil.png"),
+        ROCK(false, -1, 0, 0, "Tiles/rock.png"),
+        WATER(true, 1500, 3, 0, "Tiles/water.png"),
+        BASALT(true, 5, 16, 0, "Tiles/nil.png"),
+        MUD(true, 100, 4, 0, "Tiles/nil.png"),
+        GRASS(true, -10, 4, 0, "Tiles/nil.png"),
+        DISTRACTION(true, -10000, 4, 0, "Tiles/grass.png"),
+        ENTRANCE(true, -1 , 10, 0, "Tiles/path.png"),
+        THORNS(true, 1000000, 3, 5, "Tiles/grass.png"),
+        EXIT(true, -1 , 10, 0, "Tiles/path.png"),
+        PATH(true, 10 , 10, 0, "Tiles/path.png"),
+        DEEPWATER(false, -1, 10, 0, "Tiles/water.png"),
+        SNOW(true, 20, 5, 0, "Tiles/snow.png");
 
 
         public final boolean walkable;
         public int pathingCost;
         public final int speed;
         public final int walking_damage;
+        public final String imagepath;
 
-        Type(boolean walkable, int pathingCost, int speed, int walking_damage) {
+        Type(boolean walkable, int pathingCost, int speed, int walking_damage, String imagepath) {
             this.walkable = walkable;
             this.pathingCost = pathingCost;
             this.speed = speed;
             this.walking_damage = walking_damage;
+            this.imagepath = imagepath;
 
         }
 

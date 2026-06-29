@@ -11,7 +11,7 @@ import java.util.List;
 
 public class Renderer {
 
-
+    HashMap<Tile.Type, Texture> tileTextures;
     private SpriteBatch spriteBatch;
     private HashMap<MonsterData.Creature, Texture> monsterTextures;
     private HashMap<MonsterData.Creature, Texture> monsterTextures2;
@@ -21,6 +21,19 @@ public class Renderer {
         monsterTextures = new HashMap<>();
         monsterTextures2 = new HashMap<>();
         loadMonsterTextures();
+        loadTileTextures();
+    }
+
+    private void loadTileTextures() {
+        tileTextures = new HashMap<>();
+
+        for (Tile.Type type : Tile.Type.values()) {
+            String path = type.imagepath;
+
+            if (path != null && !path.equals("Nil")) {
+                tileTextures.put(type, new Texture(Gdx.files.internal(path)));
+            }
+        }
     }
 
     private void loadMonsterTextures() {
@@ -245,6 +258,28 @@ public class Renderer {
         }
     }
 
+    public void renderSpritesMap(Tile[][] map) {
+        spriteBatch.begin();
+
+        float tileWidth = (float) Gdx.graphics.getWidth() / map.length;
+        float tileHeight = (float) Gdx.graphics.getHeight() / map[0].length;
+
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+
+                Tile t = map[i][j];
+
+                Texture tex = tileTextures.get(t.type);
+
+                if (tex != null) {
+                    spriteBatch.draw(tex, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+                }
+            }
+        }
+
+        spriteBatch.end();
+    }
+
     public void renderMonsters(List<Monster> mon, ShapeRenderer sr, Map map) {
         sr.end();
 
@@ -292,6 +327,12 @@ public class Renderer {
                 if(m.creature == MonsterData.Creature.Watcher) {
                     scale = 1.5f;
                 }
+                if(m.creature == MonsterData.Creature.Brood_Mother) {
+                    scale = 8;
+                }
+                if(m.creature == MonsterData.Creature.Minotaur) {
+                    scale = 5.5f;
+                }
 
                 float width = tileWidth * scale;
                 float height = tileHeight * scale;
@@ -307,11 +348,18 @@ public class Renderer {
                if(MonsterData.MonsterDataStorage.getStats(m.creature).genre == MonsterData.Genre.Swarm) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 1;
                 }
+
                 if(m.creature == MonsterData.Creature.Cyclops || m.creature == MonsterData.Creature.Ogre) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 35;
                 }
                 if(m.creature == MonsterData.Creature.Minotaur) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 45;
+                }
+                if(m.creature == MonsterData.Creature.Brood_Mother) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 80;
+                }
+                if(m.creature == MonsterData.Creature.Minotaur) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50 ;
                 }
 
 

@@ -56,40 +56,44 @@ public class Map {
 
             if (structure <= 2) {
                 // rocks
+                int x = randomx;
+                int y = randomy;
 
-                for (int i = 0; i < MathUtils.random(6, 16); i++) {
-                    int x = MathUtils.clamp(randomx + MathUtils.random(-2, 2), 0, sizex - 1);
-                    int y = MathUtils.clamp(randomy + MathUtils.random(-2, 2), 0, sizey - 1);
+                for (int i = 0; i < 20; i++) {
 
                     map[x][y].setType(Tile.Type.ROCK);
+
+                    x += MathUtils.random(-1, 1);
+                    y += MathUtils.random(-1, 1);
+
+                    x = MathUtils.clamp(x, 0, sizex - 1);
+                    y = MathUtils.clamp(y, 0, sizey - 1);
                 }
             }
             if (structure == 3) {
-                // water pool
-                int radius = MathUtils.random(2, 4);
+                int x = MathUtils.random(0, sizex - 1);
+                int y = MathUtils.random(0, sizey - 1);
+                int size = MathUtils.random(30, 75);
+                for (int i = 0; i < size; i++) {
 
-                for (int i = -radius; i < radius; i++) {
-                    for (int j = -radius; j < radius; j++) {
+                    int radius = MathUtils.random(1, 1);
 
-                        int x = randomx + i;
-                        int y = randomy + j;
+                    for (int dx = -radius; dx <= radius; dx++) {
+                        for (int dy = -radius; dy <= radius; dy++) {
 
-                        if (x >= 0 && x < sizex && y >= 0 && y < sizey) {
+                            int xx = MathUtils.clamp(x + dx, 0, sizex - 1);
+                            int yy = MathUtils.clamp(y + dy, 0, sizey - 1);
 
-
-                            float dist = (float)Math.sqrt(i * i + j * j);
-                            float r = radius + MathUtils.random(-1f, 1f);
-
-                            if (dist <= r) {
-
-                                map[x][y].setType(Tile.Type.WATER);
-
-
-                            }else if (dist <= r + 1.5f && MathUtils.random() > 0.2f) {
-                                map[x][y].setType(Tile.Type.SAND);
+                            if (MathUtils.randomBoolean(0.8f)) {
+                                map[xx][yy].setType(Tile.Type.WATER);
                             }
                         }
                     }
+                    x += MathUtils.random(-1, 1);
+                    y += MathUtils.random(-1, 1);
+
+                    x = MathUtils.clamp(x, 0, sizex - 1);
+                    y = MathUtils.clamp(y, 0, sizey - 1);
                 }
             }
 
@@ -121,7 +125,29 @@ public class Map {
                         }
                     }
                 }
+            }
 
+            for (int x = 0; x < sizex; x++) {
+                for (int y = 0; y < sizey; y++) {
+
+                    if (map[x][y].type != Tile.Type.WATER)
+                        continue;
+
+                    for (int dx = -1; dx <= 1; dx++) {
+                        for (int dy = -1; dy <= 1; dy++) {
+
+                            int xx = x + dx;
+                            int yy = y + dy;
+
+                            if (xx < 0 || yy < 0 || xx >= sizex || yy >= sizey)
+                                continue;
+
+                            if (map[xx][yy].type == Tile.Type.DIRT) {
+                                map[xx][yy].setType(Tile.Type.SAND);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
