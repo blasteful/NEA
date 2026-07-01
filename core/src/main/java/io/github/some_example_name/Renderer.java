@@ -258,7 +258,7 @@ public class Renderer {
         }
     }
 
-    public void renderSpritesMap(Tile[][] map) {
+    public void renderSpritesMap(Tile[][] map, ShapeRenderer sr) {
         spriteBatch.begin();
 
         float tileWidth = (float) Gdx.graphics.getWidth() / map.length;
@@ -278,6 +278,29 @@ public class Renderer {
         }
 
         spriteBatch.end();
+
+        sr.end();
+
+        sr.begin(ShapeRenderer.ShapeType.Line);
+
+        sr.setColor(Color.BLACK);
+
+        for (int i = 0; i <= map.length; i++) {
+            sr.line(
+                i * tileWidth, 0,
+                i * tileWidth, Gdx.graphics.getHeight()
+            );
+        }
+
+        for (int j = 0; j <= map[0].length; j++) {
+            sr.line(
+                0, j * tileHeight,
+                Gdx.graphics.getWidth(), j * tileHeight
+            );
+        }
+
+        sr.end();
+
     }
 
     public void renderMonsters(List<Monster> mon, ShapeRenderer sr, Map map) {
@@ -333,6 +356,9 @@ public class Renderer {
                 if(m.creature == MonsterData.Creature.Minotaur) {
                     scale = 5.5f;
                 }
+                if(m.creature == MonsterData.Creature.Razvan) {
+                    scale = 6f;
+                }
 
                 float width = tileWidth * scale;
                 float height = tileHeight * scale;
@@ -360,6 +386,9 @@ public class Renderer {
                 }
                 if(m.creature == MonsterData.Creature.Minotaur) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50 ;
+                }
+                if(m.creature == MonsterData.Creature.Razvan) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 65 ;
                 }
 
 

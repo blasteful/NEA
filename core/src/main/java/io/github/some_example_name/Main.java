@@ -150,20 +150,40 @@ public class Main extends ApplicationAdapter {
                 selected = TowerData.Tower.Detonator;
             }
 
+            if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+                weather.Weather_Random();
+                weather.event_handler();
+                selected_event = weather.getCurrent_event();
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+                if(renderer_type == 1 ){
+                    renderer_type = 2;
+                } else {
+                    if (renderer_type == 2) {
+                        renderer_type = 1;
+                    }
+                }
+            }
+
 
             if (Monsters.isEmpty() && toSpawn.isEmpty() && phase == Phase.FIGHT) {
                 phase = Phase.BUILD;
                 wave++;
-                weather.setCurrent_event(Weather.Weather_events.Avalanche);
-                selected_event = weather.getCurrent_event();
-                weather.event_handler();
+                int ran_var = MathUtils.random(1,4);
+                if(ran_var == 4) {
+                    selected_event = weather.getCurrent_event();
+                    weather.event_handler();
+                }
+
             }
 
+            //test featires (REMOVE LATER!!!)
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
                 Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.III, map));
             }
 
-            if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_ENTER) && phase == Phase.FIGHT) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R) && phase == Phase.FIGHT) {
                 Monsters.add(new Monster(MonsterData.Genre.Secret, MonsterData.Tier.IV, map));
             }
 
@@ -171,7 +191,7 @@ public class Main extends ApplicationAdapter {
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && phase == Phase.BUILD) {
                 phase = Phase.FIGHT;
                 mode = 1;
-                toSpawn = wd.createWave(wave, map);
+                toSpawn = wd.createWave(wave, map, selected_event);
                 spawnTimer = intervals;
             }
 
@@ -276,7 +296,7 @@ public class Main extends ApplicationAdapter {
                     renderer.renderMap(sr, map.getMap());
                 }
                 if(renderer_type == 2) {
-                    renderer.renderSpritesMap(map.getMap());
+                    renderer.renderSpritesMap(map.getMap(), sr);
 
                 }
                 renderer.renderMonsters(Monsters, sr, map);

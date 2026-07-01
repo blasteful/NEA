@@ -16,13 +16,17 @@ public class WaveDirector {
         return value >= min && value <= max;
     }
 
-    public List<Monster> createWave(int wavenum, Map map) {
+    public List<Monster> createWave(int wavenum, Map map, Weather.Weather_events weather) {
 
         List<Monster> toSpawn = new ArrayList<>();
 
         budget = 10 * wavenum;
         int ran = MathUtils.random(5 + budget/2,25 + budget/2);
         int ran2 = MathUtils.random(1,3);
+
+        if(weather == Weather.Weather_events.Toilet_Break) {
+            toSpawn.add(new Monster(MonsterData.Genre.Secret, MonsterData.Tier.IV, map));
+        }
 
         for (int i = 0; i < ran; i++) {
 

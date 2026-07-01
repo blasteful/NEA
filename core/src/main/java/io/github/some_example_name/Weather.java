@@ -10,7 +10,8 @@ public class Weather {
 
         Sunny,
         Snow,
-        Avalanche
+        Avalanche,
+        Toilet_Break
 
     }
 
@@ -69,10 +70,13 @@ public class Weather {
                 Tile target = map.getTile(i, j);
                 if(target.type == Tile.Type.DIRT) {
                     target.setType(Tile.Type.SNOW);
+                    target.originalType = Tile.Type.SNOW;
                 }
             }
         }
     }
+
+
 
     public void setCurrent_event(Weather_events current_event) {
         this.current_event = current_event;
