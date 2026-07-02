@@ -36,6 +36,8 @@ public class MonsterData {
         Memory,
         Doppleganger,
 
+        Infected,
+
         Razvan
 
 
@@ -63,6 +65,7 @@ public class MonsterData {
         Swarm,
         Ground,
         Ethereal,
+        Brood,
         Secret
     }
 
@@ -131,7 +134,7 @@ public class MonsterData {
 
             stats.put(Creature.Mole, new MonsterDataStorage(250, 6, Tier.III, Genre.Swarm, "Nil", "", Gimmick.Quick_Start));
 
-            stats.put(Creature.Brood_Mother, new MonsterDataStorage(1500, 6, Tier.IV, Genre.Swarm, "brood1.png", "brood2.png", Gimmick.Summoner));
+            stats.put(Creature.Brood_Mother, new MonsterDataStorage(1500, 2, Tier.IV, Genre.Swarm, "brood1.png", "brood2.png", Gimmick.Summoner));
 
 
             stats.put(Creature.Bolt, new MonsterDataStorage(1, 12, Tier.I, Genre.Ethereal, "bolt1.png", "bolt2.png", Gimmick.Nil));
@@ -144,7 +147,7 @@ public class MonsterData {
 
             stats.put(Creature.Doppleganger, new MonsterDataStorage(750, 6, Tier.IV, Genre.Ethereal, "Nil", "", Gimmick.Split));
 
-
+            stats.put(Creature.Infected, new MonsterDataStorage(50, 3, Tier.II, Genre.Brood, "Nil", "", Gimmick.Nil));
             stats.put(Creature.Razvan, new MonsterDataStorage(1000000, 2, Tier.IV, Genre.Secret, "raz1.png", "raz2.png", Gimmick.Nil));
         }
 

@@ -3,6 +3,9 @@ package io.github.some_example_name;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Monster{
 
     int frame = 1;
@@ -21,40 +24,67 @@ public class Monster{
 
 
     MonsterData.Creature creature;
-
     public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map) {
-        boolean loop = true;
-
-        while(loop) {
-
-            int num = MathUtils.random(0, MonsterData.MonsterDataStorage.stats.size() - 1);
-
-            MonsterData.Creature[] creatures = MonsterData.Creature.values();
-            MonsterData.Creature creature1 = creatures[num];
-
-            if(MonsterData.MonsterDataStorage.getStats(creature1).genre == reqgenre && MonsterData.MonsterDataStorage.getStats(creature1).tier == reqtier) {
-                loop = false;
-                creature = creature1;
-            }
-        }
-
-        if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holy_Mantle) {
-            holymantle = 1;
-        }
-        if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holier_Mantle) {
-            holymantle = 2;
-        }
-        if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holiest_Mantle) {
-            holymantle = 3;
-        }
-
-
-        hp = MonsterData.MonsterDataStorage.getStats(creature).health;
-        baseSpeed = MonsterData.MonsterDataStorage.getStats(creature).speed / 200f;
-        speed = baseSpeed;
-        Start(map);
-
+        initializeMonster(reqgenre, reqtier, map, true);
     }
+
+    public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map, float summonX, float summonY) {
+        initializeMonster(reqgenre, reqtier, map, false);
+        this.x = summonX;
+        this.y = summonY;
+        this.current = findClosestTile(map);
+    }
+
+    private Tile findClosestTile(Map map) {
+        Tile closest = map.entrance;
+        float closestDistance = Float.MAX_VALUE;
+
+        Tile tile = map.entrance;
+        while(tile != null) {
+            float distance = Math.abs(x - tile.x) + Math.abs(y - tile.y);
+            if(distance < closestDistance) {
+                closestDistance = distance;
+                closest = tile;
+            }
+            tile = tile.child;
+        }
+
+        return closest;
+    }
+
+        private void initializeMonster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map, boolean startAtEntrance) {
+            boolean loop = true;
+
+            while(loop) {
+                int num = MathUtils.random(0, MonsterData.MonsterDataStorage.stats.size() - 1);
+                MonsterData.Creature[] creatures = MonsterData.Creature.values();
+                MonsterData.Creature creature1 = creatures[num];
+
+                if(MonsterData.MonsterDataStorage.getStats(creature1).genre == reqgenre && MonsterData.MonsterDataStorage.getStats(creature1).tier == reqtier) {
+                    loop = false;
+                    creature = creature1;
+                }
+            }
+
+            if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holy_Mantle) {
+                holymantle = 1;
+            }
+            if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holier_Mantle) {
+                holymantle = 2;
+            }
+            if(MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Holiest_Mantle) {
+                holymantle = 3;
+            }
+
+            hp = MonsterData.MonsterDataStorage.getStats(creature).health;
+            baseSpeed = MonsterData.MonsterDataStorage.getStats(creature).speed / 200f;
+            speed = baseSpeed;
+
+            if(startAtEntrance) {
+                Start(map);
+            }
+
+        }
 
     public void Start(Map map) {
         x = map.entrance.x;
@@ -102,7 +132,8 @@ public class Monster{
         }
     }
 
-    public void gimmickhandler() {
+    public void gimmickhandler(List<Monster> Monsters, Map map) {
+
 
         if(holymantle > 0 && hp <= 0) {
                     hp = 1;
@@ -119,6 +150,11 @@ public class Monster{
                     charging = true;
                     cooldown = 0.5f;
                 }
+            }
+            if (MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Summoner) {
+                Monster sum = new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map, this.x, this.y);
+                Monsters.add(sum);
+                cooldown = 5f;
             }
         }
     }

@@ -102,13 +102,14 @@ public class Main extends ApplicationAdapter {
             spawnTimer += delta;
 
             List<Monster> toRemove = new ArrayList<>();
+            List<Monster> toAdd = new ArrayList<>();
             List<Monster> toRemoveFromSpawn = new ArrayList<>();
 
 
             for (Monster m : Monsters) {
                 boolean end = m.Move(map);
                 m.update(Gdx.graphics.getDeltaTime());
-                m.gimmickhandler();
+                m.gimmickhandler(toAdd, map);
                 if (end) {
                     toRemove.add(m);
                     hp--;
@@ -118,6 +119,7 @@ public class Main extends ApplicationAdapter {
                 }
             }
 
+            Monsters.addAll(toAdd);
 
             if (frametimer >= intervals) {
                 frametimer = 0f;
@@ -184,7 +186,7 @@ public class Main extends ApplicationAdapter {
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.R) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Secret, MonsterData.Tier.IV, map));
+                Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.IV, map));
             }
 
 
