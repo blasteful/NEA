@@ -25,7 +25,7 @@ public class WaveDirector {
 
         List<Monster> toSpawn = new ArrayList<>();
 
-        float budget1 = 10 * wavenum + (pressure * 10);
+        float budget1 = 10 * wavenum + (wavenum * wavenum * 0.5f) + (pressure * 10);
         int budget = (int) Math.floor(budget1);
         System.out.println(budget);
         int boss_check = 0;
@@ -67,30 +67,32 @@ public class WaveDirector {
             int roll2 = MathUtils.random(1, 3);
 
             if (roll <= weightIII) {
+
                 budget = budget - costIII;
                 if (roll2 == 3) {
                     toSpawn.add(new Monster(threatening, MonsterData.Tier.III, map, false));
                 } else {
                     toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.III, map, true));
                 }
-            }
 
-            if (roll > weightIII && roll <= weightII) {
+            } else if (roll > weightIII && roll <= weightII) {
+
                 budget = budget - costII;
                 if (roll2 == 3) {
                     toSpawn.add(new Monster(threatening, MonsterData.Tier.II, map, false));
                 } else {
                     toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.II, map, true));
                 }
-            }
 
-            if (roll > weightII && roll <= weightI) {
+            } else if (roll > weightII && roll <= weightI) {
+
                 budget = budget - costI;
                 if (roll2 == 3) {
                     toSpawn.add(new Monster(threatening, MonsterData.Tier.I, map, false));
                 } else {
                     toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map, true));
                 }
+
             }
 
         }

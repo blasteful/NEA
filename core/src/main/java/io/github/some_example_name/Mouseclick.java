@@ -14,6 +14,13 @@ public class Mouseclick {
         this.map = map;
     }
 
+    public int getscreen_x() {
+        return(Gdx.input.getX());
+    }
+    public int getscreen_y() {
+        return(Gdx.graphics.getHeight() - Gdx.input.getY());
+    }
+
     public Tile getTile() {
         int mousex = Gdx.input.getX();
         int mousey = Gdx.graphics.getHeight() - Gdx.input.getY();

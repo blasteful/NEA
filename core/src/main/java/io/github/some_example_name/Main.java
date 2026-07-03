@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
     List<Tower> Towers = new ArrayList<>();
     List<Monster> toSpawn = new ArrayList<>();
 
-    boolean menu_active = false;
+    boolean menu_active = true;
 
     private float frametimer = 0f;
     private float intervals = 0.3f;
@@ -57,7 +57,16 @@ public class Main extends ApplicationAdapter {
         Nil,
     }
 
+    public enum Menus {
+        Main,
+        Gameplay,
+        Settings,
+        Research,
+        Exit
+    }
+
     Phase phase = Phase.BUILD;
+    Menus currentmenu = Menus.Main;
 
     // statistics
     int wave;
@@ -69,6 +78,7 @@ public class Main extends ApplicationAdapter {
     int turrets = 0;
     int barricades = 0;
     int towers = 0;
+    Menus recieved = null;
 
 
     @Override
@@ -103,7 +113,35 @@ public class Main extends ApplicationAdapter {
 
 
         if(menu_active) {
-            menu.Menu_Open(sr);
+
+            menu.update(Gdx.graphics.getDeltaTime());
+            if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
+                recieved = menu.MenuHandler(currentmenu, ms.getscreen_x(), ms.getscreen_y());
+                currentmenu = recieved;
+                System.out.println(currentmenu);
+            }
+
+            if(menu.rendermodecheck()) {
+                renderer_type = 2;
+            } else {
+                renderer_type = 1;
+            }
+
+            if(recieved == Menus.Gameplay) {
+                menu_active = false;
+            }
+            if(recieved == Menus.Exit) {
+                Gdx.app.exit();
+            }
+
+            if(currentmenu == Menus.Main) {
+                menu.MainMenu(ms.getscreen_x(), ms.getscreen_y());
+            }
+            if(currentmenu == Menus.Settings) {
+                menu.SettingsMenu(ms.getscreen_x(), ms.getscreen_y());
+            }
+
+
         } else {
 
 
@@ -177,6 +215,7 @@ public class Main extends ApplicationAdapter {
                 map = new Map(64, 48);
                 map.pathfind();
             }
+
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
                 if(renderer_type == 1 ){
