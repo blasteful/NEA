@@ -22,18 +22,20 @@ public class Monster{
 
     int hp;
 
-
+    MonsterData.Genre genre;
     MonsterData.Creature creature;
-    public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map) {
-        initializeMonster(reqgenre, reqtier, map, true);
+
+    public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map, Boolean random) {
+        initializeMonster(reqgenre, reqtier, map, true, random);
     }
 
     public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map, float summonX, float summonY) {
-        initializeMonster(reqgenre, reqtier, map, false);
+        initializeMonster(reqgenre, reqtier, map, false, false);
         this.x = summonX;
         this.y = summonY;
         this.current = findClosestTile(map);
     }
+
 
     private Tile findClosestTile(Map map) {
         Tile closest = map.entrance;
@@ -52,8 +54,27 @@ public class Monster{
         return closest;
     }
 
-        private void initializeMonster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map, boolean startAtEntrance) {
+        private void initializeMonster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map, boolean startAtEntrance, boolean random) {
             boolean loop = true;
+            int num2 = 0;
+
+            if(random == true) {
+                num2 = MathUtils.random(1,4);
+            }
+            if(num2 == 1) {
+                reqgenre = MonsterData.Genre.Flying;
+            }
+            if(num2 == 2) {
+                reqgenre = MonsterData.Genre.Ground;
+            }
+            if(num2 == 3) {
+                reqgenre = MonsterData.Genre.Ethereal;
+            }
+            if(num2 == 4) {
+                reqgenre = MonsterData.Genre.Swarm;
+            }
+
+            genre = reqgenre;
 
             while(loop) {
                 int num = MathUtils.random(0, MonsterData.MonsterDataStorage.stats.size() - 1);

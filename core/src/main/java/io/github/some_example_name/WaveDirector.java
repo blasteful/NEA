@@ -8,6 +8,7 @@ import java.util.List;
 public class WaveDirector {
 
     int budget = 0;
+    int permbosscheck = 0;
 
     private Monster mon;
     Map map;
@@ -16,53 +17,123 @@ public class WaveDirector {
         return value >= min && value <= max;
     }
 
-    public List<Monster> createWave(int wavenum, Map map, Weather.Weather_events weather) {
+    private int getHighestDefense(int detonators, int spires, int turrets, int barricades) {
+        return Math.max(Math.max(detonators, spires), Math.max(turrets, barricades));
+    }
+
+    public List<Monster> createWave(int wavenum, Map map, Weather.Weather_events weather, float pressure, int detonators, int spires, int turrets, int barricades) {
 
         List<Monster> toSpawn = new ArrayList<>();
 
-        budget = 10 * wavenum;
-        int ran = MathUtils.random(5 + budget/2,25 + budget/2);
-        int ran2 = MathUtils.random(1,3);
+        float budget1 = 10 * wavenum + (pressure * 10);
+        int budget = (int) Math.floor(budget1);
+        System.out.println(budget);
+        int boss_check = 0;
 
-        if(weather == Weather.Weather_events.Toilet_Break) {
-            toSpawn.add(new Monster(MonsterData.Genre.Secret, MonsterData.Tier.IV, map));
+        int tierI;
+        int tierII;
+        int tierIII;
+        int costI = 1;
+        int costII = 3;
+        int costIII = 6;
+
+        int weightI = Math.max(20, 80 - (wavenum * 2));
+        int weightII = Math.max(10, 20 - (wavenum / 2));
+        int weightIII = 100 - weightI - weightII;
+
+
+
+        TowerData.Tower popular = null;
+        MonsterData.Genre threatening = null;
+
+        int highestnum = getHighestDefense(detonators, spires, turrets, barricades);
+
+        if (highestnum == detonators) {
+            popular = TowerData.Tower.Detonator;
+            threatening = MonsterData.Genre.Flying;
+        } else if (highestnum == spires) {
+            popular = TowerData.Tower.Spire;
+            threatening = MonsterData.Genre.Swarm;
+        } else if (highestnum == turrets) {
+            popular = TowerData.Tower.Turret;
+            threatening = MonsterData.Genre.Ethereal;
+        } else if (highestnum == barricades) {
+            popular = TowerData.Tower.Barricade;
+            threatening = MonsterData.Genre.Ground;
         }
 
-        for (int i = 0; i < ran; i++) {
+        while (budget > 0) {
+            int roll = MathUtils.random(0, 100);
+            int roll2 = MathUtils.random(1, 3);
 
-            int randomspawn = MathUtils.random(1,100);
-
-
-
-            if(inRange(randomspawn, 0, 40)) {
-                toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map));
-            }
-            if(inRange(randomspawn, 41, 75)) {
-                int rand = MathUtils.random(1,5);
-                if(rand==3) {
-                    toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.II, map));
-                } if(ran==2) {
-                    toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.III, map));
+            if (roll <= weightIII) {
+                budget = budget - costIII;
+                if (roll2 == 3) {
+                    toSpawn.add(new Monster(threatening, MonsterData.Tier.III, map, false));
                 } else {
-                    toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map));
+                    toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.III, map, true));
                 }
             }
-            if(inRange(randomspawn, 76, 95)) {
-                toSpawn.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.I, map));
+
+            if (roll > weightIII && roll <= weightII) {
+                budget = budget - costII;
+                if (roll2 == 3) {
+                    toSpawn.add(new Monster(threatening, MonsterData.Tier.II, map, false));
+                } else {
+                    toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.II, map, true));
+                }
             }
-            if(inRange(randomspawn, 96, 100)) {
-                toSpawn.add(new Monster(MonsterData.Genre.Ethereal, MonsterData.Tier.I, map));
+
+            if (roll > weightII && roll <= weightI) {
+                budget = budget - costI;
+                if (roll2 == 3) {
+                    toSpawn.add(new Monster(threatening, MonsterData.Tier.I, map, false));
+                } else {
+                    toSpawn.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.I, map, true));
+                }
+            }
+
+        }
+
+        if (wavenum % 10 == 0) {
+            boss_check++;
+        }
+
+        if (wavenum > 25) {
+            int randomvar = MathUtils.random(1, 2);
+                if (randomvar == 1) {
+                    boss_check++;
+                }
+            }
+
+
+        if(wavenum > 60) {
+            boss_check ++;
+            if(boss_check % 10 == 0) {
+                permbosscheck ++;
             }
         }
 
-
-        if (ran2 == 1) {
-            toSpawn.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map));
-        } else if (ran2 == 2) {
-            toSpawn.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map));
+        for (int i = 0; i < permbosscheck; i++) {
+            boss_check++;
         }
 
-        System.out.println(toSpawn.get(0));
+
+        for (int i = 0; i < boss_check; i++) {
+            int random = MathUtils.random(1,3);
+            if(random == 3) {
+                toSpawn.add(new Monster(threatening, MonsterData.Tier.IV, map, false));
+            } else {
+                toSpawn.add(new Monster(threatening, MonsterData.Tier.IV, map, true));
+            }
+        }
+
+        System.out.println(threatening);
+        System.out.println(popular);
+
+
+
+
         return(toSpawn);
 
 

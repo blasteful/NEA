@@ -29,6 +29,8 @@ public class Main extends ApplicationAdapter {
     private Tower tow;
     private Menu menu;
     private Weather weather;
+    private Formulas formulas;
+
 
     List<Monster> Monsters = new ArrayList<>();
     List<Tower> Towers = new ArrayList<>();
@@ -57,9 +59,16 @@ public class Main extends ApplicationAdapter {
 
     Phase phase = Phase.BUILD;
 
+    // statistics
     int wave;
-    int cash = 10000;
-    int hp = 100;
+    int cash = 1300;
+    int hp = 10;
+    int totalcash = cash;
+    int detonators = 0;
+    int spires = 0;
+    int turrets = 0;
+    int barricades = 0;
+    int towers = 0;
 
 
     @Override
@@ -79,6 +88,7 @@ public class Main extends ApplicationAdapter {
         weather = new Weather(map);
         sr = new ShapeRenderer();
         ms = new Mouseclick(sizex, sizey, map.getMap());
+        formulas = new Formulas();
 
         int basehp = 100;
         wave = 1;
@@ -116,6 +126,8 @@ public class Main extends ApplicationAdapter {
                 }
                 if (m.hp <= 0) {
                     toRemove.add(m);
+                    cash += 50;
+                    totalcash += 50;
                 }
             }
 
@@ -142,20 +154,28 @@ public class Main extends ApplicationAdapter {
                     mode = 2;
                 }
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.Z) && phase == Phase.BUILD) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.Z) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Turret).cost) {
                 selected = TowerData.Tower.Turret;
+                turrets ++;
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.X) && phase == Phase.BUILD) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.X) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Spire).cost) {
                 selected = TowerData.Tower.Spire;
+                spires ++;
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.C) && phase == Phase.BUILD) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.C) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Detonator).cost) {
                 selected = TowerData.Tower.Detonator;
+                detonators ++;
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
                 weather.Weather_Random();
                 weather.event_handler();
                 selected_event = weather.getCurrent_event();
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.K) ) {
+                map = new Map(64, 48);
+                map.pathfind();
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
@@ -182,18 +202,24 @@ public class Main extends ApplicationAdapter {
 
             //test featires (REMOVE LATER!!!)
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.III, map));
+                Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.III, map, false));
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.V)) {
+                wave ++;
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.R) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.IV, map));
+                Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.IV, map, false));
             }
 
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && phase == Phase.BUILD) {
                 phase = Phase.FIGHT;
                 mode = 1;
-                toSpawn = wd.createWave(wave, map, selected_event);
+                wave ++;
+                float pressure_val = formulas.pressure(hp, totalcash, towers, wave, cash);
+                System.out.println(pressure_val);
+                toSpawn = wd.createWave(wave, map, selected_event, pressure_val, detonators, spires, turrets, barricades);
                 spawnTimer = intervals;
             }
 
@@ -240,12 +266,14 @@ public class Main extends ApplicationAdapter {
                     Towers.add(newT);
                     t.tower = newT;
 
+                    t.setType(Tile.Type.PLACED_TOWER);
+                    t.originalType = Tile.Type.PLACED_TOWER;
+
                 }
 
 
                 Tile.Type originalType = t.originalType;
-                t.setType(Tile.Type.PLACED_TOWER);
-                t.originalType = Tile.Type.PLACED_TOWER;
+
 
 
                 if (!map.pathfind()) {

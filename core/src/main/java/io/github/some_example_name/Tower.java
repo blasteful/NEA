@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
+import com.sun.tools.javac.jvm.Gen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,9 +104,11 @@ public class Tower {
 
     public void AttackMonsters_AOE() {
             for(Monster monster : inRange) {
-                monster.hp = monster.hp - stats.damage;
+                if(monster.genre != MonsterData.Genre.Flying) {
+                    monster.hp = monster.hp - stats.damage;
+                    drawAttackAnimation_AOE();
+                }
             }
-            drawAttackAnimation_AOE();
     }
 
     public void AttackMonsters_Single() {
