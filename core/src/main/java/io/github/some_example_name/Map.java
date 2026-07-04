@@ -253,7 +253,7 @@ public class Map {
             for (int j = 0; j < map[i].length; j++) {
                 Tile t = map[i][j];
                 if (t.type == Tile.Type.PATH && t.previous != Tile.Type.PATH) {
-                    t.type = t.originalType;
+                    t.type = t.previous;
                     t.path = false;
                 }
             }

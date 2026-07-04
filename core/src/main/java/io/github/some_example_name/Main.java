@@ -204,6 +204,10 @@ public class Main extends ApplicationAdapter {
                 selected = TowerData.Tower.Detonator;
                 detonators ++;
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.V) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Detonator).cost) {
+                selected = TowerData.Tower.Barricade;
+                detonators ++;
+            }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
                 weather.Weather_Random();
@@ -248,7 +252,7 @@ public class Main extends ApplicationAdapter {
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.R) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.IV, map, false));
+                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.II, map, false));
             }
 
 

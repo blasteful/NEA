@@ -118,7 +118,7 @@ public class MonsterData {
             stats.put(Creature.Watcher, new MonsterDataStorage(125, 6, Tier.I, Genre.Flying, "watcher1.png", "watcher2.png", Gimmick.Nil));
 
             stats.put(Creature.Harpy, new MonsterDataStorage(200, 6, Tier.II, Genre.Flying, "Nil", "", Gimmick.Nil));
-            stats.put(Creature.Wyvern, new MonsterDataStorage(125, 20, Tier.II, Genre.Flying, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Wyvern, new MonsterDataStorage(125, 20, Tier.II, Genre.Flying, "wyvern1.png", "", Gimmick.Nil));
 
             stats.put(Creature.Spirit, new MonsterDataStorage(100, 100, Tier.III, Genre.Flying, "Nil", "", Gimmick.Resonate));
 
@@ -130,7 +130,7 @@ public class MonsterData {
 
             stats.put(Creature.Spider, new MonsterDataStorage(30, 18, Tier.II, Genre.Swarm, "Nil", "", Gimmick.Nil));
             stats.put(Creature.Rat, new MonsterDataStorage(60, 6, Tier.II, Genre.Swarm, "Nil", "", Gimmick.Nil));
-            stats.put(Creature.Dip, new MonsterDataStorage(50, 12, Tier.II, Genre.Swarm, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Dip, new MonsterDataStorage(50, 12, Tier.II, Genre.Swarm, "dip1.png", "dip2.png", Gimmick.Nil));
 
             stats.put(Creature.Mole, new MonsterDataStorage(250, 6, Tier.III, Genre.Swarm, "Nil", "", Gimmick.Quick_Start));
 
@@ -141,7 +141,7 @@ public class MonsterData {
             stats.put(Creature.Spectre, new MonsterDataStorage(1, 16, Tier.I, Genre.Ethereal, "spectre1.png", "spectre2.png", Gimmick.Holy_Mantle));
 
             stats.put(Creature.Ghost, new MonsterDataStorage(1, 16, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holier_Mantle));
-            stats.put(Creature.JellyFish, new MonsterDataStorage(1, 6, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holiest_Mantle));
+            stats.put(Creature.JellyFish, new MonsterDataStorage(1, 6, Tier.II, Genre.Ethereal, "jellyfish1.png", "jellyfish2.png", Gimmick.Holiest_Mantle));
 
             stats.put(Creature.Memory, new MonsterDataStorage(250, 8, Tier.III, Genre.Ethereal, "Nil", "", Gimmick.Teleport));
 

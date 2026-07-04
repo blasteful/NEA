@@ -19,7 +19,8 @@ public class TowerData {
     public enum AttackType{
         AOE,
         Single,
-        Multi
+        Multi,
+        Nil
     }
 
 
@@ -50,6 +51,7 @@ public class TowerData {
             stats.put(Tower.Turret, new TowerDataStorage(50, 3, 1.5f, 75, AttackType.Single, false));
             stats.put(Tower.Spire, new TowerDataStorage(150, 7, 2f, 200, AttackType.Single, true));
             stats.put(Tower.Detonator, new TowerDataStorage(125, 4, 3, 25, AttackType.AOE, false));
+            stats.put(Tower.Barricade, new TowerDataStorage(10, 0, 0, 0, AttackType.Nil, false));
         }
 
     }

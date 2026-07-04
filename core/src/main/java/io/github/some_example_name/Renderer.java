@@ -16,6 +16,8 @@ public class Renderer {
     private HashMap<MonsterData.Creature, Texture> monsterTextures;
     private HashMap<MonsterData.Creature, Texture> monsterTextures2;
 
+    Texture barricadetex = new Texture("Tiles/barricade.png");
+
     public Renderer() {
         spriteBatch = new SpriteBatch();
         monsterTextures = new HashMap<>();
@@ -87,6 +89,9 @@ public class Renderer {
                 if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
                     sr.setColor(new Color(Color.PURPLE));
                 }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Barricade) {
+                    sr.setColor(new Color(Color.BROWN));
+                }
                 if(t.type == Tile.Type.GRASS) {
                     sr.setColor(106/255f, 238/255f, 255/255f, 1f);
                 }
@@ -134,6 +139,9 @@ public class Renderer {
                     }
                     if(selected == TowerData.Tower.Turret) {
                         sr.setColor(Color.SALMON);
+                    }
+                    if(selected == TowerData.Tower.Barricade) {
+                        sr.setColor(Color.BROWN);
                     }
 
                 }
@@ -212,6 +220,9 @@ public class Renderer {
                 if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
                     sr.setColor(new Color(Color.PURPLE));
                 }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Barricade) {
+                    sr.setColor(new Color(Color.BROWN));
+                }
                 if(t.type == Tile.Type.EXIT) {
                     sr.setColor(new Color(Color.RED));
                 }
@@ -272,10 +283,16 @@ public class Renderer {
                 Texture tex = tileTextures.get(t.type);
 
                 if (tex != null) {
+
                     spriteBatch.draw(tex, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+
+                    if(t.tower != null && t.tower.tower_type == TowerData.Tower.Barricade) {
+                        spriteBatch.draw(barricadetex, i * tileWidth, j * tileHeight, tileWidth, tileHeight);
+                    }
+
+                }
                 }
             }
-        }
 
         spriteBatch.end();
 
@@ -359,6 +376,9 @@ public class Renderer {
                 if(m.creature == MonsterData.Creature.Razvan) {
                     scale = 6f;
                 }
+                if(m.creature == MonsterData.Creature.Dip) {
+                    scale = 1f;
+                }
 
                 float width = tileWidth * scale;
                 float height = tileHeight * scale;
@@ -389,6 +409,9 @@ public class Renderer {
                 }
                 if(m.creature == MonsterData.Creature.Razvan) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 65 ;
+                }
+                if(m.creature == MonsterData.Creature.Dip) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 2 ;
                 }
 
 
