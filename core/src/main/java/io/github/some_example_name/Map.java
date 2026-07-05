@@ -179,8 +179,10 @@ public class Map {
 
             Tile current = openlist.get(0);
             for (int i = 1; i < openlist.size(); i++) {
-                if (openlist.get(i).fcost() < current.fcost()) {
-                    current = openlist.get(i);
+                Tile current2 = openlist.get(i);
+                if (current2.fcost() < current.fcost() ||
+                    (current2.fcost() == current.fcost() && current2.hcost < current.hcost)) {
+                    current = current2;
                 }
             }
 
@@ -229,8 +231,91 @@ public class Map {
         } else {
             System.out.println("No path found");
         }
-
         return pathFound;
+    }
+
+
+    public void view_pathfind(Tile blocked) {
+        for (int i = 0; i < sizex; i++) {
+            for (int j = 0; j < sizey; j++) {
+                map[i][j].predicted = false;
+            }
+        }
+        Tile.Type originalType = blocked.type;
+        blocked.type = Tile.Type.ROCK;
+
+        resetPathfinding();
+        entrance.gcost = 0;
+
+
+
+        openlist = new ArrayList<>();
+        closedlist = new ArrayList<>();
+        openlist.add(entrance);
+
+        boolean pathFound = false;
+
+        while (!openlist.isEmpty()) {
+
+            Tile current = openlist.get(0);
+            for (int i = 1; i < openlist.size(); i++) {
+                Tile current2 = openlist.get(i);
+                if (current2.fcost() < current.fcost() ||
+                    (current2.fcost() == current.fcost() && current2.hcost < current.hcost)) {
+                    current = current2;
+                }
+            }
+
+
+
+            if (current == exit) {
+                pathFound = true;
+                break;
+            }
+
+            openlist.remove(current);
+            closedlist.add(current);
+
+
+            for (int i = 0; i < 4; i++) {
+                int newx = current.x + dx[i];
+                int newy = current.y + dy[i];
+
+                if ((newx >= sizex || newx < 0) || (newy >= sizey || newy < 0)) {
+                    continue;
+                }
+                if (!map[newx][newy].type.walkable) {
+                    continue;
+                }
+
+                Tile neighbour = map[newx][newy];
+
+                if (closedlist.contains(neighbour)) {
+                    continue;
+                }
+
+                int newG = current.gcost + neighbour.getPathingcost();
+
+                if (!openlist.contains(neighbour)) {
+                    neighbour.hcost = heuristic(neighbour);
+                    neighbour.gcost = newG;
+                    neighbour.parent = current;
+                    openlist.add(neighbour);
+                } else if (newG < neighbour.gcost) {
+                    neighbour.gcost = newG;
+                    neighbour.parent = current;
+                }
+            }
+        }
+        if (pathFound && exit.parent != null) {
+            Tile current = exit;
+            while (current != null) {
+                current.predicted = true;
+                current = current.parent;
+            }
+        }
+
+        blocked.type = originalType;
     }
 
     public void resetPathfinding() {
@@ -279,7 +364,10 @@ public class Map {
     public int heuristic(Tile item) {
         int mandis = (Math.abs(item.x - exit.x) + Math.abs(item.y - exit.y));
         return (int) (mandis * 0.5f);
+
     }
+
+
 
     public Tile[][] getMap() {
         return map;

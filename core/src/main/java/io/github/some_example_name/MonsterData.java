@@ -18,7 +18,7 @@ public class MonsterData {
         Watcher,
         Harpy,
         Wyvern,
-        Spirit,
+        Pixie,
         Dragon,
 
         Ant,
@@ -33,7 +33,7 @@ public class MonsterData {
         Spectre,
         Ghost,
         JellyFish,
-        Memory,
+        Essence,
         Doppleganger,
 
         Infected,
@@ -118,9 +118,9 @@ public class MonsterData {
             stats.put(Creature.Watcher, new MonsterDataStorage(125, 6, Tier.I, Genre.Flying, "watcher1.png", "watcher2.png", Gimmick.Nil));
 
             stats.put(Creature.Harpy, new MonsterDataStorage(200, 6, Tier.II, Genre.Flying, "Nil", "", Gimmick.Nil));
-            stats.put(Creature.Wyvern, new MonsterDataStorage(125, 20, Tier.II, Genre.Flying, "wyvern1.png", "", Gimmick.Nil));
+            stats.put(Creature.Pixie, new MonsterDataStorage(125, 8, Tier.II, Genre.Flying, "pixie1.png", "pixie2.png", Gimmick.Nil));
 
-            stats.put(Creature.Spirit, new MonsterDataStorage(100, 100, Tier.III, Genre.Flying, "Nil", "", Gimmick.Resonate));
+            stats.put(Creature.Wyvern, new MonsterDataStorage(100, 12, Tier.III, Genre.Flying, "wyvern1.png", "wyvern1.png", Gimmick.Resonate));
 
             stats.put(Creature.Dragon, new MonsterDataStorage(2000, 2.5f, Tier.IV, Genre.Flying, "dragon1.png", "dragon2.png", Gimmick.Fire_Breath));
 
@@ -143,7 +143,7 @@ public class MonsterData {
             stats.put(Creature.Ghost, new MonsterDataStorage(1, 16, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holier_Mantle));
             stats.put(Creature.JellyFish, new MonsterDataStorage(1, 6, Tier.II, Genre.Ethereal, "jellyfish1.png", "jellyfish2.png", Gimmick.Holiest_Mantle));
 
-            stats.put(Creature.Memory, new MonsterDataStorage(250, 8, Tier.III, Genre.Ethereal, "Nil", "", Gimmick.Teleport));
+            stats.put(Creature.Essence, new MonsterDataStorage(250, 8, Tier.III, Genre.Ethereal, "", "", Gimmick.Teleport));
 
             stats.put(Creature.Doppleganger, new MonsterDataStorage(750, 6, Tier.IV, Genre.Ethereal, "Nil", "", Gimmick.Split));
 

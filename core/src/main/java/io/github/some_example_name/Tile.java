@@ -6,6 +6,7 @@ public class Tile {
 
     int x,y;
 
+    boolean predicted = false;
     Tile child;
     Tile parent;
     Tower tower;
@@ -21,11 +22,11 @@ public class Tile {
 
     public enum Type {
         DIRT(true, 30, 10, 0, "Tiles/grass.png"),
-        SAND(true, 5, 10, 0, "Tiles/sand.png"),
+        SAND(true, 10, 10, 0, "Tiles/sand.png"),
         PLACED_TOWER(false, -1, -1, 0, "Tiles/nil.png"),
         BARRICADE(true, 2, 3, 10, "Tiles/nil.png"),
         ROCK(false, -1, 0, 0, "Tiles/rock.png"),
-        WATER(true, 1500, 3, 0, "Tiles/water.png"),
+        WATER(true, 100, 3, 0, "Tiles/water.png"),
         BASALT(true, 5, 16, 0, "Tiles/nil.png"),
         MUD(true, 100, 4, 0, "Tiles/nil.png"),
         GRASS(true, -10, 4, 0, "Tiles/nil.png"),
@@ -153,7 +154,9 @@ public class Tile {
     public int fcost() {
         return(hcost + gcost);
     }
-
+    public int tiebreaker() {
+        return gcost + hcost + hcost;
+    }
 
 
 }

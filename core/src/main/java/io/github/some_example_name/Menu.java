@@ -9,11 +9,16 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import jdk.internal.org.jline.utils.OSUtils;
 
+
+
 public class Menu {
 
     private Mouseclick ms;
     private BitmapFont text;
     private BitmapFont selectedtext;
+
+    private boolean hovered = false;
+    private boolean sopened = false;
 
     String[] options = {"MENU", "SETTINGS", "EXIT", "PLAY"};
 
@@ -64,12 +69,13 @@ public class Menu {
     final float intervals = 0.6f;
 
     boolean sw = false;
+    private Audio audio;
 
     private Texture start = new Texture("buttons/start.png");
     private Texture settings = new Texture("buttons/settings.png");
     private Texture research = new Texture("buttons/research.png");
     private Texture exit = new Texture("buttons/exit.png");
-    private Texture bg = new Texture("buttons/background.png");
+    private Texture bg = new Texture("buttons/background3.png");
 
     private Texture logo = new Texture("buttons/logo.png");
     private Texture logo2 = new Texture("buttons/logo2.png");
@@ -85,6 +91,10 @@ public class Menu {
     private Texture rendermodenew = new Texture("buttons/newrenderer.png");
     private Texture rendermodeold = new Texture("buttons/oldrenderer.png");
     private Texture back = new Texture("buttons/back.png");
+
+    public Menu(Audio aud) {
+        this.audio = aud;
+    }
 
     public void update(float deltaTime) {
         if(cooldown > 0) {
@@ -138,6 +148,9 @@ public class Menu {
     }
 
     public void SettingsMenu(int mousex, int mousey) {
+
+        if(!sopened) {audio.click(); sopened = true;}
+
         SpriteBatch sb = new SpriteBatch();
         sb.begin();
         sb.draw(settingsbg, 0, 0, 1280, 960);
@@ -159,18 +172,25 @@ public class Menu {
 
     public Main.Menus hover(int mousex, int mousey) {
         if(mousex >= resx && mousex <= resx + resw && mousey >= resy && mousey <= resy + resh) {
+            if(!hovered) {audio.hover();hovered = true;}
             return Main.Menus.Research;
         }
         if(mousex >= startx && mousex <= startx + startw && mousey >= starty && mousey <= starty + starth) {
+            if(!hovered) {audio.hover();hovered = true;}
             return Main.Menus.Gameplay;
         }
         if(mousex >= exx && mousex <= exx + exw && mousey >= exy && mousey <= exy + exh) {
+            if(!hovered) {audio.hover();hovered = true;}
             return Main.Menus.Exit;
         }
         if(mousex >= settingsx && mousex <= settingsx + settingsw && mousey >= settingsy && mousey <= settingsy + settingsh) {
+            if(!hovered) {audio.hover();hovered = true;}
             return Main.Menus.Settings;
         }
+
+        hovered = false;
         return(null);
+
     }
 
     public Main.Menus MenuHandler(Main.Menus currentmenu, int mousex, int mousey) {
@@ -192,6 +212,7 @@ public class Menu {
         }
         if(currentmenu == Main.Menus.Settings) {
             if(mousex >= volox && mousex <= volox + volow && mousey >= voloy && mousey <= voloy + voloh) {
+                audio.click();
                 if(volume) {
                     volume = false;
                 } else {
@@ -199,6 +220,7 @@ public class Menu {
                 }
             }
             if(mousex >= rendervx && mousex <= rendervx + rendervw && mousey >= rendervy && mousey <= rendervy + rendervh) {
+                audio.click();
                 if(rendermode) {
                     rendermode = false;
                 } else {
@@ -207,6 +229,8 @@ public class Menu {
             }
             if(mousex >= backx && mousex <= backx + backw && mousey >= backy && mousey <= backy + backh) {
                 send = Main.Menus.Main;
+                audio.click();
+                sopened = false;
             }
 
         }
@@ -217,7 +241,10 @@ public class Menu {
 
     public boolean rendermodecheck() {
         return (rendermode);
+    }
 
+    public boolean soundcheck() {
+        return (volume);
     }
 
 }

@@ -30,7 +30,8 @@ public class Main extends ApplicationAdapter {
     private Menu menu;
     private Weather weather;
     private Formulas formulas;
-
+    private Tile last_tile = null;
+    private Audio audio;
 
     List<Monster> Monsters = new ArrayList<>();
     List<Tower> Towers = new ArrayList<>();
@@ -47,6 +48,11 @@ public class Main extends ApplicationAdapter {
     int mode;
 
     int renderer_type = 2;
+
+    boolean sound = true;
+
+    int randomtip = MathUtils.random(1,5);
+    boolean tipswitch = true;
 
     TowerData.Tower selected;
     Weather.Weather_events selected_event = Weather.Weather_events.Sunny;
@@ -87,11 +93,12 @@ public class Main extends ApplicationAdapter {
         batch = new SpriteBatch();
         font = new BitmapFont();
         wd = new WaveDirector();
+        audio = new Audio(false);
         font.setColor(Color.WHITE);
         font.getData().setScale(2f);
 
 
-        menu = new Menu();
+        menu = new Menu(audio);
         renderer = new Renderer();
         map = new Map(sizex,sizey);
         map.pathfind();
@@ -110,7 +117,7 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
+        audio.setMuted(sound);
 
         if(menu_active) {
 
@@ -127,23 +134,66 @@ public class Main extends ApplicationAdapter {
                 renderer_type = 1;
             }
 
+            if(menu.soundcheck()) {
+                sound = false;
+            } else {
+                sound = true;
+            }
+
             if(recieved == Menus.Gameplay) {
                 menu_active = false;
+                audio.click();
             }
             if(recieved == Menus.Exit) {
                 Gdx.app.exit();
             }
+            if(recieved == Menus.Main && !tipswitch) {
+                randomtip = MathUtils.random(1,5);
+                tipswitch = true;
+            }
 
             if(currentmenu == Menus.Main) {
                 menu.MainMenu(ms.getscreen_x(), ms.getscreen_y());
+                font.setColor(Color.RED);
+                font.getData().setScale(3f);
+                batch.begin();
+                if(randomtip == 1) {
+                    font.draw(batch, "HELLO ", ((float) Gdx.graphics.getWidth() / 2 - 100), 480);
+                }
+                if(randomtip == 2) {
+                    font.getData().setScale(2f);
+                    font.draw(batch, "Press O during the game to switch between render modes!", ((float) Gdx.graphics.getWidth() / 2 - 400), 480);
+                }
+                if(randomtip == 3) {
+                    font.getData().setScale(2f);
+                    font.draw(batch, "Razvan can be spawned under certain conditions... ", ((float) Gdx.graphics.getWidth() / 2 - 350), 480);
+                }
+                if(randomtip == 4) {
+                    font.draw(batch, "have you ever beaten wave 100?", ((float) Gdx.graphics.getWidth() / 2 - 325), 480);
+                }
+                if(randomtip == 5) {
+                    font.draw(batch, "please give me an A*", ((float) Gdx.graphics.getWidth() / 2 - 225), 480);
+                }
+
+                batch.end();
             }
             if(currentmenu == Menus.Settings) {
+                tipswitch = false;
                 menu.SettingsMenu(ms.getscreen_x(), ms.getscreen_y());
             }
 
 
         } else {
 
+
+            Tile current_tile = ms.getTile();
+            if(current_tile == null) {
+                last_tile = current_tile;
+            }
+            if(current_tile != last_tile) {
+                last_tile = current_tile;
+                map.view_pathfind(current_tile);
+            }
 
             float delta = Gdx.graphics.getDeltaTime();
             frametimer += delta;
@@ -232,6 +282,7 @@ public class Main extends ApplicationAdapter {
             }
 
 
+
             if (Monsters.isEmpty() && toSpawn.isEmpty() && phase == Phase.FIGHT) {
                 phase = Phase.BUILD;
                 wave++;
@@ -245,7 +296,7 @@ public class Main extends ApplicationAdapter {
 
             //test featires (REMOVE LATER!!!)
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.III, map, false));
+                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map, false));
             }
             if (Gdx.input.isKeyPressed(Input.Keys.V)) {
                 wave ++;
@@ -347,6 +398,8 @@ public class Main extends ApplicationAdapter {
                 }
             }
 
+            font.setColor(Color.WHITE);
+            font.getData().setScale(2f);
 
             if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
                 Tile t = ms.getTile();
@@ -366,7 +419,7 @@ public class Main extends ApplicationAdapter {
             sr.begin(ShapeRenderer.ShapeType.Filled);
             if (mode == 1) {
                 if(renderer_type == 1) {
-                    renderer.renderMap(sr, map.getMap());
+                    renderer.renderMap(sr, map.getMap(), ms.getTile());
                 }
                 if(renderer_type == 2) {
                     renderer.renderSpritesMap(map.getMap(), sr);

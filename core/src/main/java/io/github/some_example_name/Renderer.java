@@ -125,10 +125,42 @@ public class Renderer {
                 if(t.type == Tile.Type.DIRT) {
                     sr.setColor(106/255f, 238/255f, 255/255f, 1f);
                 }
+
+
+                if(t.type.pathingCost > 5) {
+                    sr.setColor(13/255f, 222/255f, 208/255f, 1f);
+                }
+                if(t.type.pathingCost > 10) {
+                    sr.setColor(13/255f, 208/255f, 222/255f, 1f);
+                }
+                if(t.type.pathingCost > 15) {
+                    sr.setColor(13/255f, 187/255f, 222/255f, 1f);
+                }
+                if(t.type.pathingCost > 15) {
+                    sr.setColor(13/255f, 159/255f, 222/255f, 1f);
+                }
+                if(t.type.pathingCost > 30) {
+                    sr.setColor(13/255f, 79/255f, 222/255f, 1f);
+                }
+                if(t.type.walkable == false) {
+                    sr.setColor(Color.BLACK);
+                }
                 if(t.type == Tile.Type.PATH) {
-                    sr.setColor(27/255f, 108/255f, 242/255f, 1f);
+                    sr.setColor(215/255f, 213/255f, 176/255f, 1f);
                 }
 
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Detonator) {
+                    sr.setColor(new Color(Color.RED));
+                }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Turret) {
+                    sr.setColor(new Color(Color.SALMON));
+                }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
+                    sr.setColor(new Color(Color.PURPLE));
+                }
+                if(t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Barricade) {
+                    sr.setColor(new Color(Color.BROWN));
+                }
 
                 if(t == hover && t.type.walkable) {
                     if(selected == TowerData.Tower.Detonator) {
@@ -146,11 +178,18 @@ public class Renderer {
 
                 }
 
+                if(t.predicted && !t.path) {
+                    sr.setColor(173/255f, 171/255f, 114/255f, 1f);
+                }
+
+
                 sr.rect(i * tilewidth,j * tileheight, tilewidth, tileheight);
 
             }
 
         }
+
+
 
         sr.end();
 
@@ -173,7 +212,7 @@ public class Renderer {
         }
     }
 
-    public void renderMap(ShapeRenderer sr, Tile[][] map) {
+    public void renderMap(ShapeRenderer sr, Tile[][] map, Tile Hover) {
 
         float tilewidth = (float) Gdx.graphics.getWidth() / map.length;
         float tileheight = (float) Gdx.graphics.getHeight() / map[0].length;
@@ -238,9 +277,6 @@ public class Renderer {
                 if(t.type == Tile.Type.PATH) {
                     sr.setColor(107/255f, 92/255f, 70/255f, 1f);
                 }
-
-
-
 
                 sr.rect(i * tilewidth,j * tileheight, tilewidth, tileheight);
 
@@ -379,6 +415,12 @@ public class Renderer {
                 if(m.creature == MonsterData.Creature.Dip) {
                     scale = 1f;
                 }
+                if(m.creature == MonsterData.Creature.Pixie) {
+                    scale = 2f;
+                }
+                if(m.creature == MonsterData.Creature.Wyvern) {
+                    scale = 5f;
+                }
 
                 float width = tileWidth * scale;
                 float height = tileHeight * scale;
@@ -412,6 +454,9 @@ public class Renderer {
                 }
                 if(m.creature == MonsterData.Creature.Dip) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 2 ;
+                }
+                if(m.creature == MonsterData.Creature.Wyvern) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50 ;
                 }
 
 
