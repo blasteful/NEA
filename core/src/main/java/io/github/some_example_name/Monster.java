@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Monster{
 
@@ -19,7 +20,11 @@ public class Monster{
 
     float baseSpeed;
     float speed;
+    float footstepTimer = 0f;
+    float footstepInterval = 1.2f;
 
+    boolean footstep;
+    boolean alternatefootstep = MathUtils.randomBoolean();
     int hp;
 
     MonsterData.Genre genre;
@@ -151,6 +156,22 @@ public class Monster{
         if(cooldown > 0) {
             cooldown -= deltaTime;
         }
+        if(footstepTimer > 0) {
+            footstepTimer -= deltaTime;
+        }
+    }
+
+    public boolean shouldPlayFootstep() {
+        if(footstepTimer <= 0 + MathUtils.random(0.1f, 0.4f) && genre == MonsterData.Genre.Ground) {
+            if(alternatefootstep) {
+                alternatefootstep = false;
+            } else {
+                alternatefootstep = true;
+            }
+            footstepTimer = footstepInterval;
+            return true;
+        }
+        return false;
     }
 
     public void gimmickhandler(List<Monster> Monsters, Map map) {

@@ -205,6 +205,14 @@ public class Main extends ApplicationAdapter {
 
 
             for (Monster m : Monsters) {
+                if(m.shouldPlayFootstep() && m.hp > 0) {
+                    if(m.alternatefootstep){
+                        audio.footsteps();
+                    } else {
+                        audio.footsteps2();
+                    }
+
+                }
                 boolean end = m.Move(map);
                 m.update(Gdx.graphics.getDeltaTime());
                 m.gimmickhandler(toAdd, map);
@@ -284,6 +292,7 @@ public class Main extends ApplicationAdapter {
 
 
             if (Monsters.isEmpty() && toSpawn.isEmpty() && phase == Phase.FIGHT) {
+                audio.wavecomplete();
                 phase = Phase.BUILD;
                 wave++;
                 int ran_var = MathUtils.random(1,4);
@@ -308,6 +317,7 @@ public class Main extends ApplicationAdapter {
 
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && phase == Phase.BUILD) {
+                audio.wavestart();
                 phase = Phase.FIGHT;
                 mode = 1;
                 wave ++;
@@ -451,7 +461,7 @@ public class Main extends ApplicationAdapter {
             if (phase == Phase.FIGHT) {
                 for (Tower tower : Towers) {
                     tower.GetEnemiesInRange(Monsters);
-                    tower.attackhandler();
+                    tower.attackhandler(audio);
                     tower.update(Gdx.graphics.getDeltaTime());
                 }
             }

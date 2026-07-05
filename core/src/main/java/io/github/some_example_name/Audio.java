@@ -9,12 +9,25 @@ public class Audio {
 
         Sound click;
         Sound hover;
-
+        Sound wavestart;
+        Sound footsteps;
+        Sound turret;
+        Sound detonator;
+        Sound spire;
+        Sound wavecomplete;
+        Sound footsteps2;
 
         public Audio(boolean muted) {
             this.muted = muted;
+            wavecomplete = Gdx.audio.newSound(Gdx.files.internal("Sounds/wavecomplete.wav"));
             click = Gdx.audio.newSound(Gdx.files.internal("Sounds/click.wav"));
             hover = Gdx.audio.newSound(Gdx.files.internal("Sounds/hover.wav"));
+            wavestart = Gdx.audio.newSound(Gdx.files.internal("Sounds/wavestart.wav"));
+            footsteps = Gdx.audio.newSound(Gdx.files.internal("Sounds/footsteps.wav"));
+            turret = Gdx.audio.newSound(Gdx.files.internal("Sounds/turret.wav"));
+            detonator = Gdx.audio.newSound(Gdx.files.internal("Sounds/detonator.wav"));
+            spire = Gdx.audio.newSound(Gdx.files.internal("Sounds/spire.wav"));
+            footsteps2 = Gdx.audio.newSound(Gdx.files.internal("Sounds/footsteps2.wav"));
         }
 
         public void click() {
@@ -22,11 +35,53 @@ public class Audio {
                 click.play();
             }
         }
+
+        public void footsteps2() {
+            if(!muted) {
+                footsteps2.play(0.2f);
+            }
+        }
+
+        public void wavecomplete() {
+            if(!muted) {
+                wavecomplete.play(0.5f);
+            }
+        }
+
+        public void spire() {
+            if(!muted) {
+                spire.play(0.1f);
+            }
+        }
+
         public void hover() {
             if(!muted) {
                 hover.play();
             }
+        }
 
+        public void wavestart() {
+            if(!muted) {
+                wavestart.play(0.4f);
+            }
+        }
+
+        public void turret() {
+            if(!muted) {
+                turret.play(0.2f);
+            }
+        }
+
+        public void footsteps() {
+            if(!muted) {
+                footsteps.play(0.2f);
+            }
+        }
+
+        public void detonator() {
+            if(!muted) {
+                detonator.play(0.2f);
+            }
         }
 
         public void dispose() {

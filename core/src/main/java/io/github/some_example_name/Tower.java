@@ -73,13 +73,13 @@ public class Tower {
         }
     }
 
-    public void attackhandler() {
-        if(cooldown <= 0 && !inRange.isEmpty()) {
+    public void attackhandler(Audio audio) {
+        if(cooldown <= 0 + MathUtils.random(0.01f, 0.15f) && !inRange.isEmpty()) {
             if(atktype == TowerData.AttackType.Single) {
-                AttackMonsters_Single();
+                AttackMonsters_Single(audio);
             }
             if(atktype == TowerData.AttackType.AOE) {
-                AttackMonsters_AOE();
+                AttackMonsters_AOE(audio);
             }
             if(atktype == TowerData.AttackType.Multi) {
                 AttackMonsters_MultiTarget();
@@ -102,19 +102,26 @@ public class Tower {
         }
     }
 
-    public void AttackMonsters_AOE() {
+    public void AttackMonsters_AOE(Audio audio) {
             for(Monster monster : inRange) {
                 if(monster.genre != MonsterData.Genre.Flying) {
                     monster.hp = monster.hp - stats.damage;
                     drawAttackAnimation_AOE();
                 }
             }
+            audio.detonator();
     }
 
-    public void AttackMonsters_Single() {
+    public void AttackMonsters_Single(Audio audio) {
             Monster target = inRange.get(0);
             target.hp = target.hp - stats.damage;
             drawAttackAnimation_Single(target);
+            if(tower_type == TowerData.Tower.Spire) {
+                audio.spire();
+            }
+            if(tower_type == TowerData.Tower.Turret) {
+                audio.turret();
+            }
     }
 
     public void AttackMonsters_MultiTarget() {
