@@ -76,7 +76,7 @@ public class Main extends ApplicationAdapter {
 
     // statistics
     int wave;
-    int cash = 1300;
+    int cash = 100;
     int hp = 10;
     int totalcash = cash;
     int detonators = 0;
@@ -222,8 +222,18 @@ public class Main extends ApplicationAdapter {
                 }
                 if (m.hp <= 0) {
                     toRemove.add(m);
-                    cash += 50;
-                    totalcash += 50;
+                    if(m.tier == MonsterData.Tier.IV) {
+                        cash += 300;
+                    }
+                    if(m.tier == MonsterData.Tier.III) {
+                        cash += 100;
+                    }
+                    if(m.tier == MonsterData.Tier.II) {
+                        cash += 25;
+                    }
+                    if(m.tier == MonsterData.Tier.I) {
+                        cash += 5;
+                    }
                 }
             }
 
@@ -305,14 +315,14 @@ public class Main extends ApplicationAdapter {
 
             //test featires (REMOVE LATER!!!)
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map, false));
+                Monsters.add(new Monster(MonsterData.Genre.Secret, MonsterData.Tier.IV, map, false));
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.V)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.B)) {
                 wave ++;
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.R) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.II, map, false));
+                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map, true));
             }
 
 

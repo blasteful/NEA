@@ -28,10 +28,12 @@ public class Monster{
     int hp;
 
     MonsterData.Genre genre;
+    MonsterData.Tier tier;
     MonsterData.Creature creature;
 
     public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map, Boolean random) {
         initializeMonster(reqgenre, reqtier, map, true, random);
+        tier = reqtier;
     }
 
     public Monster(MonsterData.Genre reqgenre, MonsterData.Tier reqtier, Map map, float summonX, float summonY) {
@@ -39,6 +41,7 @@ public class Monster{
         this.x = summonX;
         this.y = summonY;
         this.current = findClosestTile(map);
+        tier = reqtier;
     }
 
 
