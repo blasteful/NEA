@@ -16,6 +16,9 @@ public class Audio {
         Sound spire;
         Sound wavecomplete;
         Sound footsteps2;
+        Sound buy;
+        Sound back;
+        Sound losehp;
 
         public Audio(boolean muted) {
             this.muted = muted;
@@ -28,17 +31,38 @@ public class Audio {
             detonator = Gdx.audio.newSound(Gdx.files.internal("Sounds/detonator.wav"));
             spire = Gdx.audio.newSound(Gdx.files.internal("Sounds/spire.wav"));
             footsteps2 = Gdx.audio.newSound(Gdx.files.internal("Sounds/footsteps2.wav"));
+            buy = Gdx.audio.newSound(Gdx.files.internal("Sounds/buy.wav"));
+            back = Gdx.audio.newSound(Gdx.files.internal("Sounds/back.wav"));
+            losehp = Gdx.audio.newSound(Gdx.files.internal("Sounds/losehp.wav"));
         }
 
         public void click() {
             if(!muted) {
-                click.play();
+                click.play(0.5f);
+            }
+        }
+
+        public void losehp() {
+            if(!muted) {
+                losehp.play(0.5f);
+            }
+        }
+
+        public void back() {
+            if(!muted) {
+                back.play(0.5f);
             }
         }
 
         public void footsteps2() {
             if(!muted) {
                 footsteps2.play(0.2f);
+            }
+        }
+
+        public void buy() {
+            if(!muted) {
+                buy.play(0.2f);
             }
         }
 

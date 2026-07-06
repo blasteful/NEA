@@ -17,6 +17,26 @@ public class Menu {
     private BitmapFont text;
     private BitmapFont selectedtext;
 
+    private UpgradeMenu upgradeMenu;
+
+    private enum toShow {
+        Null,
+
+        TURRET_1,
+        TURRET_2,
+        TURRET_3,
+        TURRET_4,
+
+        SPIRE_1,
+        SPIRE_2,
+        SPIRE_3,
+        SPIRE_4
+
+    };
+
+
+    private toShow currentUpgrade = toShow.Null;
+
     private boolean hovered = false;
     private boolean sopened = false;
 
@@ -62,6 +82,51 @@ public class Menu {
     int rendervw = 100;
     int rendervh = 100;
 
+    int spire1x = 190;
+    int spire1y = 125;
+    int spire1w = 100;
+    int spire1h = 100;
+
+    int spire2x = 190;
+    int spire2y = 250;
+    int spire2w = 100;
+    int spire2h = 100;
+
+    int spire3x = 190;
+    int spire3y = 375;
+    int spire3w = 100;
+    int spire3h = 100;
+
+    int spire4x = 190;
+    int spire4y = 500;
+    int spire4w = 100;
+    int spire4h = 100;
+
+    int turretup1x = 50;
+    int turretup1y = 125;
+    int turretup1w = 100;
+    int turretup1h = 100;
+
+    int turretup2x = 50;
+    int turretup2y = 250;
+    int turretup2w = 100;
+    int turretup2h = 100;
+
+    int turretup3x = 50;
+    int turretup3y = 375;
+    int turretup3w = 100;
+    int turretup3h = 100;
+
+    int turretup4x = 50;
+    int turretup4y = 500;
+    int turretup4w = 100;
+    int turretup4h = 100;
+
+    int research_points = 1000;
+
+    int turret_upgrade = 0;
+    int spire_upgrade = 0;
+
     boolean volume = true;
     boolean rendermode = true;
 
@@ -92,8 +157,24 @@ public class Menu {
     private Texture rendermodeold = new Texture("buttons/oldrenderer.png");
     private Texture back = new Texture("buttons/back.png");
 
-    public Menu(Audio aud) {
+    private Texture researchbg = new Texture("buttons/researchbg.png");
+
+    private Texture turret1 = new Texture("buttons/turretupgrade1.png");
+    private Texture turret2 = new Texture("buttons/turretupgrade2.png");
+    private Texture turret3 = new Texture("buttons/turretupgrade3.png");
+    private Texture turret4 = new Texture("buttons/turretupgrade4.png");
+
+    private Texture spire1 = new Texture("buttons/spireupgrade1.png");
+    private Texture spire2 = new Texture("buttons/spireupgrade2.png");
+    private Texture spire3 = new Texture("buttons/spireupgrade3.png");
+    private Texture spire4 = new Texture("buttons/spireupgrade4.png");
+
+    private Texture locked = new Texture("buttons/lockedupgrade.png");
+
+    public Menu(Audio aud, UpgradeMenu upgradeMenu) {
         this.audio = aud;
+        this.upgradeMenu = upgradeMenu;
+
     }
 
     public void update(float deltaTime) {
@@ -146,6 +227,124 @@ public class Menu {
         sb.end();
 
     }
+    public void ResearchMenu(int mousex, int mousey) {
+        BitmapFont font = new BitmapFont();
+        SpriteBatch sb = new SpriteBatch();
+
+        if(currentUpgrade != toShow.Null) {
+
+            sb.begin();
+            if(currentUpgrade == Menu.toShow.TURRET_1) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 5, "+ Heavier Rounds");
+            }
+            if(currentUpgrade == toShow.TURRET_2) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 10, "+ Targeting Precision");
+            }
+            if(currentUpgrade == toShow.TURRET_3) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 30, "+ Machine Gun Barrel");
+            }
+            if(currentUpgrade == toShow.TURRET_4) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 60, "+ HYPER BEAM");
+            }
+            if(currentUpgrade == toShow.SPIRE_1) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 10, "+ Fire Magic");
+            }
+            if(currentUpgrade == toShow.SPIRE_2) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 15, "+ Wizard Revision");
+            }
+            if(currentUpgrade == Menu.toShow.SPIRE_3) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 35, "+ Lightning");
+            }
+            if(currentUpgrade == Menu.toShow.SPIRE_4) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 70, "+ ANTIMAGIC");
+            }
+            sb.end();
+        } else {
+            sb.begin();
+            sb.draw(researchbg, 0, 0, 1280, 960);
+            sb.draw(back, backx, backy, backw, backh);
+            if (turret_upgrade == 0) {
+                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
+                sb.draw(locked, turretup2x, turretup2y, turretup2w, turretup2h);
+                sb.draw(locked, turretup3x, turretup3y, turretup3w, turretup3h);
+                sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
+            }
+            if(turret_upgrade == 1) {
+                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
+                sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
+                sb.draw(locked, turretup3x, turretup3y, turretup3w, turretup3h);
+                sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
+            }
+            if(turret_upgrade == 2) {
+                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
+                sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
+                sb.draw(turret3, turretup3x, turretup3y, turretup3w, turretup3h);
+                sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
+            }
+            if(turret_upgrade == 3) {
+                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
+                sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
+                sb.draw(turret3, turretup3x, turretup3y, turretup3w, turretup3h);
+                sb.draw(turret4, turretup4x, turretup4y, turretup4w, turretup4h);
+            }
+            if(turret_upgrade == 4) {
+                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
+                sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
+                sb.draw(turret3, turretup3x, turretup3y, turretup3w, turretup3h);
+                sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
+            }
+            if(spire_upgrade == 0) {
+                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
+                sb.draw(locked, spire1x, turretup2y, spire1w, spire1h);
+                sb.draw(locked, spire1x, turretup3y, spire1w, spire1h);
+                sb.draw(locked, spire1x, turretup4y, spire1w, spire1h);
+            }
+            if(spire_upgrade == 1) {
+                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
+                sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
+                sb.draw(locked, spire1x, turretup3y, spire1w, spire1h);
+                sb.draw(locked, spire1x, turretup4y, spire1w, spire1h);
+            }
+            if(spire_upgrade == 2) {
+                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
+                sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
+                sb.draw(spire3, spire3x, turretup3y, spire3w, spire3h);
+                sb.draw(locked, spire1x, turretup4y, spire1w, spire1h);
+            }
+            if(spire_upgrade == 3) {
+                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
+                sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
+                sb.draw(spire3, spire3x, turretup3y, spire3w, spire3h);
+                sb.draw(spire4, spire1x, turretup4y, spire1w, spire1h);
+            }
+            if(spire_upgrade == 4) {
+                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
+                sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
+                sb.draw(spire3, spire3x, turretup3y, spire3w, spire3h);
+                sb.draw(spire4, spire1x, turretup4y, spire1w, spire1h);
+            }
+            font.getData().setScale(1.5f);
+            font.draw(sb, "Research Points: " + research_points, 1040, 50);
+            sb.end();
+        }
+
+
+
+
+
+
+
+
+    }
+
 
     public void SettingsMenu(int mousex, int mousey) {
 
@@ -204,7 +403,8 @@ public class Menu {
                 send = Main.Menus.Settings;
             }
             if(mousex >= resx && mousex <= resx + resw && mousey >= resy && mousey <= resy + resh) {
-                System.out.println("res");
+                send = Main.Menus.Research;
+                audio.click();
             }
             if(mousex >= exx && mousex <= exx + exw && mousey >= exy && mousey <= exy + exh) {
                 send = Main.Menus.Exit;
@@ -229,14 +429,109 @@ public class Menu {
             }
             if(mousex >= backx && mousex <= backx + backw && mousey >= backy && mousey <= backy + backh) {
                 send = Main.Menus.Main;
-                audio.click();
+                audio.back();
                 sopened = false;
             }
-
         }
+
+        if(currentmenu == Main.Menus.Research) {
+            if(currentUpgrade != toShow.Null) {
+                if(upgradeMenu.backClicked(mousex, mousey)) {
+                    currentUpgrade = toShow.Null;
+                    audio.back();
+                }
+                if(upgradeMenu.buyClicked(mousex, mousey)) {
+                    if(currentUpgrade == toShow.TURRET_1 && research_points >= 5) {
+                        research_points -= 5;
+                        turret_upgrade = 1;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.TURRET_2 && research_points >= 25) {
+                        research_points -= 10;
+                        turret_upgrade = 2;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.TURRET_3 && research_points >= 40) {
+                        research_points -= 30;
+                        turret_upgrade = 3;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.TURRET_4 && research_points >= 60) {
+                        research_points -= 60;
+                        turret_upgrade = 3;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.SPIRE_1 && research_points >= 10) {
+                        research_points -= 10;
+                        spire_upgrade = 1;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.SPIRE_2 && research_points >= 15) {
+                        research_points -= 15;
+                        spire_upgrade = 2;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.SPIRE_3 && research_points >= 30) {
+                        research_points -= 35;
+                        spire_upgrade = 3;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.SPIRE_4 && research_points >= 70) {
+                        research_points -= 70;
+                        spire_upgrade = 4;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                }
+                return send;
+            }
+
+            if(mousex >= backx && mousex <= backx + backw && mousey >= backy && mousey <= backy + backh) {
+                send = Main.Menus.Main;
+                audio.back();
+            }
+            if((mousex >= turretup1x && mousex <= turretup1x + turretup1w && mousey >= turretup1y && mousey <= turretup1y + turretup1h) && turret_upgrade == 0) {
+                currentUpgrade = Menu.toShow.TURRET_1;
+                audio.click();
+            }
+            if((mousex >= turretup2x && mousex <= turretup2x + turretup2w && mousey >= turretup2y && mousey <= turretup2y + turretup2h) && turret_upgrade == 1) {
+                currentUpgrade = Menu.toShow.TURRET_2;
+                audio.click();
+            }
+            if((mousex >= turretup3x && mousex <= turretup3x + turretup3w && mousey >= turretup3y && mousey <= turretup3y + turretup3h) && turret_upgrade == 2) {
+                currentUpgrade = toShow.TURRET_3;
+                audio.click();
+            }
+            if((mousex >= turretup4x && mousex <= turretup4x + turretup4w && mousey >= turretup4y && mousey <= turretup4y + turretup4h) && turret_upgrade == 3) {
+                currentUpgrade = toShow.TURRET_4;
+                audio.click();
+            }
+            if((mousex >= spire1x && mousex <= spire1x + spire1w && mousey >= spire1y && mousey <= spire1y + spire1h) && spire_upgrade == 0) {
+                currentUpgrade = toShow.SPIRE_1;
+                audio.click();
+            }
+            if((mousex >= spire2x && mousex <= spire2x + spire2w && mousey >= spire2y && mousey <= spire2y + spire2h) && spire_upgrade == 1) {
+                currentUpgrade = toShow.SPIRE_2;
+                audio.click();
+            }
+            if((mousex >= spire3x && mousex <= spire3x + spire3w && mousey >= spire3y && mousey <= spire3y + spire3h) && spire_upgrade == 2) {
+                currentUpgrade = toShow.SPIRE_3;
+                audio.click();
+            }
+            if((mousex >= spire4x && mousex <= spire4x + spire4w && mousey >= spire4y && mousey <= spire4y + spire4h) && spire_upgrade == 3) {
+                currentUpgrade = toShow.SPIRE_4;
+                audio.click();
+            }
+        }
+
         return send;
-
-
     }
 
     public boolean rendermodecheck() {
@@ -245,6 +540,10 @@ public class Menu {
 
     public boolean soundcheck() {
         return (volume);
+    }
+
+    public int turretc() {
+        return (turret_upgrade);
     }
 
 }

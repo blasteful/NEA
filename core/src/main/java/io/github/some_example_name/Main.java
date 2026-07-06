@@ -32,6 +32,7 @@ public class Main extends ApplicationAdapter {
     private Formulas formulas;
     private Tile last_tile = null;
     private Audio audio;
+    private UpgradeMenu upgradeMenu;
 
     List<Monster> Monsters = new ArrayList<>();
     List<Tower> Towers = new ArrayList<>();
@@ -76,7 +77,7 @@ public class Main extends ApplicationAdapter {
 
     // statistics
     int wave;
-    int cash = 100;
+    int cash = 300;
     int hp = 10;
     int totalcash = cash;
     int detonators = 0;
@@ -96,9 +97,10 @@ public class Main extends ApplicationAdapter {
         audio = new Audio(false);
         font.setColor(Color.WHITE);
         font.getData().setScale(2f);
+        UpgradeMenu UpgradeMenu = new UpgradeMenu();
 
 
-        menu = new Menu(audio);
+        menu = new Menu(audio, UpgradeMenu);
         renderer = new Renderer();
         map = new Map(sizex,sizey);
         map.pathfind();
@@ -120,7 +122,6 @@ public class Main extends ApplicationAdapter {
         audio.setMuted(sound);
 
         if(menu_active) {
-
             menu.update(Gdx.graphics.getDeltaTime());
             if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                 recieved = menu.MenuHandler(currentmenu, ms.getscreen_x(), ms.getscreen_y());
@@ -177,9 +178,14 @@ public class Main extends ApplicationAdapter {
 
                 batch.end();
             }
+
             if(currentmenu == Menus.Settings) {
                 tipswitch = false;
                 menu.SettingsMenu(ms.getscreen_x(), ms.getscreen_y());
+            }
+            if(currentmenu == Menus.Research) {
+                tipswitch = false;
+                menu.ResearchMenu(ms.getscreen_x(), ms.getscreen_y());
             }
 
 
@@ -218,6 +224,7 @@ public class Main extends ApplicationAdapter {
                 m.gimmickhandler(toAdd, map);
                 if (end) {
                     toRemove.add(m);
+                    audio.losehp();
                     hp--;
                 }
                 if (m.hp <= 0) {
