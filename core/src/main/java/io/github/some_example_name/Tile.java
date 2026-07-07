@@ -27,7 +27,7 @@ public class Tile {
         BARRICADE(true, 2, 3, 10, "Tiles/nil.png"),
         ROCK(false, -1, 0, 0, "Tiles/rock.png"),
         WATER(true, 100, 3, 0, "Tiles/water.png"),
-        BASALT(true, 5, 16, 0, "Tiles/nil.png"),
+        BASALT(true, 5, 16, 0, "Tiles/bassalt.png"),
         MUD(true, 100, 4, 0, "Tiles/nil.png"),
         GRASS(true, -10, 4, 0, "Tiles/nil.png"),
         DISTRACTION(true, -10000, 4, 0, "Tiles/grass.png"),

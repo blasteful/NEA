@@ -19,6 +19,7 @@ public class Audio {
         Sound buy;
         Sound back;
         Sound losehp;
+        Sound laser;
 
         public Audio(boolean muted) {
             this.muted = muted;
@@ -34,6 +35,7 @@ public class Audio {
             buy = Gdx.audio.newSound(Gdx.files.internal("Sounds/buy.wav"));
             back = Gdx.audio.newSound(Gdx.files.internal("Sounds/back.wav"));
             losehp = Gdx.audio.newSound(Gdx.files.internal("Sounds/losehp.wav"));
+            laser = Gdx.audio.newSound(Gdx.files.internal("Sounds/laser.wav"));
         }
 
         public void click() {
@@ -45,6 +47,16 @@ public class Audio {
         public void losehp() {
             if(!muted) {
                 losehp.play(0.5f);
+            }
+        }
+        public void laser() {
+            if(!muted) {
+                laser.play(0.5f);
+            }
+        }
+        public void stoplaser() {
+            if(!muted) {
+                laser.stop();
             }
         }
 

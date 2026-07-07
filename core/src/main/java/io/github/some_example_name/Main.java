@@ -44,6 +44,10 @@ public class Main extends ApplicationAdapter {
     private float intervals = 0.3f;
     private float spawnTimer = 0f;
 
+    int detonator_rplevel = 0;
+    int spire_rplevel = 0;
+    int turret_rplevel = 0;
+
     int sizex = 64;
     int sizey = 48;
     int mode;
@@ -52,7 +56,7 @@ public class Main extends ApplicationAdapter {
 
     boolean sound = true;
 
-    int randomtip = MathUtils.random(1,5);
+    int randomtip = MathUtils.random(1,6);
     boolean tipswitch = true;
 
     TowerData.Tower selected;
@@ -77,7 +81,7 @@ public class Main extends ApplicationAdapter {
 
     // statistics
     int wave;
-    int cash = 300;
+    int cash = 10000;
     int hp = 10;
     int totalcash = cash;
     int detonators = 0;
@@ -126,7 +130,6 @@ public class Main extends ApplicationAdapter {
             if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
                 recieved = menu.MenuHandler(currentmenu, ms.getscreen_x(), ms.getscreen_y());
                 currentmenu = recieved;
-                System.out.println(currentmenu);
             }
 
             if(menu.rendermodecheck()) {
@@ -149,7 +152,7 @@ public class Main extends ApplicationAdapter {
                 Gdx.app.exit();
             }
             if(recieved == Menus.Main && !tipswitch) {
-                randomtip = MathUtils.random(1,5);
+                randomtip = MathUtils.random(1,6);
                 tipswitch = true;
             }
 
@@ -175,6 +178,10 @@ public class Main extends ApplicationAdapter {
                 if(randomtip == 5) {
                     font.draw(batch, "please give me an A*", ((float) Gdx.graphics.getWidth() / 2 - 225), 480);
                 }
+                if(randomtip == 6) {
+                    font.draw(batch, "you are the bad guy in this game", ((float) Gdx.graphics.getWidth() / 2 - 350), 480);
+                }
+
 
                 batch.end();
             }
@@ -187,10 +194,10 @@ public class Main extends ApplicationAdapter {
                 tipswitch = false;
                 menu.ResearchMenu(ms.getscreen_x(), ms.getscreen_y());
             }
-
-
         } else {
 
+            System.out.println(turret_rplevel);
+            System.out.println(spire_rplevel);
 
             Tile current_tile = ms.getTile();
             if(current_tile == null) {
@@ -478,7 +485,11 @@ public class Main extends ApplicationAdapter {
             if (phase == Phase.FIGHT) {
                 for (Tower tower : Towers) {
                     tower.GetEnemiesInRange(Monsters);
-                    tower.attackhandler(audio);
+                    if(tower.tower_type == TowerData.Tower.Turret) {
+                        tower.laserAttackHandler(audio);
+                    } else {
+                        tower.attackhandler(audio);
+                    }
                     tower.update(Gdx.graphics.getDeltaTime());
                 }
             }

@@ -30,7 +30,12 @@ public class Menu {
         SPIRE_1,
         SPIRE_2,
         SPIRE_3,
-        SPIRE_4
+        SPIRE_4,
+
+        DETONATOR_1,
+        DETONATOR_2,
+        DETONATOR_3,
+        DETONATOR_4
 
     };
 
@@ -122,10 +127,21 @@ public class Menu {
     int turretup4w = 100;
     int turretup4h = 100;
 
+    int detonatorx = 330;
+    int detonatorh = 100;
+    int detonatorw = 100;
+
+    int detonator1y = 125;
+    int detonator2y = 250;
+    int detonator3y = 375;
+    int detonator4y = 500;
+
+
     int research_points = 1000;
 
     int turret_upgrade = 0;
     int spire_upgrade = 0;
+    int detonator_upgrade = 0;
 
     boolean volume = true;
     boolean rendermode = true;
@@ -169,7 +185,13 @@ public class Menu {
     private Texture spire3 = new Texture("buttons/spireupgrade3.png");
     private Texture spire4 = new Texture("buttons/spireupgrade4.png");
 
+    private Texture detonator1 = new Texture("buttons/detonatorupgrade1.png");
+    private Texture detonator2 = new Texture("buttons/detonatorupgrade2.png");
+    private Texture detonator3 = new Texture("buttons/detonatorupgrade3.png");
+    private Texture detonator4 = new Texture("buttons/detonatorupgrade4.png");
+
     private Texture locked = new Texture("buttons/lockedupgrade.png");
+    private Texture towermax = new Texture("buttons/towermaxxed.png");
 
     public Menu(Audio aud, UpgradeMenu upgradeMenu) {
         this.audio = aud;
@@ -266,6 +288,22 @@ public class Menu {
                 sb.draw(researchbg, 0, 0, 1280, 960);
                 upgradeMenu.render(sb, 70, "+ ANTIMAGIC");
             }
+            if(currentUpgrade == toShow.DETONATOR_1) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 20, "+ Shorter Fuse");
+            }
+            if(currentUpgrade == toShow.DETONATOR_2) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 35, "+ Larger Explosion");
+            }
+            if(currentUpgrade == toShow.DETONATOR_3) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 45, "+ Perfected Formula");
+            }
+            if(currentUpgrade == toShow.DETONATOR_4) {
+                sb.draw(researchbg, 0, 0, 1280, 960);
+                upgradeMenu.render(sb, 100, "+ NUCLEAR POWER");
+            }
             sb.end();
         } else {
             sb.begin();
@@ -299,7 +337,8 @@ public class Menu {
                 sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
                 sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
                 sb.draw(turret3, turretup3x, turretup3y, turretup3w, turretup3h);
-                sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
+                sb.draw(turret4, turretup4x, turretup4y, turretup4w, turretup4h);
+                sb.draw(towermax, turretup4x, turretup4y + 125, turretup4w, turretup4h);
             }
             if(spire_upgrade == 0) {
                 sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
@@ -330,7 +369,42 @@ public class Menu {
                 sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
                 sb.draw(spire3, spire3x, turretup3y, spire3w, spire3h);
                 sb.draw(spire4, spire1x, turretup4y, spire1w, spire1h);
+                sb.draw(towermax, spire1x, turretup4y + 125, turretup4w, turretup4h);
             }
+
+            if(detonator_upgrade == 0) {
+                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
+                sb.draw(locked, detonatorx, detonator2y, detonatorw, detonatorh);
+                sb.draw(locked, detonatorx, detonator3y, detonatorw, detonatorh);
+                sb.draw(locked, detonatorx, detonator4y, detonatorw, detonatorh);
+
+            }
+            if(detonator_upgrade == 1) {
+                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
+                sb.draw(detonator2, detonatorx, detonator2y, detonatorw, detonatorh);
+                sb.draw(locked, detonatorx, detonator3y, detonatorw, detonatorh);
+                sb.draw(locked, detonatorx, detonator4y, detonatorw, detonatorh);
+            }
+            if(detonator_upgrade == 2) {
+                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
+                sb.draw(detonator2, detonatorx, detonator2y, detonatorw, detonatorh);
+                sb.draw(detonator3, detonatorx, detonator3y, detonatorw, detonatorh);
+                sb.draw(locked, detonatorx, detonator4y, detonatorw, detonatorh);
+            }
+            if(detonator_upgrade == 3) {
+                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
+                sb.draw(detonator2, detonatorx, detonator2y, detonatorw, detonatorh);
+                sb.draw(detonator3, detonatorx, detonator3y, detonatorw, detonatorh);
+                sb.draw(detonator4, detonatorx, detonator4y, detonatorw, detonatorh);
+            }
+            if(detonator_upgrade == 4) {
+                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
+                sb.draw(detonator2, detonatorx, detonator2y, detonatorw, detonatorh);
+                sb.draw(detonator3, detonatorx, detonator3y, detonatorw, detonatorh);
+                sb.draw(detonator4, detonatorx, detonator4y, detonatorw, detonatorh);
+                sb.draw(towermax, detonatorx, turretup4y + 125, turretup4w, turretup4h);
+            }
+
             font.getData().setScale(1.5f);
             font.draw(sb, "Research Points: " + research_points, 1040, 50);
             sb.end();
@@ -461,7 +535,7 @@ public class Menu {
                     }
                     if(currentUpgrade == toShow.TURRET_4 && research_points >= 60) {
                         research_points -= 60;
-                        turret_upgrade = 3;
+                        turret_upgrade = 4;
                         currentUpgrade = toShow.Null;
                         audio.buy();
                     }
@@ -486,6 +560,30 @@ public class Menu {
                     if(currentUpgrade == toShow.SPIRE_4 && research_points >= 70) {
                         research_points -= 70;
                         spire_upgrade = 4;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.DETONATOR_1 && research_points >= 20) {
+                        research_points -= 20;
+                        detonator_upgrade = 1;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.DETONATOR_2 && research_points >= 30) {
+                        research_points -= 30;
+                        detonator_upgrade = 2;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.DETONATOR_3 && research_points >= 45) {
+                        research_points -= 45;
+                        detonator_upgrade = 3;
+                        currentUpgrade = toShow.Null;
+                        audio.buy();
+                    }
+                    if(currentUpgrade == toShow.DETONATOR_4 && research_points >= 100) {
+                        research_points -= 100;
+                        detonator_upgrade = 4;
                         currentUpgrade = toShow.Null;
                         audio.buy();
                     }
@@ -529,6 +627,22 @@ public class Menu {
                 currentUpgrade = toShow.SPIRE_4;
                 audio.click();
             }
+            if((mousex >= detonatorx && mousex <= detonatorx + detonatorw && mousey >= detonator1y && mousey <= detonator1y + detonatorh) && detonator_upgrade == 0) {
+                currentUpgrade = toShow.DETONATOR_1;
+                audio.click();
+            }
+            if((mousex >= detonatorx && mousex <= detonatorx + detonatorw && mousey >= detonator2y && mousey <= detonator2y + detonatorh) && detonator_upgrade == 1) {
+                currentUpgrade = toShow.DETONATOR_2;
+                audio.click();
+            }
+            if((mousex >= detonatorx && mousex <= detonatorx + detonatorw && mousey >= detonator3y && mousey <= detonator3y + detonatorh) && detonator_upgrade == 2) {
+                currentUpgrade = toShow.DETONATOR_3;
+                audio.click();
+            }
+            if((mousex >= detonatorx && mousex <= detonatorx + detonatorw && mousey >= detonator4y && mousey <= detonator4y + detonatorh) && detonator_upgrade == 3) {
+                currentUpgrade = toShow.DETONATOR_4;
+                audio.click();
+            }
         }
 
         return send;
@@ -542,8 +656,14 @@ public class Menu {
         return (volume);
     }
 
-    public int turretc() {
+    public int turretlevel() {
         return (turret_upgrade);
+    }
+    public int spirelevel() {
+        return (spire_upgrade);
+    }
+    public int detonatorlevel() {
+        return (detonator_upgrade);
     }
 
 }
