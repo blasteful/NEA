@@ -485,12 +485,12 @@ public class Main extends ApplicationAdapter {
             if (phase == Phase.FIGHT) {
                 for (Tower tower : Towers) {
                     tower.GetEnemiesInRange(Monsters);
-                    if(tower.tower_type == TowerData.Tower.Turret) {
+                    if(tower.atktype == TowerData.AttackType.Laser) {
                         tower.laserAttackHandler(audio);
                     } else {
                         tower.attackhandler(audio);
                     }
-                    tower.update(Gdx.graphics.getDeltaTime());
+                    tower.update(Gdx.graphics.getDeltaTime(), audio);
                 }
             }
         }

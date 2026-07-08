@@ -19,6 +19,8 @@ public class Renderer {
     Texture barricadetex = new Texture("Tiles/barricade.png");
 
     Texture spire1 = new Texture("Towers/spire1.png");
+    Texture turret1 = new Texture("Towers/turret1.png");
+    Texture detonator1 = new Texture("Towers/detonator1.png");
 
     public Renderer() {
         spriteBatch = new SpriteBatch();
@@ -394,6 +396,34 @@ public class Renderer {
                         float offsetY = (tileHeight - scaledHeight) / 2;
 
                         spriteBatch.draw(spire1,
+                            i * tileWidth + offsetX,
+                            j * tileHeight + offsetY,
+                            scaledWidth,
+                            scaledHeight);
+                    }
+                    if (t.tower != null && t.tower.tower_type == TowerData.Tower.Turret) {
+
+                        float scale = 2;
+                        float scaledWidth = tileWidth * scale;
+                        float scaledHeight = tileHeight * scale;
+                        float offsetX = (tileWidth - scaledWidth) / 2;
+                        float offsetY = (tileHeight - scaledHeight) / 2;
+
+                        spriteBatch.draw(turret1,
+                            i * tileWidth + offsetX,
+                            j * tileHeight + offsetY,
+                            scaledWidth,
+                            scaledHeight);
+                    }
+                    if (t.tower != null && t.tower.tower_type == TowerData.Tower.Detonator) {
+
+                        float scale = 3.0f;
+                        float scaledWidth = tileWidth * scale;
+                        float scaledHeight = tileHeight * scale;
+                        float offsetX = (tileWidth - scaledWidth) / 2;
+                        float offsetY = (tileHeight - scaledHeight) / 2;
+
+                        spriteBatch.draw(detonator1,
                             i * tileWidth + offsetX,
                             j * tileHeight + offsetY,
                             scaledWidth,

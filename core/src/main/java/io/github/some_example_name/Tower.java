@@ -92,7 +92,7 @@ public class Tower {
         renderer.end();
     }
 
-    public void update(float deltaTime) {
+    public void update(float deltaTime, Audio audio) {
         if(cooldown > 0) {
             cooldown -= deltaTime;
         }
@@ -102,8 +102,13 @@ public class Tower {
             float dy = Math.abs(laserTarget.y - this.y);
             float distance = (float) Math.sqrt(dx * dx + dy * dy);
 
-            if(distance > this.stats.range || laserTarget.hp <= 0) {
+            if (distance > stats.range || laserTarget.hp <= 0) {
                 laserTarget = null;
+
+                if (isLaserActive) {
+                    audio.stoplaser();
+                    isLaserActive = false;
+                }
             }
         }
 
@@ -138,11 +143,18 @@ public class Tower {
     }
 
     public void laserAttackHandler(Audio audio) {
+        if (inRange.isEmpty() && isLaserActive) {
+            audio.stoplaser();
+            isLaserActive = false;
+        }
+
         if(!inRange.isEmpty()) {
             if(laserTarget == null || !inRange.contains(laserTarget)) {
                 laserTarget = inRange.get(MathUtils.random(inRange.size() - 1));
-                audio.laser();
-                isLaserActive = true;
+                if (!isLaserActive) {
+                    audio.laser();
+                    isLaserActive = true;
+                }
             }
 
             if(laserTarget != null && cooldown <= 0) {
