@@ -194,10 +194,12 @@ public class Main extends ApplicationAdapter {
                 tipswitch = false;
                 menu.ResearchMenu(ms.getscreen_x(), ms.getscreen_y());
             }
-        } else {
 
-            System.out.println(turret_rplevel);
-            System.out.println(spire_rplevel);
+            turret_rplevel = menu.turret_upgrade;
+            detonator_rplevel = menu.detonator_upgrade;
+            spire_rplevel = menu.spire_upgrade;
+
+        } else {
 
             Tile current_tile = ms.getTile();
             if(current_tile == null) {
@@ -218,6 +220,11 @@ public class Main extends ApplicationAdapter {
 
 
             for (Monster m : Monsters) {
+
+                if(m.genre == MonsterData.Genre.Secret) {
+                    System.out.println(m.hp);
+                }
+
                 if(m.shouldPlayFootstep() && m.hp > 0) {
                     if(m.alternatefootstep){
                         audio.footsteps();
@@ -291,6 +298,7 @@ public class Main extends ApplicationAdapter {
                 detonators ++;
             }
 
+
             if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
                 weather.Weather_Random();
                 weather.event_handler();
@@ -300,6 +308,13 @@ public class Main extends ApplicationAdapter {
             if (Gdx.input.isKeyJustPressed(Input.Keys.K) ) {
                 map = new Map(64, 48);
                 map.pathfind();
+            }
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.I) ) {
+                menu_active = true;
+                recieved = null;
+                currentmenu = Menus.Main;
+                recieved = null;
             }
 
 
@@ -399,10 +414,7 @@ public class Main extends ApplicationAdapter {
 
                 }
 
-
                 Tile.Type originalType = t.originalType;
-
-
 
                 if (!map.pathfind()) {
                     t.type = originalType;
@@ -412,6 +424,74 @@ public class Main extends ApplicationAdapter {
                     map.pathfind();
                     System.out.println("would block path");
                 }
+            }
+
+            if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT) && mode == 2 && ms.getTile().type == Tile.Type.PLACED_TOWER) {
+                Tile t = ms.getTile();
+                if (t.type == Tile.Type.ENTRANCE || t.type == Tile.Type.EXIT) {
+                    return;
+                }
+
+                if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretII).cost <= cash && t.tower.tower_type == TowerData.Tower.Turret && turret_rplevel >= 1 && t.tower.level == 0) {
+                    System.out.println("lvl 1");
+                    Towers.remove(t.tower);
+                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.TurretII, map, sr);
+                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretII).cost;
+                    Towers.add(newT);
+                    t.tower = newT;
+
+                    t.setType(Tile.Type.PLACED_TOWER);
+                    t.originalType = Tile.Type.PLACED_TOWER;
+
+                    audio.upgrade();
+                    t.tower.level ++;
+
+                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretIII).cost <= cash && t.tower.tower_type == TowerData.Tower.TurretII && turret_rplevel >= 2 && t.tower.level == 1) {
+                    System.out.println("lvl 2");
+                    Towers.remove(t.tower);
+                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.TurretIII, map, sr);
+                    newT.level = 1;
+                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretII).cost;
+                    Towers.add(newT);
+                    t.tower = newT;
+
+                    t.setType(Tile.Type.PLACED_TOWER);
+                    t.originalType = Tile.Type.PLACED_TOWER;
+
+                    audio.upgrade();
+                    t.tower.level ++;
+                    System.out.println(t.tower.level);
+                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretIII).cost <= cash && t.tower.tower_type == TowerData.Tower.TurretIII && turret_rplevel >= 3 && t.tower.level == 2) {
+                    System.out.println("lvl 3");
+                    Towers.remove(t.tower);
+                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.TurretIV, map, sr);
+                    newT.level = 2;
+                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretII).cost;
+                    Towers.add(newT);
+                    t.tower = newT;
+
+                    t.setType(Tile.Type.PLACED_TOWER);
+                    t.originalType = Tile.Type.PLACED_TOWER;
+
+                    audio.upgrade();
+                    t.tower.level ++;
+                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretIV).cost <= cash && t.tower.tower_type == TowerData.Tower.TurretIV && turret_rplevel >= 4 && t.tower.level == 3) {
+                    System.out.println("lvl 4");
+                    Towers.remove(t.tower);
+                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.TurretV, map, sr);
+                    newT.level = 3;
+                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretV).cost;
+                    Towers.add(newT);
+                    t.tower = newT;
+
+                    t.setType(Tile.Type.PLACED_TOWER);
+                    t.originalType = Tile.Type.PLACED_TOWER;
+
+                    audio.upgrade();
+                    t.tower.level ++;
+                }
+
+                Tile.Type originalType = t.originalType;
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.M)) {
@@ -485,7 +565,7 @@ public class Main extends ApplicationAdapter {
             if (phase == Phase.FIGHT) {
                 for (Tower tower : Towers) {
                     tower.GetEnemiesInRange(Monsters);
-                    if(tower.tower_type == TowerData.Tower.Turret) {
+                    if(tower.atktype == TowerData.AttackType.Laser) {
                         tower.laserAttackHandler(audio);
                     } else {
                         tower.attackhandler(audio);
