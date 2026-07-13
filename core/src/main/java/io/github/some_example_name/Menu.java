@@ -258,150 +258,120 @@ public class Menu {
             sb.begin();
             if(currentUpgrade == Menu.toShow.TURRET_1) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 5, "+ Heavier Rounds");
+                upgradeMenu.render(sb, 5, "Heavier Rounds \n\n+30 Damage");
             }
             if(currentUpgrade == toShow.TURRET_2) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 10, "+ Targeting Precision");
+                upgradeMenu.render(sb, 10, "Targeting Precision \n\n+3 Range ");
             }
             if(currentUpgrade == toShow.TURRET_3) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 30, "+ Machine Gun Barrel");
+                upgradeMenu.render(sb, 30, "Machine Gun Barrel \n\n0.32 Second Cooldown");
             }
             if(currentUpgrade == toShow.TURRET_4) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 60, "+ HYPER BEAM");
+                upgradeMenu.render(sb, 60, "HYPER BEAM \n\n+Laser Targeting\n+5 Range\n-68 Damage");
             }
             if(currentUpgrade == toShow.SPIRE_1) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 10, "+ Fire Magic");
+                upgradeMenu.render(sb, 10, "Fire Magic");
             }
             if(currentUpgrade == toShow.SPIRE_2) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 15, "+ Wizard Revision");
+                upgradeMenu.render(sb, 15, "Wizard Revision");
             }
             if(currentUpgrade == Menu.toShow.SPIRE_3) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 35, "+ Lightning");
+                upgradeMenu.render(sb, 35, "Lightning");
             }
             if(currentUpgrade == Menu.toShow.SPIRE_4) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 70, "+ ANTIMAGIC");
+                upgradeMenu.render(sb, 70, "DARK MAGIC");
             }
             if(currentUpgrade == toShow.DETONATOR_1) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 20, "+ Shorter Fuse");
+                upgradeMenu.render(sb, 20, "Shorter Fuse");
             }
             if(currentUpgrade == toShow.DETONATOR_2) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 35, "+ Larger Explosion");
+                upgradeMenu.render(sb, 35, "Larger Explosion");
             }
             if(currentUpgrade == toShow.DETONATOR_3) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 45, "+ Perfected Formula");
+                upgradeMenu.render(sb, 45, "Perfected Formula");
             }
             if(currentUpgrade == toShow.DETONATOR_4) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 100, "+ NUCLEAR POWER");
+                upgradeMenu.render(sb, 100, "NUCLEAR POWER");
             }
             sb.end();
         } else {
             sb.begin();
             sb.draw(researchbg, 0, 0, 1280, 960);
             sb.draw(back, backx, backy, backw, backh);
-            if (turret_upgrade == 0) {
+
+            sb.draw(locked, turretup1x, turretup1y, turretup1w, turretup1h);
+            sb.draw(locked, turretup2x, turretup2y, turretup2w, turretup2h);
+            sb.draw(locked, turretup3x, turretup3y, turretup3w, turretup3h);
+            sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
+
+            sb.draw(locked, spire1x, spire1y, spire1w, spire1h);
+            sb.draw(locked, spire1x, turretup2y, spire1w, spire1h);
+            sb.draw(locked, spire1x, turretup3y, spire1w, spire1h);
+            sb.draw(locked, spire1x, turretup4y, spire1w, spire1h);
+
+            sb.draw(locked, detonatorx, detonator1y, detonatorw, detonatorh);
+            sb.draw(locked, detonatorx, detonator2y, detonatorw, detonatorh);
+            sb.draw(locked, detonatorx, detonator3y, detonatorw, detonatorh);
+            sb.draw(locked, detonatorx, detonator4y, detonatorw, detonatorh);
+
+            if (turret_upgrade >= 0) {
                 sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
-                sb.draw(locked, turretup2x, turretup2y, turretup2w, turretup2h);
-                sb.draw(locked, turretup3x, turretup3y, turretup3w, turretup3h);
-                sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
             }
-            if(turret_upgrade == 1) {
-                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
+            if(turret_upgrade >= 1) {
                 sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
-                sb.draw(locked, turretup3x, turretup3y, turretup3w, turretup3h);
-                sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
             }
-            if(turret_upgrade == 2) {
-                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
-                sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
+            if(turret_upgrade >= 2) {
                 sb.draw(turret3, turretup3x, turretup3y, turretup3w, turretup3h);
-                sb.draw(locked, turretup4x, turretup4y, turretup4w, turretup4h);
             }
-            if(turret_upgrade == 3) {
-                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
-                sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
-                sb.draw(turret3, turretup3x, turretup3y, turretup3w, turretup3h);
+            if(turret_upgrade >= 3) {
                 sb.draw(turret4, turretup4x, turretup4y, turretup4w, turretup4h);
             }
-            if(turret_upgrade == 4) {
-                sb.draw(turret1, turretup1x, turretup1y, turretup1w, turretup1h);
-                sb.draw(turret2, turretup2x, turretup2y, turretup2w, turretup2h);
-                sb.draw(turret3, turretup3x, turretup3y, turretup3w, turretup3h);
-                sb.draw(turret4, turretup4x, turretup4y, turretup4w, turretup4h);
+            if(turret_upgrade >= 4) {
                 sb.draw(towermax, turretup4x, turretup4y + 125, turretup4w, turretup4h);
             }
-            if(spire_upgrade == 0) {
+
+            if(spire_upgrade >= 0) {
                 sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
-                sb.draw(locked, spire1x, turretup2y, spire1w, spire1h);
-                sb.draw(locked, spire1x, turretup3y, spire1w, spire1h);
-                sb.draw(locked, spire1x, turretup4y, spire1w, spire1h);
             }
-            if(spire_upgrade == 1) {
-                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
+            if(spire_upgrade >= 1) {
                 sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
-                sb.draw(locked, spire1x, turretup3y, spire1w, spire1h);
-                sb.draw(locked, spire1x, turretup4y, spire1w, spire1h);
             }
-            if(spire_upgrade == 2) {
-                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
-                sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
+            if(spire_upgrade >= 2) {
                 sb.draw(spire3, spire3x, turretup3y, spire3w, spire3h);
-                sb.draw(locked, spire1x, turretup4y, spire1w, spire1h);
             }
-            if(spire_upgrade == 3) {
-                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
-                sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
-                sb.draw(spire3, spire3x, turretup3y, spire3w, spire3h);
+            if(spire_upgrade >= 3) {
                 sb.draw(spire4, spire1x, turretup4y, spire1w, spire1h);
             }
-            if(spire_upgrade == 4) {
-                sb.draw(spire1, spire1x, spire1y, spire1w, spire1h);
-                sb.draw(spire2, spire1x, turretup2y, spire1w, spire1h);
-                sb.draw(spire3, spire3x, turretup3y, spire3w, spire3h);
-                sb.draw(spire4, spire1x, turretup4y, spire1w, spire1h);
+            if(spire_upgrade >= 4) {
                 sb.draw(towermax, spire1x, turretup4y + 125, turretup4w, turretup4h);
             }
 
-            if(detonator_upgrade == 0) {
+            if(detonator_upgrade >= 0) {
                 sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
-                sb.draw(locked, detonatorx, detonator2y, detonatorw, detonatorh);
-                sb.draw(locked, detonatorx, detonator3y, detonatorw, detonatorh);
-                sb.draw(locked, detonatorx, detonator4y, detonatorw, detonatorh);
 
             }
-            if(detonator_upgrade == 1) {
-                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
+            if(detonator_upgrade >= 1) {
                 sb.draw(detonator2, detonatorx, detonator2y, detonatorw, detonatorh);
-                sb.draw(locked, detonatorx, detonator3y, detonatorw, detonatorh);
-                sb.draw(locked, detonatorx, detonator4y, detonatorw, detonatorh);
             }
-            if(detonator_upgrade == 2) {
-                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
-                sb.draw(detonator2, detonatorx, detonator2y, detonatorw, detonatorh);
+            if(detonator_upgrade >= 2) {
                 sb.draw(detonator3, detonatorx, detonator3y, detonatorw, detonatorh);
-                sb.draw(locked, detonatorx, detonator4y, detonatorw, detonatorh);
             }
-            if(detonator_upgrade == 3) {
-                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
-                sb.draw(detonator2, detonatorx, detonator2y, detonatorw, detonatorh);
-                sb.draw(detonator3, detonatorx, detonator3y, detonatorw, detonatorh);
+
+            if(detonator_upgrade >= 3) {
                 sb.draw(detonator4, detonatorx, detonator4y, detonatorw, detonatorh);
             }
-            if(detonator_upgrade == 4) {
-                sb.draw(detonator1, detonatorx, detonator1y, detonatorw, detonatorh);
-                sb.draw(detonator2, detonatorx, detonator2y, detonatorw, detonatorh);
-                sb.draw(detonator3, detonatorx, detonator3y, detonatorw, detonatorh);
-                sb.draw(detonator4, detonatorx, detonator4y, detonatorw, detonatorh);
+            if(detonator_upgrade >= 4) {
                 sb.draw(towermax, detonatorx, turretup4y + 125, turretup4w, turretup4h);
             }
 

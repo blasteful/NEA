@@ -79,7 +79,7 @@ public class TowerData {
             stats.put(Tower.SpireIV, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
             stats.put(Tower.DetonatorIV, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
 
-            stats.put(Tower.TurretV, new TowerDataStorage(100, 12, 0.04f, 12, AttackType.Laser, false));
+            stats.put(Tower.TurretV, new TowerDataStorage(100, 13, 0.04f, 12, AttackType.Laser, false));
             stats.put(Tower.SpireV, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
             stats.put(Tower.DetonatorV, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
         }

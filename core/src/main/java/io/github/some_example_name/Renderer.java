@@ -82,6 +82,9 @@ public class Renderer {
                 if (t.type == Tile.Type.THORNS) {
                     sr.setColor(106 / 255f, 238 / 255f, 255 / 255f, 1f);
                 }
+                if (t.type == Tile.Type.VOID) {
+                    sr.setColor(Color.BLACK);
+                }
                 if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.Detonator) || t.tower.tower_type == TowerData.Tower.DetonatorII))  {
                     sr.setColor(new Color(Color.RED));
                 }
@@ -228,6 +231,9 @@ public class Renderer {
                 }
                 if (t.type == Tile.Type.SNOW) {
                     sr.setColor(Color.LIGHT_GRAY);
+                }
+                if (t.type == Tile.Type.VOID) {
+                    sr.setColor(Color.BLACK);
                 }
 
                 if (t.type == Tile.Type.GRASS) {
