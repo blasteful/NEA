@@ -154,9 +154,9 @@ public class Map {
 
     public void createPath() {
         int enterancex = 0;
-        int enterancey = MathUtils.random(7, sizey - 1);
+        int enterancey = MathUtils.random(8, sizey - 1);
         int exitx = sizex - 1;
-        int exity = MathUtils.random(7, sizey - 1);
+        int exity = MathUtils.random(8, sizey - 1);
 
         entrance = map[enterancex][enterancey];
         exit = map[exitx][exity];
@@ -168,7 +168,7 @@ public class Map {
         for (int i = 0; i < sizex; i++) {
             for (int j = 0; j < sizey; j++) {
 
-                if(j <= 7) {
+                if(j <= 7 && i >= 14) {
                     map[i][j].type = Tile.Type.VOID;
                 }
 

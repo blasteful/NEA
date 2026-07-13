@@ -11,7 +11,7 @@ public class Weather {
         Sunny,
         Snow,
         Avalanche,
-        RazV
+        BankHoliday,
 
     }
 
@@ -55,7 +55,7 @@ public class Weather {
             for (int j = 0; j < map.sizey; j++) {
                 Tile target = map.getTile(i, j);
                 if (target.type == Tile.Type.DIRT) {
-                    int ran_var = MathUtils.random(1,10);
+                    int ran_var = MathUtils.random(1,20);
                     if(ran_var == 1){
                         target.setType(Tile.Type.ROCK);
                     }

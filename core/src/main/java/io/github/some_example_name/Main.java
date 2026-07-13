@@ -33,6 +33,7 @@ public class Main extends ApplicationAdapter {
     private Tile last_tile = null;
     private Audio audio;
     private UpgradeMenu upgradeMenu;
+    private GameUI gameUI;
 
     List<Monster> Monsters = new ArrayList<>();
     List<Tower> Towers = new ArrayList<>();
@@ -99,6 +100,7 @@ public class Main extends ApplicationAdapter {
         font = new BitmapFont();
         wd = new WaveDirector();
         audio = new Audio(false);
+        gameUI = new GameUI();
         font.setColor(Color.WHITE);
         font.getData().setScale(2f);
         UpgradeMenu UpgradeMenu = new UpgradeMenu();
@@ -548,6 +550,8 @@ public class Main extends ApplicationAdapter {
             }
             sr.end();
 
+            gameUI.draw(batch, cash, wave, hp, weather, phase, mode, selected);
+
             batch.begin();
             font.draw(batch, "PHASE: " + phase, ((float) Gdx.graphics.getWidth() / 2 - 100), 950);
             font.draw(batch, "WAVE: " + wave, ((float) Gdx.graphics.getWidth() / 2 + 500), 950);
@@ -558,7 +562,7 @@ public class Main extends ApplicationAdapter {
 
             if (mode == 2) {
                 batch.begin();
-                font.draw(batch, "" + selected, ((float) Gdx.graphics.getWidth() / 2 - 100), 920); // (x, y) position
+                font.draw(batch, "" + selected, ((float) Gdx.graphics.getWidth() / 2 - 100), 920);
                 batch.end();
             }
 
