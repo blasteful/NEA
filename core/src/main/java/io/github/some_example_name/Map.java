@@ -154,15 +154,28 @@ public class Map {
 
     public void createPath() {
         int enterancex = 0;
-        int enterancey = MathUtils.random(0, sizey - 1);
+        int enterancey = MathUtils.random(7, sizey - 1);
         int exitx = sizex - 1;
-        int exity = MathUtils.random(0, sizey - 1);
+        int exity = MathUtils.random(7, sizey - 1);
 
         entrance = map[enterancex][enterancey];
         exit = map[exitx][exity];
 
         map[enterancex][enterancey].type = Tile.Type.ENTRANCE;
         map[exitx][exity].type = Tile.Type.EXIT;
+
+        // create ui border bruh
+        for (int i = 0; i < sizex; i++) {
+            for (int j = 0; j < sizey; j++) {
+
+                if(j <= 7) {
+                    map[i][j].type = Tile.Type.VOID;
+                }
+
+            }
+
+        }
+
     }
 
     public boolean pathfind() {

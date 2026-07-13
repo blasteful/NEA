@@ -36,7 +36,8 @@ public class Tile {
         EXIT(true, -1 , 10, 0, "Tiles/path.png"),
         PATH(true, 10 , 10, 0, "Tiles/path.png"),
         DEEPWATER(false, -1, 10, 0, "Tiles/water.png"),
-        SNOW(true, 20, 5, 0, "Tiles/snow.png");
+        SNOW(true, 20, 5, 0, "Tiles/snow.png"),
+        VOID(false, 20, 5, 0, "Tiles/nil.png");
 
 
         public final boolean walkable;

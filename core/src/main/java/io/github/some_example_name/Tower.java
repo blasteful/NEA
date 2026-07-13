@@ -18,6 +18,7 @@ public class Tower {
     TowerData.TowerDataStorage stats;
     TowerData.AttackType atktype;
     List<Monster> inRange = new ArrayList<>();
+    int level = 0;
 
     ShapeRenderer renderer = new ShapeRenderer();
 
