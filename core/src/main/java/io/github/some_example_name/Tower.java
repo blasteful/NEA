@@ -53,10 +53,13 @@ public class Tower {
         float endY = target.y * tileHeight + tileHeight / 2;
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
-        if(tower_type == TowerData.Tower.Spire) {
+        if(tower_type == TowerData.Tower.Spire || tower_type == TowerData.Tower.SpireII || tower_type == TowerData.Tower.SpireIII || tower_type == TowerData.Tower.SpireIV) {
             renderer.setColor(Color.PURPLE);
         } else {
             renderer.setColor(1, 1, 0, 1);
+        }
+        if(tower_type == TowerData.Tower.SpireV) {
+            renderer.setColor(Color.BLACK);
         }
         renderer.line(startX, startY, endX, endY);
         renderer.end();
@@ -207,10 +210,10 @@ public class Tower {
         lastAttackTarget = target;
         target.hp = target.hp - stats.damage;
         isAOEAnimation = false;
-        if(tower_type == TowerData.Tower.Spire) {
+        if(tower_type == TowerData.Tower.Spire || tower_type == TowerData.Tower.SpireII || tower_type == TowerData.Tower.SpireIII || tower_type == TowerData.Tower.SpireIV || tower_type == TowerData.Tower.SpireV) {
             audio.spire();
         }
-        if(tower_type == TowerData.Tower.Turret) {
+        if(tower_type == TowerData.Tower.Turret ||tower_type == TowerData.Tower.TurretII || tower_type == TowerData.Tower.TurretIII || tower_type == TowerData.Tower.TurretIV) {
             audio.turret();
         }
     }

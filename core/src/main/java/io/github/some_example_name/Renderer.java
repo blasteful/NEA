@@ -159,11 +159,35 @@ public class Renderer {
                 if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Detonator) {
                     sr.setColor(new Color(Color.RED));
                 }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.Turret) || (t.tower.tower_type == TowerData.Tower.TurretII))) {
-                    sr.setColor(new Color(Color.SALMON));
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.Turret))) {
+                    sr.setColor(182 / 255f, 237 / 255f, 182 / 255f, 1f);
                 }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
-                    sr.setColor(new Color(Color.PURPLE));
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.TurretII))) {
+                    sr.setColor(153 / 255f, 237 / 255f, 153 / 255f, 1f);
+                }
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.TurretIII))) {
+                    sr.setColor(153 / 255f, 237 / 255f, 114 / 255f, 1f);
+                }
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.TurretIV))) {
+                    sr.setColor(73 / 255f, 237 / 255f, 73 / 255f, 1f);
+                }
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.TurretV))) {
+                    sr.setColor(0 / 255f, 255 / 255f, 0 / 255f, 1f);
+                }
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.Spire))) {
+                    sr.setColor(165 / 255f, 165 / 255f, 235 / 255f, 1f);
+                }
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.SpireII))) {
+                    sr.setColor(146 / 255f, 146 / 255f, 232 / 255f, 1f);
+                }
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.SpireIII))) {
+                    sr.setColor(118 / 255f, 118 / 255f, 230 / 255f, 1f);
+                }
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.SpireIV))) {
+                    sr.setColor(80 / 255f, 84 / 255f, 227 / 255f, 1f);
+                }
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.SpireV))) {
+                    sr.setColor(0 / 255f, 0 / 255f, 255 / 255f, 1f);
                 }
                 if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Barricade) {
                     sr.setColor(new Color(Color.BROWN));
@@ -174,10 +198,10 @@ public class Renderer {
                         sr.setColor(Color.RED);
                     }
                     if (selected == TowerData.Tower.Spire) {
-                        sr.setColor(Color.PURPLE);
+                        sr.setColor(165 / 255f, 165 / 255f, 235 / 255f, 1f);
                     }
                     if (selected == TowerData.Tower.Turret) {
-                        sr.setColor(Color.SALMON);
+                        sr.setColor(182 / 255f, 237 / 255f, 182 / 255f, 1f);
                     }
                     if (selected == TowerData.Tower.Barricade) {
                         sr.setColor(Color.BROWN);
@@ -393,7 +417,7 @@ public class Renderer {
 
                 if (tex != null) {
 
-                    if (t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
+                    if (t.tower != null && ((t.tower.tower_type == TowerData.Tower.Spire) || (t.tower.tower_type == TowerData.Tower.SpireII) || (t.tower.tower_type == TowerData.Tower.SpireIII) || (t.tower.tower_type == TowerData.Tower.SpireIV) || (t.tower.tower_type == TowerData.Tower.SpireV))){
 
                         float scale = 3.0f;
                         float scaledWidth = tileWidth * scale;
@@ -407,7 +431,7 @@ public class Renderer {
                             scaledWidth,
                             scaledHeight);
                     }
-                    if (t.tower != null && t.tower.tower_type == TowerData.Tower.Turret) {
+                    if (t.tower != null && ((t.tower.tower_type == TowerData.Tower.Turret) || (t.tower.tower_type == TowerData.Tower.TurretII) || (t.tower.tower_type == TowerData.Tower.TurretIII) || (t.tower.tower_type == TowerData.Tower.TurretIV) || (t.tower.tower_type == TowerData.Tower.TurretV))){
 
                         float scale = 2;
                         float scaledWidth = tileWidth * scale;

@@ -266,27 +266,27 @@ public class Menu {
             }
             if(currentUpgrade == toShow.TURRET_3) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 30, "Machine Gun Barrel \n\n0.32 Second Cooldown");
+                upgradeMenu.render(sb, 30, "Machine Gun Barrel \n\n0.32 Second Attack Rate");
             }
             if(currentUpgrade == toShow.TURRET_4) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 60, "HYPER BEAM \n\n+Laser Targeting\n+5 Range\n-68 Damage");
+                upgradeMenu.render(sb, 60, "HYPER BEAM \n\n+Laser Targeting\n+5 Range\n-68 Damage\n0.04 Second Attack Rate");
             }
             if(currentUpgrade == toShow.SPIRE_1) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 10, "Fire Magic");
+                upgradeMenu.render(sb, 10, "Fire Magic \n\n+50 Damage");
             }
             if(currentUpgrade == toShow.SPIRE_2) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 15, "Wizard Revision");
+                upgradeMenu.render(sb, 15, "Wizard Revision\n\n3 Second Attack Rate");
             }
             if(currentUpgrade == Menu.toShow.SPIRE_3) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 35, "Lightning");
+                upgradeMenu.render(sb, 35, "Lightning\n\n+75 Damage\n2.5 Second Attack Rate");
             }
             if(currentUpgrade == Menu.toShow.SPIRE_4) {
                 sb.draw(researchbg, 0, 0, 1280, 960);
-                upgradeMenu.render(sb, 70, "DARK MAGIC");
+                upgradeMenu.render(sb, 70, "DARK MAGIC\n\n+Infinite Range\n+100 Damage\n4 Second Attack Rate");
             }
             if(currentUpgrade == toShow.DETONATOR_1) {
                 sb.draw(researchbg, 0, 0, 1280, 960);

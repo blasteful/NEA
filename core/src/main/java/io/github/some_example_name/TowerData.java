@@ -64,23 +64,23 @@ public class TowerData {
             stats.put(Tower.Barricade, new TowerDataStorage(10, 0, 0, 0, AttackType.Nil, false));
 
             stats.put(Tower.Turret, new TowerDataStorage(50, 5, 2f, 50, AttackType.Single, false));
-            stats.put(Tower.Spire, new TowerDataStorage(150, 7, 2f, 125, AttackType.Single, true));
+            stats.put(Tower.Spire, new TowerDataStorage(150, 7, 5f, 125, AttackType.Single, true));
             stats.put(Tower.Detonator, new TowerDataStorage(125, 4, 5, 25, AttackType.AOE, false));
 
             stats.put(Tower.TurretII, new TowerDataStorage(100, 5, 2f, 80, AttackType.Single, false));
-            stats.put(Tower.SpireII, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
+            stats.put(Tower.SpireII, new TowerDataStorage(250, 7, 5f, 175, AttackType.Single, true));
             stats.put(Tower.DetonatorII, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
 
             stats.put(Tower.TurretIII, new TowerDataStorage(100, 8, 2f, 80, AttackType.Single, false));
-            stats.put(Tower.SpireIII, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
+            stats.put(Tower.SpireIII, new TowerDataStorage(500, 7, 3f, 175, AttackType.Single, true));
             stats.put(Tower.DetonatorIII, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
 
             stats.put(Tower.TurretIV, new TowerDataStorage(100, 8, 0.32f, 80, AttackType.Single, false));
-            stats.put(Tower.SpireIV, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
+            stats.put(Tower.SpireIV, new TowerDataStorage(1000, 7, 2.5f, 250, AttackType.Single, true));
             stats.put(Tower.DetonatorIV, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
 
             stats.put(Tower.TurretV, new TowerDataStorage(100, 13, 0.04f, 12, AttackType.Laser, false));
-            stats.put(Tower.SpireV, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
+            stats.put(Tower.SpireV, new TowerDataStorage(2500, 1000, 4f, 350, AttackType.Single, true));
             stats.put(Tower.DetonatorV, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
         }
 
