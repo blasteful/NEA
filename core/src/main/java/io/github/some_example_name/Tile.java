@@ -106,6 +106,11 @@ public class Tile {
         return(speed);
     }
 
+    public boolean getwalkable() {
+        return type.walkable;
+    }
+
+
     public int getPathingcost() {
         int pathingCost = type.pathingCost;
 

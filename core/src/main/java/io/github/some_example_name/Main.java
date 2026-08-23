@@ -79,6 +79,8 @@ public class Main extends ApplicationAdapter {
 
     Phase phase = Phase.BUILD;
     Menus currentmenu = Menus.Main;
+    Monster selected_monster = null;
+    Monster hovered_monster = null;
 
     // statistics
     int wave;
@@ -353,7 +355,7 @@ public class Main extends ApplicationAdapter {
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.R) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map, true));
+                Monsters.add(new Monster(MonsterData.Genre.Ethereal, MonsterData.Tier.II, map, true));
             }
 
 
@@ -491,6 +493,8 @@ public class Main extends ApplicationAdapter {
 
                     audio.upgrade();
                     t.tower.level ++;
+                } else {
+                    audio.failedupgrade();
                 }
 
                 Tile.Type originalType = t.originalType;
@@ -517,19 +521,12 @@ public class Main extends ApplicationAdapter {
             font.setColor(Color.WHITE);
             font.getData().setScale(2f);
 
-            if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-                Tile t = ms.getTile();
 
-                System.out.println(t.type + " Tile");
-                System.out.println("Magnetism: -" + t.getPathingcost());
-                System.out.println("Walk damage: " + t.getWalkingDamage());
-                System.out.println("Walkable: " + t.type.walkable);
-                System.out.println("Previously a " + t.previous + " Tile");
-                System.out.println("Parent: " + t.parent);
-                System.out.println("Child: " + t.child);
-                System.out.println();
 
-            }
+
+
+
+
 
 
             sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -546,19 +543,27 @@ public class Main extends ApplicationAdapter {
             }
             if (mode == 2) {
                 renderer.renderBMap(sr, map.getMap(), ms.getTile(), selected);
-
             }
             sr.end();
 
-            gameUI.draw(batch, cash, wave, hp, weather, phase, mode, selected);
+            Tile t = ms.getTile();
+            if(t == null) {
+                t = map.getTile(0, 0);
+            }
 
-            batch.begin();
-            font.draw(batch, "PHASE: " + phase, ((float) Gdx.graphics.getWidth() / 2 - 100), 950);
-            font.draw(batch, "WAVE: " + wave, ((float) Gdx.graphics.getWidth() / 2 + 500), 950);
-            font.draw(batch, "CASH: " + cash, ((float) Gdx.graphics.getWidth() / 2 + 500), 920);
-            font.draw(batch, "HP: " + hp, ((float) Gdx.graphics.getWidth() / 2 + 500), 890);
-            font.draw(batch, "" + selected_event, ((float) Gdx.graphics.getWidth() / 2 + 500), 860);
-            batch.end();
+            hovered_monster = ms.getMonster(Monsters);
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+                if (hovered_monster != null) {
+                    selected_monster = hovered_monster;
+                }
+            }
+
+            gameUI.draw(batch, cash, wave, hp, weather, phase, mode, selected, t, selected_monster);
+
+
+
+
 
             if (mode == 2) {
                 batch.begin();

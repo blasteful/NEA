@@ -31,7 +31,7 @@ public class MonsterData {
 
         Bolt,
         Spectre,
-        Ghost,
+        Reaper,
         JellyFish,
         Essence,
         Doppleganger,
@@ -140,7 +140,7 @@ public class MonsterData {
             stats.put(Creature.Bolt, new MonsterDataStorage(1, 12, Tier.I, Genre.Ethereal, "bolt1.png", "bolt2.png", Gimmick.Nil));
             stats.put(Creature.Spectre, new MonsterDataStorage(1, 16, Tier.I, Genre.Ethereal, "spectre1.png", "spectre2.png", Gimmick.Holy_Mantle));
 
-            stats.put(Creature.Ghost, new MonsterDataStorage(1, 16, Tier.II, Genre.Ethereal, "Nil", "", Gimmick.Holier_Mantle));
+            stats.put(Creature.Reaper, new MonsterDataStorage(1, 16, Tier.II, Genre.Ethereal, "reaper1.png", "reaper2.png", Gimmick.Holier_Mantle));
             stats.put(Creature.JellyFish, new MonsterDataStorage(1, 6, Tier.II, Genre.Ethereal, "jellyfish1.png", "jellyfish2.png", Gimmick.Holiest_Mantle));
 
             stats.put(Creature.Essence, new MonsterDataStorage(250, 8, Tier.III, Genre.Ethereal, "", "", Gimmick.Teleport));

@@ -545,6 +545,9 @@ public class Renderer {
                 if(m.creature == MonsterData.Creature.Wyvern) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50 ;
                 }
+                if(m.creature == MonsterData.Creature.Reaper) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50 ;
+                }
 
 
                 spriteBatch.draw(texture, screenX, screenY, width, height);

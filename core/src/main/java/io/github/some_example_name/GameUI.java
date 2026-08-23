@@ -39,7 +39,7 @@ public class GameUI {
     boolean cycle = false;
     boolean cycle2 = false;
 
-    public void draw(SpriteBatch batch, int cash, int wavenum, int hp, Weather weather, Main.Phase phase, int mode, TowerData.Tower selected) {
+    public void draw(SpriteBatch batch, int cash, int wavenum, int hp, Weather weather, Main.Phase phase, int mode, TowerData.Tower selected, Tile t, Monster m) {
 
         timer += Gdx.graphics.getDeltaTime();
         timer2 += Gdx.graphics.getDeltaTime();
@@ -122,7 +122,49 @@ public class GameUI {
         font.draw(batch, "" + wavenum, 355, 50);
         font.draw(batch, "" + cash, 360, 120);
         font.draw(batch, "" + wavenum, 355, 50);
+
+
+        if(t.type == Tile.Type.PLACED_TOWER) {
+            font.draw(batch, "" + t.tower.tower_type + " Tile", 550, 140);
+        } else {
+            font.draw(batch, "" + t.type + " Tile", 550, 140);
+            font.draw(batch, "Walkable: "  + t.getwalkable(), 550, 105);
+            font.draw(batch, "Difficulty: "  + t.getPathingcost() + "/100", 550, 85);
+        }
+        if(t.type == Tile.Type.PATH) {
+            font.draw(batch, "Previously a "  + t.previous + " Tile", 550, 45);
+        }
+
+        if(m != null) {
+
+            Texture monsterTexture = getMonsterTexture(m);
+
+            if(monsterTexture != null) {
+                batch.draw(monsterTexture, 900, 50, 100, 100);
+            }
+
+
+            font.draw(batch, "" + m.creature, 800, 140);
+            font.draw(batch, "HP: " + m.hp + "/" + MonsterData.MonsterDataStorage.getStats(m.creature).health, 800, 105);
+            font.draw(batch, "Speed: " + m.speed * 100, 800, 85);
+            font.draw(batch, "Tier: " + m.tier, 800, 65);
+            font.draw(batch, "Genre: " + m.genre, 800, 45);
+            font.draw(batch, "Gimmicks: " + MonsterData.MonsterDataStorage.getStats(m.creature).gimmick, 800, 25);
+        } else {
+            font.draw(batch, "Click A Monster" , 800, 140);
+        }
+
+
+
         batch.end();
+    }
+
+    private Texture getMonsterTexture(Monster m) {
+        if (m == null) {
+            return null;
+        }
+
+        return new Texture( m.creature + "1.png");
     }
 
 }
