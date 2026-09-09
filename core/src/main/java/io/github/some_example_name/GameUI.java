@@ -26,6 +26,9 @@ public class GameUI {
     private Texture tab2 = new Texture("GameUI/tab2.png");
     private Texture btab1 = new Texture("GameUI/btab1.png");
 
+    private Texture extrainfo = new Texture("GameUI/extrainfo.png");
+    private Texture extrainfo2 = new Texture("GameUI/extrainfoblock.png");
+
     private Texture turret = new Texture("Towers/turret1.png");
     private Texture spire = new Texture("Towers/spire1.png");
     private Texture detonator = new Texture("Towers/detonator1.png");
@@ -39,7 +42,26 @@ public class GameUI {
     boolean cycle = false;
     boolean cycle2 = false;
 
+
+    int infoWidth = 150;
+    boolean openedmons = false;
+
     public void draw(SpriteBatch batch, int cash, int wavenum, int hp, Weather weather, Main.Phase phase, int mode, TowerData.Tower selected, Tile t, Monster m) {
+
+        int screenWidth = Gdx.graphics.getWidth();
+
+        int tileX;
+        int monsterX;
+
+        Tower tower = t.tower;
+
+        if (m != null) {
+            monsterX = screenWidth - infoWidth;
+            tileX = screenWidth - infoWidth * 2;
+        } else {
+            tileX = screenWidth - infoWidth;
+            monsterX = screenWidth;
+        }
 
         timer += Gdx.graphics.getDeltaTime();
         timer2 += Gdx.graphics.getDeltaTime();
@@ -123,35 +145,55 @@ public class GameUI {
         font.draw(batch, "" + cash, 360, 120);
         font.draw(batch, "" + wavenum, 355, 50);
 
+        batch.draw(extrainfo2, tileX, 150);
+        Texture ttexture = getTileTexture(t);
+
 
         if(t.type == Tile.Type.PLACED_TOWER) {
-            font.draw(batch, "" + t.tower.tower_type + " Tile", 550, 140);
+            Texture towertexture = getTowerTexture(t.tower);
+            font.draw(batch, "" + t.tower.tower_type, tileX + 40, 340);
+            batch.draw(towertexture, tileX + 42, 250, 64 , 64);
+            font.draw(batch, "Level: " + tower.level, tileX + 10, 230);
+            font.draw(batch, "Range: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).range, tileX + 10, 212);
+            font.draw(batch, "CD: " + tower.cooldown, tileX + 10, 197);
+            font.draw(batch, "Damage: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).damage, tileX + 10, 182);
+
+
         } else {
-            font.draw(batch, "" + t.type + " Tile", 550, 140);
-            font.draw(batch, "Walkable: "  + t.getwalkable(), 550, 105);
-            font.draw(batch, "Difficulty: "  + t.getPathingcost() + "/100", 550, 85);
+            batch.draw(ttexture, tileX + 42, 250, 64, 64);
+            font.draw(batch, "" + t.type + " Tile", tileX + 30, 340);
+            font.draw(batch, "Walkable: "  + t.getwalkable(), tileX + 10, 230);
+            font.draw(batch, "Difficulty: "  + t.getPathingcost() + "/100", tileX + 10, 212);
         }
         if(t.type == Tile.Type.PATH) {
-            font.draw(batch, "Previously a "  + t.previous + " Tile", 550, 45);
+            font.draw(batch, "Was a "  + t.previous + " Tile", tileX+ 10, 182);
         }
 
         if(m != null) {
 
-            Texture monsterTexture = getMonsterTexture(m);
+            batch.draw(extrainfo, monsterX, 150);
 
-            if(monsterTexture != null) {
-                batch.draw(monsterTexture, 900, 50, 100, 100);
+            Texture monsterTexture = getMonsterTexture(m);
+            Texture monsterTexture2 = getMonsterTexture2(m);
+
+            if(monsterTexture != null && monsterTexture2 != null) {
+                if(cycle) {
+                    batch.draw(monsterTexture, monsterX + 30, 240, 75, 75);
+                } else {
+                    batch.draw(monsterTexture2, monsterX + 30, 240, 75, 75);
+                }
             }
 
 
-            font.draw(batch, "" + m.creature, 800, 140);
-            font.draw(batch, "HP: " + m.hp + "/" + MonsterData.MonsterDataStorage.getStats(m.creature).health, 800, 105);
-            font.draw(batch, "Speed: " + m.speed * 100, 800, 85);
-            font.draw(batch, "Tier: " + m.tier, 800, 65);
-            font.draw(batch, "Genre: " + m.genre, 800, 45);
-            font.draw(batch, "Gimmicks: " + MonsterData.MonsterDataStorage.getStats(m.creature).gimmick, 800, 25);
+            font.draw(batch, "" + m.creature, monsterX + 50 , 340);
+            font.draw(batch, "HP: " + m.hp + "/" + MonsterData.MonsterDataStorage.getStats(m.creature).health, monsterX + 10, 230);
+            font.draw(batch, "Speed: " + m.speed * 100, monsterX + 10, 212);
+            font.draw(batch, "Tier: " + m.tier, monsterX + 10, 197);
+            font.draw(batch, "Genre: " + m.genre, monsterX + 10, 182);
+
         } else {
             font.draw(batch, "Click A Monster" , 800, 140);
+            openedmons = false;
         }
 
 
@@ -165,6 +207,44 @@ public class GameUI {
         }
 
         return new Texture( m.creature + "1.png");
+    }
+
+
+    private Texture getMonsterTexture2(Monster m) {
+        if (m == null) {
+            return null;
+        }
+
+        return new Texture( m.creature + "2.png");
+    }
+
+    private Texture getTileTexture(Tile t) {
+        if (t == null) {
+            return new Texture( "Tiles/nil.png");
+        }
+
+        String path;
+
+        if(t.type == Tile.Type.DIRT) {
+            path = "Tiles/GRASS.png";
+        } else {
+            path = "Tiles/" + t.type + ".png";
+        }
+
+        if (Gdx.files.internal(path).exists()) {
+            return new Texture(path);
+        }
+        return new Texture("Tiles/nil.png");
+    }
+
+    private Texture getTowerTexture(Tower t) {
+
+        if (t == null) {
+            return new Texture("Towers/nil.png");
+        }
+
+        String path = "Towers/" + t.tower_type + "1.png";
+        return new Texture(path);
     }
 
 }

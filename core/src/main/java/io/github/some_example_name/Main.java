@@ -556,6 +556,8 @@ public class Main extends ApplicationAdapter {
             if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
                 if (hovered_monster != null) {
                     selected_monster = hovered_monster;
+                } else {
+                    selected_monster = null;
                 }
             }
 
