@@ -20,6 +20,7 @@ public class Renderer {
 
     Texture spire1 = new Texture("Towers/spire1.png");
     Texture turret1 = new Texture("Towers/turret1.png");
+    Texture turret2 = new Texture("Towers/turretIII1.png");
     Texture detonator1 = new Texture("Towers/detonator1.png");
 
     public Renderer() {
@@ -407,19 +408,43 @@ public class Renderer {
                             scaledWidth,
                             scaledHeight);
                     }
-                    if (t.tower != null && t.tower.tower_type == TowerData.Tower.Turret) {
+                    if (t.tower != null && t.tower.tower_type.family == TowerData.Family.Turret) {
 
-                        float scale = 2;
-                        float scaledWidth = tileWidth * scale;
-                        float scaledHeight = tileHeight * scale;
-                        float offsetX = (tileWidth - scaledWidth) / 2;
-                        float offsetY = (tileHeight - scaledHeight) / 2;
+                        Texture texture;
+                        float scale;
 
-                        spriteBatch.draw(turret1,
-                            i * tileWidth + offsetX,
-                            j * tileHeight + offsetY,
-                            scaledWidth,
-                            scaledHeight);
+                        switch (t.tower.tower_type) {
+                            case Turret:
+                            case TurretII:
+                                texture = turret1;
+                                scale = 4f;
+                                break;
+                            case TurretIII:
+                            case TurretIV:
+                                texture = turret2;
+                                scale = 3.5f;
+                                break;
+                            case TurretV:
+                                texture = turret2;
+                                scale = 4f;
+                                break;
+                            default:
+                                texture = null;
+                                scale = 1f;
+                        }
+
+                        if (texture != null) {
+                            float scaledWidth = tileWidth * scale;
+                            float scaledHeight = tileHeight * scale;
+                            float offsetX = (tileWidth - scaledWidth) / 2;
+                            float offsetY = (tileHeight - scaledHeight) / 2;
+
+                            spriteBatch.draw(texture,
+                                i * tileWidth + offsetX,
+                                j * tileHeight + offsetY,
+                                scaledWidth,
+                                scaledHeight);
+                        }
                     }
                     if (t.tower != null && t.tower.tower_type == TowerData.Tower.Detonator) {
 

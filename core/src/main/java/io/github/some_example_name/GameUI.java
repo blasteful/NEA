@@ -1,9 +1,12 @@
 package io.github.some_example_name;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
 public class GameUI {
@@ -34,6 +37,12 @@ public class GameUI {
     private Texture detonator = new Texture("Towers/detonator1.png");
     private Texture barricade = new Texture("Tiles/barricade.png");
 
+    private Texture turretbutton = new Texture("GameUI/turretbutton.png");
+    private Texture turretbuttonoff = new Texture("GameUI/turretbuttonoff.png");
+
+    private Texture barricadebutton = new Texture("GameUI/barricadebutton.png");
+    private Texture barricadebuttonoff = new Texture("GameUI/barricadebuttonoff.png");
+
 
     float interval = 0.3f;
     float interval2 = 0.4f;
@@ -46,7 +55,7 @@ public class GameUI {
     int infoWidth = 150;
     boolean openedmons = false;
 
-    public void draw(SpriteBatch batch, int cash, int wavenum, int hp, Weather weather, Main.Phase phase, int mode, TowerData.Tower selected, Tile t, Monster m) {
+    public void draw(SpriteBatch batch, ShapeRenderer sr, int cash, int wavenum, int hp, Weather weather, Main.Phase phase, int mode, TowerData.Tower selected, Tile t, Monster m, Boolean hide, int trp, int srp, int drp) {
 
         int screenWidth = Gdx.graphics.getWidth();
 
@@ -55,11 +64,11 @@ public class GameUI {
 
         Tower tower = t.tower;
 
-        if (m != null) {
+        if (m != null && m.hp > 0) {
             monsterX = screenWidth - infoWidth;
             tileX = screenWidth - infoWidth * 2;
         } else {
-            tileX = screenWidth - infoWidth;
+            tileX = screenWidth  - infoWidth;
             monsterX = screenWidth;
         }
 
@@ -97,18 +106,6 @@ public class GameUI {
             font.draw(batch, "" + weather.current_event, 490, 50);
         }
 
-        if(selected == TowerData.Tower.Turret && mode == 2) {
-            batch.draw(turret, 700, 20);
-        }
-        if(selected == TowerData.Tower.Spire && mode == 2) {
-            batch.draw(spire, 710, 30);
-        }
-        if(selected == TowerData.Tower.Detonator && mode == 2) {
-            batch.draw(detonator, 700, 20);
-        }
-        if(selected == TowerData.Tower.Barricade && mode == 2) {
-            batch.draw(barricade, 700, 20);
-        }
 
         if(phase == Main.Phase.BUILD) {
             if(cycle2) {
@@ -145,57 +142,121 @@ public class GameUI {
         font.draw(batch, "" + cash, 360, 120);
         font.draw(batch, "" + wavenum, 355, 50);
 
-        batch.draw(extrainfo2, tileX, 150);
-        Texture ttexture = getTileTexture(t);
+        int ycord = 80; //80
+        int ycord2 = 90; //90
+        int ycord3 = 100; // 100
 
+        if(mode == 2) {
+            font.draw(batch, "Z" , 670, ycord);
+            font.draw(batch, "X" , 730, ycord);
+            font.draw(batch, "C" , 790, ycord);
+            font.draw(batch, "V" , 850, ycord);
 
-        if(t.type == Tile.Type.PLACED_TOWER) {
-            Texture towertexture = getTowerTexture(t.tower);
-            font.draw(batch, "" + t.tower.tower_type, tileX + 40, 340);
-            batch.draw(towertexture, tileX + 42, 250, 64 , 64);
-            font.draw(batch, "Level: " + tower.level, tileX + 10, 230);
-            font.draw(batch, "Range: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).range, tileX + 10, 212);
-            font.draw(batch, "CD: " + tower.cooldown, tileX + 10, 197);
-            font.draw(batch, "Damage: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).damage, tileX + 10, 182);
+            font.setColor(Color.PURPLE);
 
+            batch.draw(turretbutton, 650, ycord2, 50, 50);
+            batch.draw(turretbutton, 710, ycord2, 50, 50);
+            batch.draw(turretbutton, 770, ycord2, 50, 50);
+            batch.draw(barricadebutton, 830, ycord2, 50, 50);
 
-        } else {
-            batch.draw(ttexture, tileX + 42, 250, 64, 64);
-            font.draw(batch, "" + t.type + " Tile", tileX + 30, 340);
-            font.draw(batch, "Walkable: "  + t.getwalkable(), tileX + 10, 230);
-            font.draw(batch, "Difficulty: "  + t.getPathingcost() + "/100", tileX + 10, 212);
+            if(selected == TowerData.Tower.Turret) {
+                batch.draw(turretbuttonoff, 650, ycord2, 50, 50);
+            }
+            if(selected == TowerData.Tower.Spire) {
+                batch.draw(turretbuttonoff, 710, ycord2, 50, 50);
+            }
+            if(selected == TowerData.Tower.Detonator) {
+                batch.draw(turretbuttonoff, 770, ycord2, 50, 50);
+            }
+            if(selected == TowerData.Tower.Barricade) {
+                batch.draw(barricadebuttonoff, 830, ycord2, 50, 50);
+            }
+            font.setColor(Color.PURPLE);
+
+            font.draw(batch, "" + trp, 690, ycord3);
+            font.draw(batch, "" + srp, 750, ycord3);
+            font.draw(batch, "" + drp, 810, ycord3);
+
+            font.setColor(Color.WHITE);
         }
-        if(t.type == Tile.Type.PATH) {
-            font.draw(batch, "Was a "  + t.previous + " Tile", tileX+ 10, 182);
-        }
 
-        if(m != null) {
 
-            batch.draw(extrainfo, monsterX, 150);
+        if(hide == false) {
 
-            Texture monsterTexture = getMonsterTexture(m);
-            Texture monsterTexture2 = getMonsterTexture2(m);
 
-            if(monsterTexture != null && monsterTexture2 != null) {
-                if(cycle) {
-                    batch.draw(monsterTexture, monsterX + 30, 240, 75, 75);
-                } else {
-                    batch.draw(monsterTexture2, monsterX + 30, 240, 75, 75);
+            batch.draw(extrainfo2, tileX, 150);
+            Texture ttexture = getTileTexture(t);
+
+
+            if (t.type == Tile.Type.PLACED_TOWER) {
+                Texture towertexture = getTowerTexture(t.tower);
+                font.draw(batch, "" + t.tower.tower_type, tileX + 40, 340);
+                batch.draw(towertexture, tileX + 42, 250, 64, 64);
+                font.draw(batch, "Level: " + (tower.level + 1), tileX + 10, 230);
+                font.draw(batch, "Range: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).range, tileX + 10, 212);
+                font.draw(batch, "CD: " + tower.cooldown, tileX + 10, 197);
+                font.draw(batch, "Damage: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).damage, tileX + 10, 182);
+
+
+
+                float tilewidth = (float) Gdx.graphics.getWidth() / 64;
+                float tileheight = (float) Gdx.graphics.getHeight() / 48;
+
+                float towerScreenX = t.x * tilewidth + tilewidth / 2f;
+                float towerScreenY = t.y * tileheight + tileheight / 2f;
+
+                if(mode == 2) {
+                    batch.end();
+                    sr.begin(ShapeRenderer.ShapeType.Filled);
+                    Gdx.gl.glEnable(GL20.GL_BLEND);
+                    Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+                    sr.setColor(1f, 1f, 0f, 0.25f);
+                    sr.circle(towerScreenX,towerScreenY, TowerData.TowerDataStorage.stats.get(t.tower.tower_type).range * tilewidth);
+                    sr.end();
+                    Gdx.gl.glDisable(GL20.GL_BLEND);
+
+                    batch.begin();
                 }
+
+
+
+            } else {
+                batch.draw(ttexture, tileX + 42, 250, 64, 64);
+                font.draw(batch, "" + t.type + " Tile", tileX + 30, 340);
+                font.draw(batch, "Walkable: " + t.getwalkable(), tileX + 10, 230);
+                font.draw(batch, "Difficulty: " + t.getPathingcost() + "/100", tileX + 10, 212);
+            }
+            if (t.type == Tile.Type.PATH) {
+                font.draw(batch, "Was a " + t.previous + " Tile", tileX + 10, 182);
             }
 
+            if (m != null && m.hp > 0) {
 
-            font.draw(batch, "" + m.creature, monsterX + 50 , 340);
-            font.draw(batch, "HP: " + m.hp + "/" + MonsterData.MonsterDataStorage.getStats(m.creature).health, monsterX + 10, 230);
-            font.draw(batch, "Speed: " + m.speed * 100, monsterX + 10, 212);
-            font.draw(batch, "Tier: " + m.tier, monsterX + 10, 197);
-            font.draw(batch, "Genre: " + m.genre, monsterX + 10, 182);
+                batch.draw(extrainfo, monsterX, 150);
 
-        } else {
-            font.draw(batch, "Click A Monster" , 800, 140);
-            openedmons = false;
+                Texture monsterTexture = getMonsterTexture(m);
+                Texture monsterTexture2 = getMonsterTexture2(m);
+
+                if (monsterTexture != null && monsterTexture2 != null) {
+                    if (cycle) {
+                        batch.draw(monsterTexture, monsterX + 30, 240, 75, 75);
+                    } else {
+                        batch.draw(monsterTexture2, monsterX + 30, 240, 75, 75);
+                    }
+                }
+
+                font.draw(batch, "" + m.creature, monsterX + 50, 340);
+                if(m.holymantle == 0) {
+                    font.draw(batch, "HP: " + m.hp + "/" + MonsterData.MonsterDataStorage.getStats(m.creature).health, monsterX + 10, 230);
+                } else {
+                    font.draw(batch, "Shield: " + m.holymantle, monsterX + 10, 230);
+                }
+
+                font.draw(batch, "Speed: " + m.speed * 100, monsterX + 10, 212);
+                font.draw(batch, "Tier: " + m.tier, monsterX + 10, 197);
+                font.draw(batch, "Genre: " + m.genre, monsterX + 10, 182);
+            }
         }
-
 
 
         batch.end();

@@ -1,30 +1,45 @@
 package io.github.some_example_name;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.HashMap;
 
 public class TowerData {
 
-    public enum Tower{
+    public enum Family{
         Barricade,
         Spire,
         Turret,
-        Detonator,
+        Detonator
+    }
 
-        SpireII,
-        TurretII,
-        DetonatorII,
+    public enum Tower{
+        Barricade(Family.Barricade, 0),
 
-        SpireIII,
-        TurretIII,
-        DetonatorIII,
+        Spire(Family.Spire, 0),
+        SpireII(Family.Spire, 1),
+        SpireIII(Family.Spire, 2),
+        SpireIV(Family.Spire, 3),
+        SpireV(Family.Spire, 4),
 
-        SpireIV,
-        TurretIV,
-        DetonatorIV,
+        Turret(Family.Turret, 0),
+        TurretII(Family.Turret, 1),
+        TurretIII(Family.Turret, 2),
+        TurretIV(Family.Turret, 3),
+        TurretV(Family.Turret, 4),
 
-        SpireV,
-        TurretV,
-        DetonatorV,
+        Detonator(Family.Detonator, 0),
+        DetonatorII(Family.Detonator, 1),
+        DetonatorIII(Family.Detonator, 2),
+        DetonatorIV(Family.Detonator, 3),
+        DetonatorV(Family.Detonator, 4);
+
+        public final Family family;
+        public final int tier;
+
+        Tower(Family family, int tier) {
+            this.family = family;
+            this.tier = tier;
+        }
     }
 
     public enum AttackType{
@@ -58,6 +73,7 @@ public class TowerData {
         }
 
         static Map<Tower, TowerDataStorage> stats = new HashMap<>();
+        static Map<Family, Tower[]> tiersByFamily = new EnumMap<>(Family.class);
 
         static {
 
@@ -81,8 +97,29 @@ public class TowerData {
 
             stats.put(Tower.TurretV, new TowerDataStorage(100, 13, 0.04f, 12, AttackType.Laser, false));
             stats.put(Tower.SpireV, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
-            stats.put(Tower.DetonatorV, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
+            stats.put(Tower.DetonatorV, new TowerDataStorage(300, 16, 10, 300, AttackType.AOE, false));
+
+            for (Family f : Family.values()) {
+                int maxTier = -1;
+                for (Tower t : Tower.values()) {
+                    if (t.family == f) maxTier = Math.max(maxTier, t.tier);
+                }
+                Tower[] arr = new Tower[maxTier + 1];
+                for (Tower t : Tower.values()) {
+                    if (t.family == f) arr[t.tier] = t;
+                }
+                tiersByFamily.put(f, arr);
+            }
+
         }
+
+        public static Tower nextUpgrade(Tower current) {
+            Tower[] tiers = tiersByFamily.get(current.family);
+            int nextTier = current.tier + 1;
+            if (nextTier >= tiers.length) return null;
+            return tiers[nextTier];
+        }
+
 
     }
 

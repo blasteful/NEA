@@ -210,7 +210,7 @@ public class Tower {
         if(tower_type == TowerData.Tower.Spire) {
             audio.spire();
         }
-        if(tower_type == TowerData.Tower.Turret) {
+        if(tower_type.family == TowerData.Family.Turret) {
             audio.turret();
         }
     }
