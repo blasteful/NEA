@@ -21,6 +21,8 @@ public class Renderer {
     Texture spire1 = new Texture("Towers/spire1.png");
     Texture turret1 = new Texture("Towers/turret1.png");
     Texture turret2 = new Texture("Towers/turretIII1.png");
+    Texture turret3 = new Texture("Towers/turretIV1.png");
+    Texture turret4 = new Texture("Towers/turretV1.png");
     Texture detonator1 = new Texture("Towers/detonator1.png");
 
     public Renderer() {
@@ -412,7 +414,6 @@ public class Renderer {
 
                         Texture texture;
                         float scale;
-
                         switch (t.tower.tower_type) {
                             case Turret:
                             case TurretII:
@@ -420,12 +421,15 @@ public class Renderer {
                                 scale = 4f;
                                 break;
                             case TurretIII:
-                            case TurretIV:
                                 texture = turret2;
+                                scale = 4f;
+                                break;
+                            case TurretIV:
+                                texture = turret3;
                                 scale = 3.5f;
                                 break;
                             case TurretV:
-                                texture = turret2;
+                                texture = turret4;
                                 scale = 4f;
                                 break;
                             default:

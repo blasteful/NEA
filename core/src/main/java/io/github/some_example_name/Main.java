@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -96,6 +97,7 @@ public class Main extends ApplicationAdapter {
     int towers = 0;
     Menus recieved = null;
 
+    private Texture losetx;
 
     @Override
     public void create() {
@@ -118,6 +120,8 @@ public class Main extends ApplicationAdapter {
         sr = new ShapeRenderer();
         ms = new Mouseclick(sizex, sizey, map.getMap());
         formulas = new Formulas();
+
+         losetx = new Texture("lose.png");
 
         int basehp = 100;
         wave = 1;
@@ -206,6 +210,11 @@ public class Main extends ApplicationAdapter {
             spire_rplevel = menu.spire_upgrade;
 
         } else {
+
+            if(hp <= 0) {
+                lose(wave);
+                return;
+            }
 
             Tile current_tile = ms.getTile();
             if(current_tile == null) {
@@ -349,7 +358,10 @@ public class Main extends ApplicationAdapter {
 
             //test featires (REMOVE LATER!!!)
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Secret, MonsterData.Tier.IV, map, false));
+                hp --;
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8) && phase == Phase.FIGHT) {
+                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.III, map, false));
             }
             if (Gdx.input.isKeyPressed(Input.Keys.B)) {
                 wave ++;
@@ -508,10 +520,6 @@ public class Main extends ApplicationAdapter {
 
             gameUI.draw(batch, sr, cash, wave, hp, weather, phase, mode, selected, t, selected_monster, hideinfo, turret_rplevel, spire_rplevel, detonator_rplevel);
 
-
-
-
-
             if (mode == 2) {
                 batch.begin();
                 font.draw(batch, "" + selected, ((float) Gdx.graphics.getWidth() / 2 - 100), 920);
@@ -529,6 +537,63 @@ public class Main extends ApplicationAdapter {
                     tower.update(Gdx.graphics.getDeltaTime(), audio);
                 }
             }
+
+
+
+        }
+
+    }
+
+    private void reset() {
+
+        Monsters.clear();
+        Towers.clear();
+        toSpawn.clear();
+
+        phase = Phase.BUILD;
+        mode = 1;
+        selected = null;
+        selected_event = Weather.Weather_events.Sunny;
+
+        map = new Map(sizex, sizey);
+        map.pathfind();
+        weather = new Weather(map);
+        ms = new Mouseclick(sizex, sizey, map.getMap());
+
+        frametimer = 0f;
+        spawnTimer = 0f;
+
+        selected_monster = null;
+        hovered_monster = null;
+        last_tile = null;
+
+        menu_active = true;
+        currentmenu = Menus.Main;
+        recieved = null;
+
+        hp = 10;
+        wave = 1;
+        cash = 10000;
+        totalcash = cash;
+
+
+    }
+
+    private void lose(int wave) {
+
+        batch.begin();
+
+        batch.draw(losetx,0, 0, 1280, 960);
+        font.draw(batch, "Wave Reached: " + wave, 50, 600);
+        font.draw(batch, "Research Points: " + wave * 2, 50, 560);
+
+        font.draw(batch, "Press SPACE", 50, 450);
+        batch.end();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            menu.addResearch_points(wave*2);
+            reset();
+
         }
 
     }
@@ -586,5 +651,6 @@ public class Main extends ApplicationAdapter {
     @Override
     public void dispose() {
         sr.dispose();
+        losetx.dispose();
     }
 }

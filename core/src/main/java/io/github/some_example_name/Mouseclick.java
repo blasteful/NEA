@@ -36,7 +36,7 @@ public class Mouseclick {
 
 
         if(tilex < 0 || tilex >= sizex || tiley < 0 || tiley >= sizey) {
-            return null;
+            return map[0][0];
         }
 
         return map[tilex][tiley];

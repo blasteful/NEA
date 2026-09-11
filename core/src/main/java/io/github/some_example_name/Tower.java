@@ -72,7 +72,7 @@ public class Tower {
         float endY = target.y * tileHeight + tileHeight / 2;
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
-        renderer.setColor(Color.RED);
+        renderer.setColor(Color.SKY);
         renderer.line(startX, startY, endX, endY);
         renderer.line(startX, startY + 2, endX, endY + 2);
         renderer.line(startX, startY - 2, endX, endY - 2);
