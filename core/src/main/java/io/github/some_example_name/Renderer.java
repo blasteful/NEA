@@ -396,20 +396,51 @@ public class Renderer {
 
                 if (tex != null) {
 
-                    if (t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
+                    if (t.tower != null && t.tower.tower_type.family == TowerData.Family.Spire) {
 
-                        float scale = 3.0f;
-                        float scaledWidth = tileWidth * scale;
-                        float scaledHeight = tileHeight * scale;
-                        float offsetX = (tileWidth - scaledWidth) / 2;
-                        float offsetY = (tileHeight - scaledHeight) / 2;
+                        Texture texture;
+                        float scale;
+                        switch (t.tower.tower_type) {
+                            case Spire:
+                                texture = spire1;
+                                scale = 3f;
+                                break;
+                            case SpireII:
+                                texture = spire1;
+                                scale = 3f;
+                                break;
+                            case SpireIII:
+                                texture = spire1;
+                                scale = 3f;
+                                break;
+                            case SpireIV:
+                                texture = spire1;
+                                scale = 3f;
+                                break;
+                            case SpireV:
+                                texture = spire1;
+                                scale = 3f;
+                                break;
+                            default:
+                                texture = null;
+                                scale = 1f;
+                        }
 
-                        spriteBatch.draw(spire1,
-                            i * tileWidth + offsetX,
-                            j * tileHeight + offsetY,
-                            scaledWidth,
-                            scaledHeight);
+
+                        if (texture != null) {
+                            float scaledWidth = tileWidth * scale;
+                            float scaledHeight = tileHeight * scale;
+                            float offsetX = (tileWidth - scaledWidth) / 2;
+                            float offsetY = (tileHeight - scaledHeight) / 2;
+
+                            spriteBatch.draw(texture,
+                                i * tileWidth + offsetX,
+                                j * tileHeight + offsetY,
+                                scaledWidth,
+                                scaledHeight);
+                        }
                     }
+
                     if (t.tower != null && t.tower.tower_type.family == TowerData.Family.Turret) {
 
                         Texture texture;
@@ -418,19 +449,19 @@ public class Renderer {
                             case Turret:
                             case TurretII:
                                 texture = turret1;
-                                scale = 4f;
+                                scale = 3f;
                                 break;
                             case TurretIII:
                                 texture = turret2;
-                                scale = 4f;
+                                scale = 3f;
                                 break;
                             case TurretIV:
                                 texture = turret3;
-                                scale = 3.5f;
+                                scale = 3f;
                                 break;
                             case TurretV:
                                 texture = turret4;
-                                scale = 4f;
+                                scale = 3f;
                                 break;
                             default:
                                 texture = null;
