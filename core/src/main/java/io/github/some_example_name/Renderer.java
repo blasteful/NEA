@@ -19,6 +19,8 @@ public class Renderer {
     Texture barricadetex = new Texture("Tiles/barricade.png");
 
     Texture spire1 = new Texture("Towers/spire1.png");
+    Texture spire2 = new Texture("Towers/spireII1.png");
+    Texture spire3 = new Texture("Towers/spireIV1.png");
     Texture turret1 = new Texture("Towers/turret1.png");
     Texture turret2 = new Texture("Towers/turretIII1.png");
     Texture turret3 = new Texture("Towers/turretIV1.png");
@@ -406,19 +408,19 @@ public class Renderer {
                                 scale = 3f;
                                 break;
                             case SpireII:
-                                texture = spire1;
-                                scale = 3f;
+                                texture = spire2;
+                                scale = 4f;
                                 break;
                             case SpireIII:
-                                texture = spire1;
-                                scale = 3f;
+                                texture = spire2;
+                                scale = 4f;
                                 break;
                             case SpireIV:
-                                texture = spire1;
-                                scale = 3f;
+                                texture = spire3;
+                                scale = 4f;
                                 break;
                             case SpireV:
-                                texture = spire1;
+                                texture = spire3;
                                 scale = 3f;
                                 break;
                             default:
