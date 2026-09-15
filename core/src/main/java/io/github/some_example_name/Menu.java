@@ -626,6 +626,10 @@ public class Menu {
         return (volume);
     }
 
+    public void addResearch_points(int research_points) {
+        this.research_points = this.research_points + research_points;
+    }
+
     public int turretlevel() {
         return (turret_upgrade);
     }

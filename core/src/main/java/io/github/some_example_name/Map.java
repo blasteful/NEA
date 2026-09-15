@@ -13,10 +13,12 @@ public class Map {
     ArrayList<Tile> openlist;
     ArrayList<Tile> closedlist;
 
+    boolean found = false;
 
     int[] dx = {-1, 1, 0, 0};
     int[] dy = {0, 0, -1, 1};
 
+    int attempts = 0;
 
     int waterpools = MathUtils.random(0,6);
 
@@ -24,8 +26,16 @@ public class Map {
         this.sizex = sizex;
         this.sizey = sizey;
 
-        createbaseMap();
-        createPath();
+
+        while(!found) {
+            createbaseMap();
+            createPath();
+            attempts ++;
+            found = pathfind();
+        }
+
+        System.out.println("took " +attempts+ " attempt to generate map");
+
 
     }
 

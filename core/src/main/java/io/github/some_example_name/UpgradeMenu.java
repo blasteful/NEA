@@ -24,7 +24,6 @@ public class UpgradeMenu {
     private BitmapFont writing;
 
     public UpgradeMenu() {
-        // Calculate positions based on center
         backX = (int) ((Gdx.graphics.getWidth() / 2) + 225);
         backY = (int) ((Gdx.graphics.getHeight() / 2) - 180);
         buyX = (int) ((Gdx.graphics.getWidth() / 2) - 300);

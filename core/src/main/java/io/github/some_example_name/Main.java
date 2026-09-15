@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -60,6 +61,8 @@ public class Main extends ApplicationAdapter {
     int randomtip = MathUtils.random(1,6);
     boolean tipswitch = true;
 
+    boolean hideinfo = false;
+
     TowerData.Tower selected;
     Weather.Weather_events selected_event = Weather.Weather_events.Sunny;
 
@@ -79,6 +82,8 @@ public class Main extends ApplicationAdapter {
 
     Phase phase = Phase.BUILD;
     Menus currentmenu = Menus.Main;
+    Monster selected_monster = null;
+    Monster hovered_monster = null;
 
     // statistics
     int wave;
@@ -92,6 +97,7 @@ public class Main extends ApplicationAdapter {
     int towers = 0;
     Menus recieved = null;
 
+    private Texture losetx;
 
     @Override
     public void create() {
@@ -114,6 +120,8 @@ public class Main extends ApplicationAdapter {
         sr = new ShapeRenderer();
         ms = new Mouseclick(sizex, sizey, map.getMap());
         formulas = new Formulas();
+
+         losetx = new Texture("lose.png");
 
         int basehp = 100;
         wave = 1;
@@ -203,6 +211,11 @@ public class Main extends ApplicationAdapter {
 
         } else {
 
+            if(hp <= 0) {
+                lose(wave);
+                return;
+            }
+
             Tile current_tile = ms.getTile();
             if(current_tile == null) {
                 last_tile = current_tile;
@@ -285,19 +298,18 @@ public class Main extends ApplicationAdapter {
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.Z) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Turret).cost) {
                 selected = TowerData.Tower.Turret;
-
+                turrets ++;
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.X) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Spire).cost) {
                 selected = TowerData.Tower.Spire;
-
+                spires ++;
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.C) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Detonator).cost) {
                 selected = TowerData.Tower.Detonator;
-
+                detonators ++;
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.V) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Detonator).cost) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.V) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Barricade).cost) {
                 selected = TowerData.Tower.Barricade;
-
             }
 
 
@@ -346,14 +358,17 @@ public class Main extends ApplicationAdapter {
 
             //test featires (REMOVE LATER!!!)
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Secret, MonsterData.Tier.IV, map, false));
+                hp --;
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8) && phase == Phase.FIGHT) {
+                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.III, map, false));
             }
             if (Gdx.input.isKeyPressed(Input.Keys.B)) {
                 wave ++;
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.R) && phase == Phase.FIGHT) {
-                hp --;
+                Monsters.add(new Monster(MonsterData.Genre.Ethereal, MonsterData.Tier.II, map, true));
             }
 
 
@@ -405,43 +420,28 @@ public class Main extends ApplicationAdapter {
                     return;
                 }
 
-                Tower newT = new Tower(ms.getTile(), selected, map, sr);
-
                 if (selected != null && TowerData.TowerDataStorage.stats.get(selected).cost <= cash && t.type != Tile.Type.PLACED_TOWER) {
-
-                    Tile.Type originalType = t.originalType;
-                    int oldcash = cash;
+                    Tower newT = new Tower(ms.getTile(), selected, map, sr);
                     cash = cash - TowerData.TowerDataStorage.stats.get(selected).cost;
                     Towers.add(newT);
                     t.tower = newT;
+
                     t.setType(Tile.Type.PLACED_TOWER);
                     t.originalType = Tile.Type.PLACED_TOWER;
 
-
-                    if (!map.pathfind()) {
-                        t.type = originalType;
-                        t.originalType = originalType;
-                        cash = oldcash;
-                        t.tower = null;
-                        Towers.remove(Towers.size() - 1);
-                        map.pathfind();
-                        System.out.println("would block path");
-                    } else {
-                        if(selected == TowerData.Tower.Detonator) {
-                            detonators++;
-                        }
-                        if(selected == TowerData.Tower.Turret) {
-                            turrets++;
-                        }
-                        if(selected == TowerData.Tower.Spire) {
-                            spires++;
-                            System.out.println(spires);
-                        }
-
-                    }
                 }
 
+                Tile.Type originalType = t.originalType;
+
+                if (!map.pathfind()) {
+                    t.type = originalType;
+                    t.originalType = originalType;
+                    t.tower = null;
+                    Towers.remove(Towers.size() - 1);
+                    map.pathfind();
+                    System.out.println("would block path");
                 }
+            }
 
 
 
@@ -450,128 +450,7 @@ public class Main extends ApplicationAdapter {
                 if (t.type == Tile.Type.ENTRANCE || t.type == Tile.Type.EXIT) {
                     return;
                 }
-
-                if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretII).cost <= cash && t.tower.tower_type == TowerData.Tower.Turret && turret_rplevel >= 1 && t.tower.level == 0) {
-                    System.out.println("lvl 1");
-                    Towers.remove(t.tower);
-                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.TurretII, map, sr);
-                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretII).cost;
-                    Towers.add(newT);
-                    t.tower = newT;
-
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
-
-                    audio.upgrade();
-                    t.tower.level ++;
-
-                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretIII).cost <= cash && t.tower.tower_type == TowerData.Tower.TurretII && turret_rplevel >= 2 && t.tower.level == 1) {
-                    System.out.println("lvl 2");
-                    Towers.remove(t.tower);
-                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.TurretIII, map, sr);
-                    newT.level = 1;
-                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretIII).cost;
-                    Towers.add(newT);
-                    t.tower = newT;
-
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
-
-                    audio.upgrade();
-                    t.tower.level ++;
-                    System.out.println(t.tower.level);
-                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretIV).cost <= cash && t.tower.tower_type == TowerData.Tower.TurretIII && turret_rplevel >= 3 && t.tower.level == 2) {
-                    System.out.println("lvl 3");
-                    Towers.remove(t.tower);
-                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.TurretIV, map, sr);
-                    newT.level = 2;
-                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretIV).cost;
-                    Towers.add(newT);
-                    t.tower = newT;
-
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
-
-                    audio.upgrade();
-                    t.tower.level ++;
-                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretIV).cost <= cash && t.tower.tower_type == TowerData.Tower.TurretIV && turret_rplevel >= 4 && t.tower.level == 3) {
-                    System.out.println("lvl 4");
-                    Towers.remove(t.tower);
-                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.TurretV, map, sr);
-                    newT.level = 3;
-                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.TurretV).cost;
-                    Towers.add(newT);
-                    t.tower = newT;
-
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
-
-                    audio.upgrade();
-                    t.tower.level ++;
-                }
-
-                // sep
-
-                if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.SpireII).cost <= cash && t.tower.tower_type == TowerData.Tower.Spire && spire_rplevel >= 1 && t.tower.level == 0) {
-                    System.out.println("lvl 1");
-                    Towers.remove(t.tower);
-                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.SpireII, map, sr);
-                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.SpireII).cost;
-                    Towers.add(newT);
-                    t.tower = newT;
-
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
-
-                    audio.upgrade();
-                    t.tower.level ++;
-
-                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.SpireIII).cost <= cash && t.tower.tower_type == TowerData.Tower.SpireII && spire_rplevel >= 2 && t.tower.level == 1) {
-                    System.out.println("lvl 2");
-                    Towers.remove(t.tower);
-                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.SpireIII, map, sr);
-                    newT.level = 1;
-                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.SpireIII).cost;
-                    Towers.add(newT);
-                    t.tower = newT;
-
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
-
-                    audio.upgrade();
-                    t.tower.level ++;
-                    System.out.println(t.tower.level);
-                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.SpireIV).cost <= cash && t.tower.tower_type == TowerData.Tower.SpireIII && spire_rplevel >= 3 && t.tower.level == 2) {
-                    System.out.println("lvl 3");
-                    Towers.remove(t.tower);
-                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.SpireIV, map, sr);
-                    newT.level = 2;
-                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.SpireIV).cost;
-                    Towers.add(newT);
-                    t.tower = newT;
-
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
-
-                    audio.upgrade();
-                    t.tower.level ++;
-                } else if (TowerData.TowerDataStorage.stats.get(TowerData.Tower.SpireV).cost <= cash && t.tower.tower_type == TowerData.Tower.SpireIV && spire_rplevel >= 4 && t.tower.level == 3) {
-                    System.out.println("lvl 4");
-                    Towers.remove(t.tower);
-                    Tower newT = new Tower(ms.getTile(), TowerData.Tower.SpireV, map, sr);
-                    newT.level = 3;
-                    cash = cash - TowerData.TowerDataStorage.stats.get(TowerData.Tower.SpireV).cost;
-                    Towers.add(newT);
-                    t.tower = newT;
-
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
-
-                    audio.upgrade();
-                    t.tower.level ++;
-                }
-
-                Tile.Type originalType = t.originalType;
+                tryUpgradeTower(t);
             }
 
             if (Gdx.input.isKeyPressed(Input.Keys.M)) {
@@ -595,19 +474,12 @@ public class Main extends ApplicationAdapter {
             font.setColor(Color.WHITE);
             font.getData().setScale(2f);
 
-            if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
-                Tile t = ms.getTile();
 
-                System.out.println(t.type + " Tile");
-                System.out.println("Magnetism: -" + t.getPathingcost());
-                System.out.println("Walk damage: " + t.getWalkingDamage());
-                System.out.println("Walkable: " + t.type.walkable);
-                System.out.println("Previously a " + t.previous + " Tile");
-                System.out.println("Parent: " + t.parent);
-                System.out.println("Child: " + t.child);
-                System.out.println();
 
-            }
+
+
+
+
 
 
             sr.begin(ShapeRenderer.ShapeType.Filled);
@@ -624,11 +496,35 @@ public class Main extends ApplicationAdapter {
             }
             if (mode == 2) {
                 renderer.renderBMap(sr, map.getMap(), ms.getTile(), selected);
-
             }
             sr.end();
 
-            gameUI.draw(batch, cash, wave, hp, weather, phase, mode, selected);
+            Tile t = ms.getTile();
+            if(t == null) {
+                t = map.getTile(0, 0);
+            }
+
+            hovered_monster = ms.getMonster(Monsters);
+
+//            if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+//                if (hovered_monster != null) {
+//                    selected_monster = hovered_monster;
+//                } else {
+//                    selected_monster = null;
+//                }
+//            }
+
+            if (hovered_monster != null) {
+                selected_monster = hovered_monster;
+            }
+
+            gameUI.draw(batch, sr, cash, wave, hp, weather, phase, mode, selected, t, selected_monster, hideinfo, turret_rplevel, spire_rplevel, detonator_rplevel);
+
+            if (mode == 2) {
+                batch.begin();
+                font.draw(batch, "" + selected, ((float) Gdx.graphics.getWidth() / 2 - 100), 920);
+                batch.end();
+            }
 
             if (phase == Phase.FIGHT) {
                 for (Tower tower : Towers) {
@@ -642,33 +538,119 @@ public class Main extends ApplicationAdapter {
                 }
             }
 
-            if(hp <= 0) {
-                map = new Map(sizex, sizey);
-                hp = 10;
-                cash = 10000;
-                wave = 1;
-                toAdd.clear();
-                toRemove.clear();
-                Monsters.clear();
-                Towers.clear();
-                map.pathfind();
-                phase = Phase.BUILD;
-                ms = new Mouseclick(sizex, sizey, map.getMap());
-                weather.current_event = Weather.Weather_events.Sunny;
-                menu_active = true;
-                recieved = null;
-                currentmenu = Menus.Main;
-                recieved = null;
-
-            }
 
 
         }
 
     }
 
+    private void reset() {
+
+        Monsters.clear();
+        Towers.clear();
+        toSpawn.clear();
+
+        phase = Phase.BUILD;
+        mode = 1;
+        selected = null;
+        selected_event = Weather.Weather_events.Sunny;
+
+        map = new Map(sizex, sizey);
+        map.pathfind();
+        weather = new Weather(map);
+        ms = new Mouseclick(sizex, sizey, map.getMap());
+
+        frametimer = 0f;
+        spawnTimer = 0f;
+
+        selected_monster = null;
+        hovered_monster = null;
+        last_tile = null;
+
+        menu_active = true;
+        currentmenu = Menus.Main;
+        recieved = null;
+
+        hp = 10;
+        wave = 1;
+        cash = 10000;
+        totalcash = cash;
+
+
+    }
+
+    private void lose(int wave) {
+
+        batch.begin();
+
+        batch.draw(losetx,0, 0, 1280, 960);
+        font.draw(batch, "Wave Reached: " + wave, 50, 600);
+        font.draw(batch, "Research Points: " + wave * 2, 50, 560);
+
+        font.draw(batch, "Press SPACE", 50, 450);
+        batch.end();
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            menu.addResearch_points(wave*2);
+            reset();
+
+        }
+
+    }
+
+    private int getResearchLevel(TowerData.Family family) {
+
+        if(family == TowerData.Family.Turret) {
+            return turret_rplevel;
+        }
+        if(family == TowerData.Family.Spire) {
+            return spire_rplevel;
+        }
+        if(family == TowerData.Family.Detonator) {
+            return detonator_rplevel;
+        } else {
+            return 0;
+        }
+    }
+
+    private void tryUpgradeTower(Tile t) {
+        if (t.tower == null) {
+            return;
+        }
+
+        TowerData.Tower currentType = t.tower.tower_type;
+        TowerData.Tower nextType = TowerData.TowerDataStorage.nextUpgrade(currentType);
+
+        if (nextType == null) {
+            audio.failedupgrade();
+            return;
+        }
+
+        TowerData.TowerDataStorage nextStats = TowerData.TowerDataStorage.stats.get(nextType);
+        int researchLevel = getResearchLevel(nextType.family);
+
+        if (nextStats.cost > cash || researchLevel < nextType.tier) {
+            audio.failedupgrade();
+            return;
+        }
+
+        cash -= nextStats.cost;
+        Towers.remove(t.tower);
+
+        Tower newT = new Tower(t, nextType, map, sr);
+        newT.level = nextType.tier;
+        Towers.add(newT);
+        t.tower = newT;
+
+        t.setType(Tile.Type.PLACED_TOWER);
+        t.originalType = Tile.Type.PLACED_TOWER;
+
+        audio.upgrade();
+    }
+
     @Override
     public void dispose() {
         sr.dispose();
+        losetx.dispose();
     }
 }

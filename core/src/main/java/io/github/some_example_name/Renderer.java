@@ -19,7 +19,12 @@ public class Renderer {
     Texture barricadetex = new Texture("Tiles/barricade.png");
 
     Texture spire1 = new Texture("Towers/spire1.png");
+    Texture spire2 = new Texture("Towers/spireII1.png");
+    Texture spire3 = new Texture("Towers/spireIV1.png");
     Texture turret1 = new Texture("Towers/turret1.png");
+    Texture turret2 = new Texture("Towers/turretIII1.png");
+    Texture turret3 = new Texture("Towers/turretIV1.png");
+    Texture turret4 = new Texture("Towers/turretV1.png");
     Texture detonator1 = new Texture("Towers/detonator1.png");
 
     public Renderer() {
@@ -159,35 +164,11 @@ public class Renderer {
                 if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Detonator) {
                     sr.setColor(new Color(Color.RED));
                 }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.Turret))) {
-                    sr.setColor(182 / 255f, 237 / 255f, 182 / 255f, 1f);
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.Turret) || (t.tower.tower_type == TowerData.Tower.TurretII))) {
+                    sr.setColor(new Color(Color.SALMON));
                 }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.TurretII))) {
-                    sr.setColor(153 / 255f, 237 / 255f, 153 / 255f, 1f);
-                }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.TurretIII))) {
-                    sr.setColor(153 / 255f, 237 / 255f, 114 / 255f, 1f);
-                }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.TurretIV))) {
-                    sr.setColor(73 / 255f, 237 / 255f, 73 / 255f, 1f);
-                }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.TurretV))) {
-                    sr.setColor(0 / 255f, 255 / 255f, 0 / 255f, 1f);
-                }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.Spire))) {
-                    sr.setColor(165 / 255f, 165 / 255f, 235 / 255f, 1f);
-                }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.SpireII))) {
-                    sr.setColor(146 / 255f, 146 / 255f, 232 / 255f, 1f);
-                }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.SpireIII))) {
-                    sr.setColor(118 / 255f, 118 / 255f, 230 / 255f, 1f);
-                }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.SpireIV))) {
-                    sr.setColor(80 / 255f, 84 / 255f, 227 / 255f, 1f);
-                }
-                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && ((t.tower.tower_type == TowerData.Tower.SpireV))) {
-                    sr.setColor(0 / 255f, 0 / 255f, 255 / 255f, 1f);
+                if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Spire) {
+                    sr.setColor(new Color(Color.PURPLE));
                 }
                 if (t.type == Tile.Type.PLACED_TOWER && t.tower != null && t.tower.tower_type == TowerData.Tower.Barricade) {
                     sr.setColor(new Color(Color.BROWN));
@@ -198,10 +179,10 @@ public class Renderer {
                         sr.setColor(Color.RED);
                     }
                     if (selected == TowerData.Tower.Spire) {
-                        sr.setColor(165 / 255f, 165 / 255f, 235 / 255f, 1f);
+                        sr.setColor(Color.PURPLE);
                     }
                     if (selected == TowerData.Tower.Turret) {
-                        sr.setColor(182 / 255f, 237 / 255f, 182 / 255f, 1f);
+                        sr.setColor(Color.SALMON);
                     }
                     if (selected == TowerData.Tower.Barricade) {
                         sr.setColor(Color.BROWN);
@@ -417,33 +398,90 @@ public class Renderer {
 
                 if (tex != null) {
 
-                    if (t.tower != null && ((t.tower.tower_type == TowerData.Tower.Spire) || (t.tower.tower_type == TowerData.Tower.SpireII) || (t.tower.tower_type == TowerData.Tower.SpireIII) || (t.tower.tower_type == TowerData.Tower.SpireIV) || (t.tower.tower_type == TowerData.Tower.SpireV))){
+                    if (t.tower != null && t.tower.tower_type.family == TowerData.Family.Spire) {
 
-                        float scale = 3.0f;
-                        float scaledWidth = tileWidth * scale;
-                        float scaledHeight = tileHeight * scale;
-                        float offsetX = (tileWidth - scaledWidth) / 2;
-                        float offsetY = (tileHeight - scaledHeight) / 2;
+                        Texture texture;
+                        float scale;
+                        switch (t.tower.tower_type) {
+                            case Spire:
+                                texture = spire1;
+                                scale = 3f;
+                                break;
+                            case SpireII:
+                                texture = spire2;
+                                scale = 4f;
+                                break;
+                            case SpireIII:
+                                texture = spire2;
+                                scale = 4f;
+                                break;
+                            case SpireIV:
+                                texture = spire3;
+                                scale = 4f;
+                                break;
+                            case SpireV:
+                                texture = spire3;
+                                scale = 3f;
+                                break;
+                            default:
+                                texture = null;
+                                scale = 1f;
+                        }
 
-                        spriteBatch.draw(spire1,
-                            i * tileWidth + offsetX,
-                            j * tileHeight + offsetY,
-                            scaledWidth,
-                            scaledHeight);
+
+                        if (texture != null) {
+                            float scaledWidth = tileWidth * scale;
+                            float scaledHeight = tileHeight * scale;
+                            float offsetX = (tileWidth - scaledWidth) / 2;
+                            float offsetY = (tileHeight - scaledHeight) / 2;
+
+                            spriteBatch.draw(texture,
+                                i * tileWidth + offsetX,
+                                j * tileHeight + offsetY,
+                                scaledWidth,
+                                scaledHeight);
+                        }
                     }
-                    if (t.tower != null && ((t.tower.tower_type == TowerData.Tower.Turret) || (t.tower.tower_type == TowerData.Tower.TurretII) || (t.tower.tower_type == TowerData.Tower.TurretIII) || (t.tower.tower_type == TowerData.Tower.TurretIV) || (t.tower.tower_type == TowerData.Tower.TurretV))){
 
-                        float scale = 2;
-                        float scaledWidth = tileWidth * scale;
-                        float scaledHeight = tileHeight * scale;
-                        float offsetX = (tileWidth - scaledWidth) / 2;
-                        float offsetY = (tileHeight - scaledHeight) / 2;
+                    if (t.tower != null && t.tower.tower_type.family == TowerData.Family.Turret) {
 
-                        spriteBatch.draw(turret1,
-                            i * tileWidth + offsetX,
-                            j * tileHeight + offsetY,
-                            scaledWidth,
-                            scaledHeight);
+                        Texture texture;
+                        float scale;
+                        switch (t.tower.tower_type) {
+                            case Turret:
+                            case TurretII:
+                                texture = turret1;
+                                scale = 3f;
+                                break;
+                            case TurretIII:
+                                texture = turret2;
+                                scale = 3f;
+                                break;
+                            case TurretIV:
+                                texture = turret3;
+                                scale = 3f;
+                                break;
+                            case TurretV:
+                                texture = turret4;
+                                scale = 3f;
+                                break;
+                            default:
+                                texture = null;
+                                scale = 1f;
+                        }
+
+                        if (texture != null) {
+                            float scaledWidth = tileWidth * scale;
+                            float scaledHeight = tileHeight * scale;
+                            float offsetX = (tileWidth - scaledWidth) / 2;
+                            float offsetY = (tileHeight - scaledHeight) / 2;
+
+                            spriteBatch.draw(texture,
+                                i * tileWidth + offsetX,
+                                j * tileHeight + offsetY,
+                                scaledWidth,
+                                scaledHeight);
+                        }
                     }
                     if (t.tower != null && t.tower.tower_type == TowerData.Tower.Detonator) {
 
@@ -567,6 +605,9 @@ public class Renderer {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 2 ;
                 }
                 if(m.creature == MonsterData.Creature.Wyvern) {
+                    screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50 ;
+                }
+                if(m.creature == MonsterData.Creature.Reaper) {
                     screenY = (m.y * tileHeight + (tileHeight - height) / 2) + 50 ;
                 }
 
