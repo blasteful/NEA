@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.Objects;
+
 
 public class GameUI {
 
@@ -236,6 +238,7 @@ public class GameUI {
 
                 Texture monsterTexture = getMonsterTexture(m);
                 Texture monsterTexture2 = getMonsterTexture2(m);
+                Texture nil = new Texture( "Tiles/Nil.png");
 
                 if (monsterTexture != null && monsterTexture2 != null) {
                     if (cycle) {
@@ -243,6 +246,10 @@ public class GameUI {
                     } else {
                         batch.draw(monsterTexture2, monsterX + 30, 240, 75, 75);
                     }
+                }
+
+                if(Objects.equals(monsterTexture, nil)) {
+                    batch.draw(monsterTexture2, monsterX + 30, 240, 40, 40);
                 }
 
                 font.draw(batch, "" + m.creature, monsterX + 50, 340);
@@ -267,7 +274,17 @@ public class GameUI {
             return null;
         }
 
-        return new Texture( m.creature + "1.png");
+
+        Texture txt;
+
+        try {
+            txt = new Texture( m.creature + "1.png");
+        } catch (Exception e) {
+            txt = new Texture("Tiles/Nil.png");
+
+        }
+
+        return txt;
     }
 
 
@@ -276,7 +293,17 @@ public class GameUI {
             return null;
         }
 
-        return new Texture( m.creature + "2.png");
+        Texture txt;
+
+        try {
+             txt = new Texture( m.creature + "2.png");
+        } catch (Exception e) {
+             txt = new Texture("Tiles/Nil.png");
+
+        }
+
+        return txt;
+
     }
 
     private Texture getTileTexture(Tile t) {

@@ -84,19 +84,19 @@ public class TowerData {
             stats.put(Tower.Detonator, new TowerDataStorage(125, 4, 5, 25, AttackType.AOE, false));
 
             stats.put(Tower.TurretII, new TowerDataStorage(100, 5, 2f, 80, AttackType.Single, false));
-            stats.put(Tower.SpireII, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
+            stats.put(Tower.SpireII, new TowerDataStorage(200, 9, 2f, 175, AttackType.Single, true));
             stats.put(Tower.DetonatorII, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
 
             stats.put(Tower.TurretIII, new TowerDataStorage(100, 8, 2f, 80, AttackType.Single, false));
-            stats.put(Tower.SpireIII, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
+            stats.put(Tower.SpireIII, new TowerDataStorage(200, 13, 2f, 175, AttackType.Single, true));
             stats.put(Tower.DetonatorIII, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
 
             stats.put(Tower.TurretIV, new TowerDataStorage(100, 8, 0.32f, 80, AttackType.Single, false));
-            stats.put(Tower.SpireIV, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
+            stats.put(Tower.SpireIV, new TowerDataStorage(200, 15, 2f, 175, AttackType.Single, true));
             stats.put(Tower.DetonatorIV, new TowerDataStorage(300, 4, 3, 25, AttackType.AOE, false));
 
-            stats.put(Tower.TurretV, new TowerDataStorage(100, 13, 0.04f, 12, AttackType.Laser, false));
-            stats.put(Tower.SpireV, new TowerDataStorage(200, 7, 2f, 175, AttackType.Single, true));
+            stats.put(Tower.TurretV, new TowerDataStorage(100, 12, 0.05f, 2, AttackType.Laser, false));
+            stats.put(Tower.SpireV, new TowerDataStorage(200, 1000, 2f, 175, AttackType.Single, true));
             stats.put(Tower.DetonatorV, new TowerDataStorage(300, 16, 10, 300, AttackType.AOE, false));
 
             for (Family f : Family.values()) {

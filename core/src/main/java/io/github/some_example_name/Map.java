@@ -159,6 +159,10 @@ public class Map {
                     }
                 }
             }
+
+            if(structure == 5) {
+                // temple
+            }
         }
     }
 

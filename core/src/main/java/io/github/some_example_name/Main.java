@@ -54,6 +54,8 @@ public class Main extends ApplicationAdapter {
     int sizey = 48;
     int mode;
 
+    boolean on_game_start = false;
+
     int renderer_type = 2;
 
     boolean sound = true;
@@ -87,7 +89,7 @@ public class Main extends ApplicationAdapter {
 
     // statistics
     int wave;
-    int cash = 10000;
+    int cash = 500;
     int hp = 10;
     int totalcash = cash;
     int detonators = 0;
@@ -157,6 +159,7 @@ public class Main extends ApplicationAdapter {
             if(recieved == Menus.Gameplay) {
                 menu_active = false;
                 audio.click();
+                on_game_start = false;
             }
             if(recieved == Menus.Exit) {
                 Gdx.app.exit();
@@ -216,6 +219,14 @@ public class Main extends ApplicationAdapter {
                 return;
             }
 
+            if(!on_game_start) {
+                weather.Weather_Random();
+                weather.event_handler();
+                selected_event = weather.getCurrent_event();
+                on_game_start = true;
+            }
+
+
             Tile current_tile = ms.getTile();
             if(current_tile == null) {
                 last_tile = current_tile;
@@ -235,10 +246,6 @@ public class Main extends ApplicationAdapter {
 
 
             for (Monster m : Monsters) {
-
-                if(m.genre == MonsterData.Genre.Secret) {
-                    System.out.println(m.hp);
-                }
 
                 if(m.shouldPlayFootstep() && m.hp > 0) {
                     if(m.alternatefootstep){
@@ -361,7 +368,13 @@ public class Main extends ApplicationAdapter {
                 hp --;
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.III, map, false));
+                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map, false));
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9) && phase == Phase.FIGHT) {
+                Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.IV, map, false));
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6) && phase == Phase.FIGHT) {
+                Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map, false));
             }
             if (Gdx.input.isKeyPressed(Input.Keys.B)) {
                 wave ++;
