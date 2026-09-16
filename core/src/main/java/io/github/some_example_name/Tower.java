@@ -22,6 +22,7 @@ public class Tower {
 
     ShapeRenderer renderer = new ShapeRenderer();
 
+
     float cooldown = 0f;
     float attackAnimationTimer = 0f;
     float attackAnimationDuration = 0.2f;
@@ -29,6 +30,8 @@ public class Tower {
     Monster laserTarget = null;
     boolean isAOEAnimation = false;
     private boolean isLaserActive = false;
+
+    int damage;
 
     int x;
     int y;
@@ -41,6 +44,11 @@ public class Tower {
 
         this.x = tile_location.x;
         this.y = tile_location.y;
+
+        damage = stats.damage;
+        if(tile_location.previous == Tile.Type.BOOST) {
+            damage = damage * 2;
+        }
     }
 
     private void drawAttackAnimation_Single(Monster target) {
@@ -53,13 +61,24 @@ public class Tower {
         float endY = target.y * tileHeight + tileHeight / 2;
 
         renderer.begin(ShapeRenderer.ShapeType.Line);
-        if(tower_type == TowerData.Tower.Spire) {
+        if(tower_type.family == TowerData.Family.Spire) {
             renderer.setColor(Color.PURPLE);
+            if(tower_type == TowerData.Tower.SpireII || tower_type == TowerData.Tower.SpireIII) {
+                renderer.setColor(Color.RED);
+            }
+            if(tower_type == TowerData.Tower.SpireIV) {
+                renderer.setColor(Color.BLUE);
+            }
+            if(tower_type == TowerData.Tower.SpireV){
+                renderer.setColor(Color.BLACK);
+            }
         } else {
             renderer.setColor(1, 1, 0, 1);
         }
         renderer.line(startX, startY, endX, endY);
         renderer.end();
+
+
     }
 
     private void drawAttackAnimation_Laser(Monster target) {
@@ -159,7 +178,7 @@ public class Tower {
             }
 
             if(laserTarget != null && cooldown <= 0) {
-                laserTarget.hp = laserTarget.hp - stats.damage;
+                laserTarget.hp = laserTarget.hp - damage;
                 cooldown = this.stats.attackspeed;
 
             }
@@ -195,7 +214,7 @@ public class Tower {
     public void AttackMonsters_AOE(Audio audio) {
         for(Monster monster : inRange) {
             if(monster.genre != MonsterData.Genre.Flying) {
-                monster.hp = monster.hp - stats.damage;
+                monster.hp = monster.hp - damage;
             }
         }
         isAOEAnimation = true;
@@ -205,14 +224,17 @@ public class Tower {
     public void AttackMonsters_Single(Audio audio) {
         Monster target = inRange.get(MathUtils.random(inRange.size() - 1));
         lastAttackTarget = target;
-        target.hp = target.hp - stats.damage;
+        target.hp = target.hp - damage;
         isAOEAnimation = false;
-        if(tower_type == TowerData.Tower.Spire) {
+        if(tower_type.family == TowerData.Family.Spire) {
             audio.spire();
         }
         if(tower_type.family == TowerData.Family.Turret) {
             audio.turret();
         }
+
+        System.out.println(damage);
+
     }
 
     public void AttackMonsters_MultiTarget() {

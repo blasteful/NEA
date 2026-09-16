@@ -47,14 +47,21 @@ public class Map {
         for (int i = 0; i < sizex; i++) {
             for (int j = 0; j < sizey; j++) {
 
-                int num = MathUtils.random(1, 100);
+                int num = MathUtils.random(1, 350);
                 Tile.Type type;
-                type = Tile.Type.DIRT;
+                if(num != 349) {
+                    type = Tile.Type.DIRT;
+                } else {
+                    type = Tile.Type.BOOST;
+                }
+
 
 
                 map[i][j] = new Tile(i, j, type);
             }
         }
+
+
 
         while (spawning_structures >= 0) {
 
@@ -158,6 +165,10 @@ public class Map {
                         }
                     }
                 }
+            }
+
+            if(structure == 5) {
+                // temple
             }
         }
     }

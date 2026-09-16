@@ -37,6 +37,7 @@ public class Tile {
         PATH(true, 10 , 10, 0, "Tiles/path.png"),
         DEEPWATER(false, -1, 10, 0, "Tiles/water.png"),
         SNOW(true, 20, 5, 0, "Tiles/snow.png"),
+        BOOST(true, 100, 5, 0, "Tiles/nil.png"),
         VOID(false, 20, 5, 0, "Tiles/nil.png");
 
 
@@ -149,6 +150,7 @@ public class Tile {
         this.previous = this.type;
         this.type = t;
     }
+
 
     public void setParent(Tile t) {
         this.parent = t;

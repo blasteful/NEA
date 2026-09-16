@@ -117,7 +117,7 @@ public class MonsterData {
             stats.put(Creature.Bat, new MonsterDataStorage(50, 10, Tier.I, Genre.Flying, "bat1.png", "bat2.png", Gimmick.Nil));
             stats.put(Creature.Watcher, new MonsterDataStorage(125, 6, Tier.I, Genre.Flying, "watcher1.png", "watcher2.png", Gimmick.Nil));
 
-            stats.put(Creature.Harpy, new MonsterDataStorage(200, 6, Tier.II, Genre.Flying, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Harpy, new MonsterDataStorage(200, 6, Tier.II, Genre.Flying, "Tiles/nil.png", "Tiles/nil.png", Gimmick.Nil));
             stats.put(Creature.Pixie, new MonsterDataStorage(125, 8, Tier.II, Genre.Flying, "pixie1.png", "pixie2.png", Gimmick.Nil));
 
             stats.put(Creature.Wyvern, new MonsterDataStorage(100, 12, Tier.III, Genre.Flying, "wyvern1.png", "wyvern1.png", Gimmick.Resonate));
@@ -128,13 +128,13 @@ public class MonsterData {
             stats.put(Creature.Ant, new MonsterDataStorage(30, 3, Tier.I, Genre.Swarm, "ant1.png", "ant1.png", Gimmick.Nil));
             stats.put(Creature.Gnome, new MonsterDataStorage(30, 4, Tier.I, Genre.Swarm, "gnome1.png", "gnome2.png", Gimmick.Nil));
 
-            stats.put(Creature.Spider, new MonsterDataStorage(30, 18, Tier.II, Genre.Swarm, "Nil", "", Gimmick.Nil));
-            stats.put(Creature.Rat, new MonsterDataStorage(60, 6, Tier.II, Genre.Swarm, "Nil", "", Gimmick.Nil));
+            stats.put(Creature.Spider, new MonsterDataStorage(30, 18, Tier.II, Genre.Swarm, "Tiles/nil.png", "Tiles/nil.png", Gimmick.Nil));
+            stats.put(Creature.Rat, new MonsterDataStorage(60, 6, Tier.II, Genre.Swarm, "Tiles/nil.png", "Tiles/nil.png", Gimmick.Nil));
             stats.put(Creature.Dip, new MonsterDataStorage(50, 12, Tier.II, Genre.Swarm, "dip1.png", "dip2.png", Gimmick.Nil));
 
-            stats.put(Creature.Mole, new MonsterDataStorage(250, 6, Tier.III, Genre.Swarm, "Nil", "", Gimmick.Quick_Start));
+            stats.put(Creature.Mole, new MonsterDataStorage(250, 6, Tier.III, Genre.Swarm, "Tiles/nil.png", "Tiles/nil.png", Gimmick.Quick_Start));
 
-            stats.put(Creature.Brood_Mother, new MonsterDataStorage(1500, 2, Tier.IV, Genre.Swarm, "brood1.png", "brood2.png", Gimmick.Summoner));
+            stats.put(Creature.Brood_Mother, new MonsterDataStorage(1500, 2, Tier.IV, Genre.Swarm, "brood_mother1.png", "brood_mother2.png", Gimmick.Summoner));
 
 
             stats.put(Creature.Bolt, new MonsterDataStorage(1, 12, Tier.I, Genre.Ethereal, "bolt1.png", "bolt2.png", Gimmick.Nil));
@@ -143,7 +143,7 @@ public class MonsterData {
             stats.put(Creature.Reaper, new MonsterDataStorage(1, 16, Tier.II, Genre.Ethereal, "reaper1.png", "reaper2.png", Gimmick.Holier_Mantle));
             stats.put(Creature.JellyFish, new MonsterDataStorage(1, 6, Tier.II, Genre.Ethereal, "jellyfish1.png", "jellyfish2.png", Gimmick.Holiest_Mantle));
 
-            stats.put(Creature.Essence, new MonsterDataStorage(250, 8, Tier.III, Genre.Ethereal, "", "", Gimmick.Teleport));
+            stats.put(Creature.Essence, new MonsterDataStorage(250, 8, Tier.III, Genre.Ethereal, "Tiles/nil.png", "Tiles/nil.png", Gimmick.Teleport));
 
             stats.put(Creature.Doppleganger, new MonsterDataStorage(750, 6, Tier.IV, Genre.Ethereal, "Nil", "", Gimmick.Split));
 

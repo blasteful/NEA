@@ -6,13 +6,15 @@ import static com.badlogic.gdx.math.MathUtils.random;
 
 public class Weather {
 
+    Tile[] ava_rocks = new Tile[1000];
+    int counter = 0;
+
     public enum Weather_events{
 
         Sunny,
         Snow,
         Avalanche,
         BankHoliday,
-
     }
 
     Weather_events current_event;
@@ -28,6 +30,9 @@ public class Weather {
     }
 
     public void event_handler() {
+
+        sunny(map);
+
         if (current_event == Weather_events.Snow) {
             snow(map);
         }
@@ -46,22 +51,61 @@ public class Weather {
                 if (target.type == Tile.Type.SNOW) {
                     target.setType(Tile.Type.DIRT);
                 }
+                if(target.type == Tile.Type.PATH) {
+                    target.previous = Tile.Type.DIRT;
+                }
             }
         }
+
+        clear_rocks();
     }
 
-    private void avalanche(Map map) {
+    private void flood(Map map) {
+
+        sunny(map);
+
         for (int i = 0; i < map.sizex; i++) {
             for (int j = 0; j < map.sizey; j++) {
                 Tile target = map.getTile(i, j);
                 if (target.type == Tile.Type.DIRT) {
-                    int ran_var = MathUtils.random(1,20);
-                    if(ran_var == 1){
-                        target.setType(Tile.Type.ROCK);
-                    }
+                    target.setType(Tile.Type.WATER);
+                }
+                if(target.type == Tile.Type.PATH) {
+                    target.previous = Tile.Type.DIRT;
                 }
             }
         }
+
+        clear_rocks();
+    }
+
+    private void avalanche(Map map) {
+
+        sunny(map);
+        clear_rocks();
+
+        for (int i = 0; i < ava_rocks.length; i++) {
+            ava_rocks[i] = null;
+        }
+
+        counter = 0;
+
+        for (int i = 0; i < map.sizex; i++) {
+            for (int j = 0; j < map.sizey; j++) {
+                Tile target = map.getTile(i, j);
+                if (target.type == Tile.Type.DIRT || target.type == Tile.Type.SNOW) {
+                    int ran_var = MathUtils.random(1,20);
+                    if(ran_var == 1){
+                        ava_rocks[counter] = target;
+                        target.previous = target.type;
+                        target.setType(Tile.Type.ROCK);
+                        counter ++;
+                    }
+                }
+
+            }
+        }
+
     }
 
     private void snow(Map map) {
@@ -72,7 +116,22 @@ public class Weather {
                     target.setType(Tile.Type.SNOW);
                     target.originalType = Tile.Type.SNOW;
                 }
+                if(target.type == Tile.Type.PATH) {
+                    target.previous = Tile.Type.SNOW;
+                }
             }
+        }
+        clear_rocks();
+    }
+
+    public void clear_rocks() {
+        for (int i = 0; i < counter; i++) {
+            Tile target = ava_rocks[i];
+
+            if(target.type == Tile.Type.ROCK && target != null) {
+                target.setType(target.previous);
+            }
+
         }
     }
 

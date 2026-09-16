@@ -3,6 +3,7 @@ package io.github.some_example_name;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -109,6 +110,7 @@ public class Monster{
             baseSpeed = MonsterData.MonsterDataStorage.getStats(creature).speed / 200f;
             speed = baseSpeed;
 
+
             if(startAtEntrance) {
                 Start(map);
             }
@@ -200,6 +202,23 @@ public class Monster{
                 Monster sum = new Monster(MonsterData.Genre.Ground, MonsterData.Tier.I, map, this.x, this.y);
                 Monsters.add(sum);
                 cooldown = 5f;
+            }
+            if (MonsterData.MonsterDataStorage.getStats(creature).gimmick == MonsterData.Gimmick.Resonate) {
+                int num = MathUtils.random(1,3);
+                System.out.println(num);
+                if(num == 1) {
+                    speed = baseSpeed + 0f;
+                    System.out.println(speed);
+                }
+                if (num == 2) {
+                    speed = baseSpeed + 0.03f;
+                    System.out.println(speed);
+                }
+                if (num == 3) {
+                    speed = baseSpeed + 0.07f;
+                    System.out.println(speed);
+                }
+                cooldown = 4f;
             }
         }
     }

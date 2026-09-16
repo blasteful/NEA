@@ -54,7 +54,12 @@ public class Main extends ApplicationAdapter {
     int sizey = 48;
     int mode;
 
+    boolean on_game_start = false;
+
     int renderer_type = 2;
+
+    private float buildTimer = 0f;
+    private boolean isTimerActive = false;
 
     boolean sound = true;
 
@@ -87,7 +92,7 @@ public class Main extends ApplicationAdapter {
 
     // statistics
     int wave;
-    int cash = 10000;
+    int cash = 1000000;
     int hp = 10;
     int totalcash = cash;
     int detonators = 0;
@@ -157,6 +162,7 @@ public class Main extends ApplicationAdapter {
             if(recieved == Menus.Gameplay) {
                 menu_active = false;
                 audio.click();
+                on_game_start = false;
             }
             if(recieved == Menus.Exit) {
                 Gdx.app.exit();
@@ -216,6 +222,15 @@ public class Main extends ApplicationAdapter {
                 return;
             }
 
+            if(!on_game_start) {
+
+                weather.Weather_Random();
+                weather.event_handler();
+                selected_event = weather.getCurrent_event();
+                on_game_start = true;
+            }
+
+
             Tile current_tile = ms.getTile();
             if(current_tile == null) {
                 last_tile = current_tile;
@@ -235,10 +250,6 @@ public class Main extends ApplicationAdapter {
 
 
             for (Monster m : Monsters) {
-
-                if(m.genre == MonsterData.Genre.Secret) {
-                    System.out.println(m.hp);
-                }
 
                 if(m.shouldPlayFootstep() && m.hp > 0) {
                     if(m.alternatefootstep){
@@ -348,6 +359,10 @@ public class Main extends ApplicationAdapter {
                 audio.wavecomplete();
                 phase = Phase.BUILD;
                 wave++;
+
+                buildTimer = 20.0f;
+                isTimerActive = true;
+
                 int ran_var = MathUtils.random(1,4);
                 if(ran_var == 4) {
                     selected_event = weather.getCurrent_event();
@@ -356,12 +371,43 @@ public class Main extends ApplicationAdapter {
 
             }
 
+            if (isTimerActive && phase == Phase.BUILD) {
+
+                buildTimer -= Gdx.graphics.getDeltaTime();
+
+
+                if (buildTimer <= 0) {
+                    buildTimer = 0;
+                    isTimerActive = false;
+                    audio.wavestart();
+                    phase = Phase.FIGHT;
+                    mode = 1;
+                    wave ++;
+                    float pressure_val = formulas.pressure(hp, totalcash, towers, wave, cash);
+                    System.out.println(pressure_val);
+                    toSpawn = wd.createWave(wave, map, selected_event, pressure_val, detonators, spires, turrets, barricades);
+                    spawnTimer = intervals;
+                }
+
+
+            }
+
+
+
+
+
             //test featires (REMOVE LATER!!!)
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7) && phase == Phase.FIGHT) {
                 hp --;
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8) && phase == Phase.FIGHT) {
-                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.III, map, false));
+                Monsters.add(new Monster(MonsterData.Genre.Flying, MonsterData.Tier.IV, map, false));
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9) && phase == Phase.FIGHT) {
+                Monsters.add(new Monster(MonsterData.Genre.Swarm, MonsterData.Tier.IV, map, false));
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_6) && phase == Phase.FIGHT) {
+                Monsters.add(new Monster(MonsterData.Genre.Ground, MonsterData.Tier.IV, map, false));
             }
             if (Gdx.input.isKeyPressed(Input.Keys.B)) {
                 wave ++;
@@ -421,13 +467,15 @@ public class Main extends ApplicationAdapter {
                 }
 
                 if (selected != null && TowerData.TowerDataStorage.stats.get(selected).cost <= cash && t.type != Tile.Type.PLACED_TOWER) {
+                    t.setType(Tile.Type.PLACED_TOWER);
+                    t.originalType = Tile.Type.PLACED_TOWER;
+
                     Tower newT = new Tower(ms.getTile(), selected, map, sr);
                     cash = cash - TowerData.TowerDataStorage.stats.get(selected).cost;
                     Towers.add(newT);
                     t.tower = newT;
 
-                    t.setType(Tile.Type.PLACED_TOWER);
-                    t.originalType = Tile.Type.PLACED_TOWER;
+
 
                 }
 
@@ -518,7 +566,7 @@ public class Main extends ApplicationAdapter {
                 selected_monster = hovered_monster;
             }
 
-            gameUI.draw(batch, sr, cash, wave, hp, weather, phase, mode, selected, t, selected_monster, hideinfo, turret_rplevel, spire_rplevel, detonator_rplevel);
+            gameUI.draw(batch, sr, cash, wave, hp, weather, phase, mode, selected, t, selected_monster, hideinfo, turret_rplevel, spire_rplevel, detonator_rplevel, buildTimer);
 
             if (mode == 2) {
                 batch.begin();

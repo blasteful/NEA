@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.Objects;
+
 
 public class GameUI {
 
@@ -55,7 +57,7 @@ public class GameUI {
     int infoWidth = 150;
     boolean openedmons = false;
 
-    public void draw(SpriteBatch batch, ShapeRenderer sr, int cash, int wavenum, int hp, Weather weather, Main.Phase phase, int mode, TowerData.Tower selected, Tile t, Monster m, Boolean hide, int trp, int srp, int drp) {
+    public void draw(SpriteBatch batch, ShapeRenderer sr, int cash, int wavenum, int hp, Weather weather, Main.Phase phase, int mode, TowerData.Tower selected, Tile t, Monster m, Boolean hide, int trp, int srp, int drp, float buildtime) {
 
         int screenWidth = Gdx.graphics.getWidth();
 
@@ -146,11 +148,18 @@ public class GameUI {
         int ycord2 = 90; //90
         int ycord3 = 100; // 100
 
+        if(phase == Main.Phase.BUILD) {
+            font.draw(batch, "Next wave in " + (int)buildtime + "s" , 850, ycord);
+        }
+      ;
+
         if(mode == 2) {
             font.draw(batch, "Z" , 670, ycord);
             font.draw(batch, "X" , 730, ycord);
             font.draw(batch, "C" , 790, ycord);
             font.draw(batch, "V" , 850, ycord);
+
+
 
             font.setColor(Color.PURPLE);
 
@@ -194,8 +203,17 @@ public class GameUI {
                 batch.draw(towertexture, tileX + 42, 250, 64, 64);
                 font.draw(batch, "Level: " + (tower.level + 1), tileX + 10, 230);
                 font.draw(batch, "Range: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).range, tileX + 10, 212);
-                font.draw(batch, "CD: " + tower.cooldown, tileX + 10, 197);
-                font.draw(batch, "Damage: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).damage, tileX + 10, 182);
+                font.draw(batch, "CD: " + (int)tower.cooldown, tileX + 10, 197);
+
+
+                if(t.previous == Tile.Type.BOOST) {
+                    font.draw(batch, "Damage: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).damage * 2, tileX + 10, 182);
+                    font.setColor(Color.PURPLE);
+                    font.draw(batch, "BOOSTED" , tileX + 10, 320);
+                    font.setColor(Color.WHITE);
+                } else {
+                    font.draw(batch, "Damage: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).damage, tileX + 10, 182);
+                }
 
 
 
@@ -236,6 +254,7 @@ public class GameUI {
 
                 Texture monsterTexture = getMonsterTexture(m);
                 Texture monsterTexture2 = getMonsterTexture2(m);
+                Texture nil = new Texture( "Tiles/Nil.png");
 
                 if (monsterTexture != null && monsterTexture2 != null) {
                     if (cycle) {
@@ -243,6 +262,10 @@ public class GameUI {
                     } else {
                         batch.draw(monsterTexture2, monsterX + 30, 240, 75, 75);
                     }
+                }
+
+                if(Objects.equals(monsterTexture, nil)) {
+                    batch.draw(monsterTexture2, monsterX + 30, 240, 40, 40);
                 }
 
                 font.draw(batch, "" + m.creature, monsterX + 50, 340);
@@ -267,7 +290,17 @@ public class GameUI {
             return null;
         }
 
-        return new Texture( m.creature + "1.png");
+
+        Texture txt;
+
+        try {
+            txt = new Texture( m.creature + "1.png");
+        } catch (Exception e) {
+            txt = new Texture("Tiles/Nil.png");
+
+        }
+
+        return txt;
     }
 
 
@@ -276,7 +309,17 @@ public class GameUI {
             return null;
         }
 
-        return new Texture( m.creature + "2.png");
+        Texture txt;
+
+        try {
+             txt = new Texture( m.creature + "2.png");
+        } catch (Exception e) {
+             txt = new Texture("Tiles/Nil.png");
+
+        }
+
+        return txt;
+
     }
 
     private Texture getTileTexture(Tile t) {
