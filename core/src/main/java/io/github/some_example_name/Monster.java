@@ -28,6 +28,10 @@ public class Monster{
     boolean alternatefootstep = MathUtils.randomBoolean();
     int hp;
 
+    Tile lasthit;
+    float movespeed;
+    float travelspeed;
+
     MonsterData.Genre genre;
     MonsterData.Tier tier;
     MonsterData.Creature creature;
@@ -123,36 +127,53 @@ public class Monster{
         current = map.entrance;
     }
 
-    public boolean Move(Map map) {
+        public boolean Move(Map map) {
 
-        if(current == map.exit) {
-            return(true);
+            if(current == map.exit) {
+                return(true);
+            }
+
+            boolean nextitle = true;
+            if(current.child != null) {
+                int targetx = current.child.x;
+                int targety = current.child.y;
+
+
+                if(current.previous != null) {
+                     movespeed = speed * current.previous.speed;
+                } else {
+                     movespeed = speed;
+                }
+
+
+                float dx = targetx - x;
+                float dy = targety - y;
+
+                float distance = Math.abs(x - targetx) + Math.abs(y - targety);
+                if (movespeed > 0f) {
+                    if (distance <= movespeed) {
+
+                        x = targetx;
+                        y = targety;
+                        current = current.child;
+                    } else {
+
+                        x += (dx / distance) * movespeed;
+                        y += (dy / distance) * movespeed;
+                    }
+                }
+
+            }
+
+        if(lasthit != current && current.previous != null && holymantle == 0 && genre != MonsterData.Genre.Flying) {
+            Tile.Type walkd = current.previous;
+            int wald = walkd.walking_damage;
+            hp = hp - wald;
+            lasthit = current;
         }
 
-        boolean nextitle = true;
-        if(current.child != null) {
-            int targetx = current.child.x;
-            int targety = current.child.y;
 
-            if(x > targetx) {
-                x = (x-speed);
-            } if(x < targetx) {
-                x = (x+speed);
-            }
-
-            if(y > targety) {
-                y = (y-speed);
-            } if(y < targety) {
-                y = (y+speed);
-            }
-
-            float distance = Math.abs(x - targetx) + Math.abs(y - targety);
-            if(distance < 0.2) {
-                current = current.child;
-
-            }
-
-        }
+        System.out.println(creature + " " + baseSpeed + " " + current.previous);
 
         return(false);
     }

@@ -167,8 +167,34 @@ public class Map {
                 }
             }
 
-            if(structure == 5) {
-                // temple
+            if (structure == 5) {
+                int x = MathUtils.random(0, sizex - 1);
+                int y = MathUtils.random(0, sizey - 1);
+                int size = MathUtils.random(3, 8);
+                for (int i = 0; i < size; i++) {
+
+                    int radius = MathUtils.random(1, 1);
+
+                    for (int dx = -radius; dx <= radius; dx++) {
+                        for (int dy = -radius; dy <= radius; dy++) {
+
+                            int xx = MathUtils.clamp(x + dx, 0, sizex - 1);
+                            int yy = MathUtils.clamp(y + dy, 0, sizey - 1);
+
+                            if (MathUtils.randomBoolean(0.8f)) {
+                                if (MathUtils.randomBoolean(0.5f)) {
+                                    map[xx][yy].setType(Tile.Type.THORNS);
+                                }
+
+                            }
+                        }
+                    }
+                    x += MathUtils.random(-1, 1);
+                    y += MathUtils.random(-1, 1);
+
+                    x = MathUtils.clamp(x, 0, sizex - 1);
+                    y = MathUtils.clamp(y, 0, sizey - 1);
+                }
             }
         }
     }
@@ -200,6 +226,7 @@ public class Map {
     }
 
     public boolean pathfind() {
+        restorePath();
         resetPathfinding();
         entrance.gcost = 0;
 
@@ -368,15 +395,7 @@ public class Map {
             return;
         }
 
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                Tile t = map[i][j];
-                if (t.type == Tile.Type.PATH && t.previous != Tile.Type.PATH) {
-                    t.type = t.previous;
-                    t.path = false;
-                }
-            }
-        }
+
 
         Tile current = exit;
         Tile child = null;
@@ -394,6 +413,18 @@ public class Map {
         }
     }
 
+    private void restorePath() {
+        for (int x = 0; x < sizex; x++) {
+            for (int y = 0; y < sizey; y++) {
+                Tile tile = map[x][y];
+
+                if (tile.type == Tile.Type.PATH && tile.previous != null) {
+                    tile.type = tile.previous;
+                    tile.path = false;
+                }
+            }
+        }
+    }
 
     public int heuristic(Tile item) {
         int mandis = (Math.abs(item.x - exit.x) + Math.abs(item.y - exit.y));

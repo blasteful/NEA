@@ -21,33 +21,34 @@ public class Tile {
 
 
     public enum Type {
-        DIRT(true, 30, 10, 0, "Tiles/grass.png"),
-        SAND(true, 10, 10, 0, "Tiles/sand.png"),
+        DIRT(true, 30, 1, 0, "Tiles/grass.png"),
+        SAND(true, 10, 0.8f, 0, "Tiles/sand.png"),
         PLACED_TOWER(false, -1, -1, 0, "Tiles/nil.png"),
         BARRICADE(true, 2, 3, 10, "Tiles/nil.png"),
         ROCK(false, -1, 0, 0, "Tiles/rock.png"),
-        WATER(true, 100, 3, 0, "Tiles/water.png"),
-        BASALT(true, 5, 16, 0, "Tiles/basalt.png"),
+        WATER(true, 100, 0.2f, 0, "Tiles/water.png"),
+        BASALT(true, 5, 2, 0, "Tiles/basalt.png"),
         MUD(true, 100, 4, 0, "Tiles/nil.png"),
         GRASS(true, -10, 4, 0, "Tiles/nil.png"),
         DISTRACTION(true, -10000, 4, 0, "Tiles/grass.png"),
         ENTRANCE(true, -1 , 10, 0, "Tiles/path.png"),
-        THORNS(true, 1000000, 3, 5, "Tiles/grass.png"),
+        THORNS(true, 80, 0.3f, 15, "Tiles/thorns.png"),
         EXIT(true, -1 , 10, 0, "Tiles/path.png"),
         PATH(true, 10 , 10, 0, "Tiles/path.png"),
         DEEPWATER(false, -1, 10, 0, "Tiles/water.png"),
-        SNOW(true, 20, 5, 0, "Tiles/snow.png"),
-        BOOST(true, 100, 5, 0, "Tiles/nil.png"),
+        SNOW(true, 20, 0.7f, 0, "Tiles/snow.png"),
+        QuickSand(true, 10, 0.6f, 0, "Tiles/sand.png"),
+        BOOST(false, 100, 5, 0, "Tiles/boost.png"),
         VOID(false, 20, 5, 0, "Tiles/nil.png");
 
 
         public final boolean walkable;
         public int pathingCost;
-        public final int speed;
+        public final float speed;
         public final int walking_damage;
         public final String imagepath;
 
-        Type(boolean walkable, int pathingCost, int speed, int walking_damage, String imagepath) {
+        Type(boolean walkable, int pathingCost, float speed, int walking_damage, String imagepath) {
             this.walkable = walkable;
             this.pathingCost = pathingCost;
             this.speed = speed;
@@ -97,12 +98,9 @@ public class Tile {
         this.originalType = type;
     }
 
-    public int getSpeed() {
-        int speed = type.speed;
+    public float getSpeed() {
+        float speed = type.speed;
 
-        for(Effect e : Active_effects) {
-            speed = e.modifySpeed(speed);
-        }
 
         return(speed);
     }

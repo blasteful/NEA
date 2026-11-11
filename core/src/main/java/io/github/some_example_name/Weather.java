@@ -1,6 +1,7 @@
 package io.github.some_example_name;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 
 import static com.badlogic.gdx.math.MathUtils.random;
 
@@ -15,10 +16,12 @@ public class Weather {
         Snow,
         Avalanche,
         BankHoliday,
+        SandStorm,
     }
 
     Weather_events current_event;
     Map map;
+    Tile[] sandy;
 
     public Weather(Map map) {
         this.map = map;
@@ -42,6 +45,9 @@ public class Weather {
         if (current_event == Weather_events.Avalanche) {
             avalanche(map);
         }
+        if (current_event == Weather_events.SandStorm) {
+            sandstorm(map);
+        }
     }
 
     private void sunny(Map map) {
@@ -49,6 +55,9 @@ public class Weather {
             for (int j = 0; j < map.sizey; j++) {
                 Tile target = map.getTile(i, j);
                 if (target.type == Tile.Type.SNOW) {
+                    target.setType(Tile.Type.DIRT);
+                }
+                if (target.type == Tile.Type.QuickSand) {
                     target.setType(Tile.Type.DIRT);
                 }
                 if(target.type == Tile.Type.PATH) {
@@ -106,6 +115,23 @@ public class Weather {
             }
         }
 
+    }
+
+    private void sandstorm(Map map) {
+        for (int i = 0; i < map.sizex; i++) {
+            for (int j = 0; j < map.sizey; j++) {
+                Tile target = map.getTile(i, j);
+                if(target.type == Tile.Type.DIRT) {
+                    target.setType(Tile.Type.QuickSand);
+                    target.originalType = Tile.Type.QuickSand;
+
+                }
+                if(target.type == Tile.Type.PATH) {
+                    target.previous = Tile.Type.QuickSand;
+                }
+            }
+        }
+        clear_rocks();
     }
 
     private void snow(Map map) {

@@ -209,7 +209,7 @@ public class GameUI {
                 if(t.previous == Tile.Type.BOOST) {
                     font.draw(batch, "Damage: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).damage * 2, tileX + 10, 182);
                     font.setColor(Color.PURPLE);
-                    font.draw(batch, "BOOSTED" , tileX + 10, 320);
+                    font.draw(batch, "BOOSTED" , tileX + 10, 315);
                     font.setColor(Color.WHITE);
                 } else {
                     font.draw(batch, "Damage: " + TowerData.TowerDataStorage.stats.get(tower.tower_type).damage, tileX + 10, 182);
@@ -243,9 +243,18 @@ public class GameUI {
                 font.draw(batch, "" + t.type + " Tile", tileX + 30, 340);
                 font.draw(batch, "Walkable: " + t.getwalkable(), tileX + 10, 230);
                 font.draw(batch, "Difficulty: " + t.getPathingcost() + "/100", tileX + 10, 212);
+                if(t.type == Tile.Type.PATH) {
+                    font.setColor(Color.BLACK);
+                    Tile.Type temp = t.previous;
+                    font.draw(batch, "SPEED: " + temp.speed + "x" , tileX + 10, 255);
+                    font.setColor(Color.WHITE);
+                }
             }
             if (t.type == Tile.Type.PATH) {
                 font.draw(batch, "Was a " + t.previous + " Tile", tileX + 10, 182);
+            }
+            if(t.type.walking_damage > 0) {
+                font.draw(batch, "Deals " + t.type.walking_damage + " to enemies", tileX + 10, 178);
             }
 
             if (m != null && m.hp > 0) {
@@ -275,7 +284,7 @@ public class GameUI {
                     font.draw(batch, "Shield: " + m.holymantle, monsterX + 10, 230);
                 }
 
-                font.draw(batch, "Speed: " + m.speed * 100, monsterX + 10, 212);
+                font.draw(batch, "Speed: " + m.movespeed * 100, monsterX + 10, 212);
                 font.draw(batch, "Tier: " + m.tier, monsterX + 10, 197);
                 font.draw(batch, "Genre: " + m.genre, monsterX + 10, 182);
             }

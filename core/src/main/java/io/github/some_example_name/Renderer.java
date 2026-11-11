@@ -154,8 +154,14 @@ public class Renderer {
                 if (t.type.pathingCost > 30) {
                     sr.setColor(13 / 255f, 79 / 255f, 222 / 255f, 1f);
                 }
+                if (t.type == Tile.Type.BOOST) {
+                    sr.setColor(120 / 255f, 81 / 255f, 169 / 255f, 1f);
+                }
                 if (t.type.walkable == false) {
                     sr.setColor(Color.BLACK);
+                }
+                if (t.type == Tile.Type.BOOST) {
+                    sr.setColor(Color.PURPLE);
                 }
                 if (t.type == Tile.Type.PATH) {
                     sr.setColor(215 / 255f, 213 / 255f, 176 / 255f, 1f);
