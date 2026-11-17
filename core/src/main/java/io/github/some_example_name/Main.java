@@ -68,7 +68,7 @@ public class Main extends ApplicationAdapter {
 
     boolean hideinfo = false;
 
-    TowerData.Tower selected;
+    TowerData.Tower selected = TowerData.Tower.Barricade;
     Weather.Weather_events selected_event = Weather.Weather_events.Sunny;
 
     public enum Phase {
@@ -237,7 +237,9 @@ public class Main extends ApplicationAdapter {
             }
             if(current_tile != last_tile) {
                 last_tile = current_tile;
-                map.view_pathfind(current_tile);
+                if(mode == 2) {
+                    map.view_pathfind(current_tile);
+                }
             }
 
             float delta = Gdx.graphics.getDeltaTime();
@@ -303,8 +305,10 @@ public class Main extends ApplicationAdapter {
             if (Gdx.input.isKeyJustPressed(Input.Keys.TAB) && phase == Phase.BUILD) {
                 if (mode == 2) {
                     mode = 1;
+                    map.restoreOriginalPath();
                 } else {
                     mode = 2;
+                    map.view_pathfind(ms.getTile());
                 }
             }
             if (Gdx.input.isKeyJustPressed(Input.Keys.Z) && phase == Phase.BUILD && cash >= TowerData.TowerDataStorage.stats.get(TowerData.Tower.Turret).cost) {
@@ -360,13 +364,15 @@ public class Main extends ApplicationAdapter {
                 phase = Phase.BUILD;
                 wave++;
 
-                buildTimer = 20.0f;
+                buildTimer = 60.0f;
                 isTimerActive = true;
 
                 int ran_var = MathUtils.random(1,4);
                 if(ran_var == 4) {
                     selected_event = weather.getCurrent_event();
                     weather.event_handler();
+                } else {
+                    System.out.println("didnt roll new weather");
                 }
 
             }

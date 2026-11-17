@@ -297,6 +297,9 @@ public class Map {
 
 
     public void view_pathfind(Tile blocked) {
+
+        restorePath();
+
         for (int i = 0; i < sizex; i++) {
             for (int j = 0; j < sizey; j++) {
                 map[i][j].predicted = false;
@@ -327,8 +330,6 @@ public class Map {
                 }
             }
 
-
-
             if (current == exit) {
                 pathFound = true;
                 break;
@@ -336,7 +337,6 @@ public class Map {
 
             openlist.remove(current);
             closedlist.add(current);
-
 
             for (int i = 0; i < 4; i++) {
                 int newx = current.x + dx[i];
@@ -377,6 +377,7 @@ public class Map {
         }
 
         blocked.type = originalType;
+
     }
 
     public void resetPathfinding() {
@@ -390,13 +391,20 @@ public class Map {
         }
     }
 
+    public void restoreOriginalPath() {
+        for (int x = 0; x < sizex; x++) {
+            for (int y = 0; y < sizey; y++) {
+                map[x][y].predicted = false;
+            }
+        }
+
+        pathfind();
+    }
+
     public void markPath() {
         if (exit.parent == null) {
             return;
         }
-
-
-
         Tile current = exit;
         Tile child = null;
 
@@ -410,6 +418,12 @@ public class Map {
             current.child = child;
             child = current;
             current = current.parent;
+        }
+    }
+
+    public void markpath_og() {
+        for (int i = 0; i < map.length; i++) {
+
         }
     }
 
@@ -429,7 +443,6 @@ public class Map {
     public int heuristic(Tile item) {
         int mandis = (Math.abs(item.x - exit.x) + Math.abs(item.y - exit.y));
         return (int) (mandis * 0.5f);
-
     }
 
 
