@@ -149,7 +149,9 @@ public class GameUI {
         int ycord3 = 100; // 100
 
         if(phase == Main.Phase.BUILD) {
-            font.draw(batch, "Next wave in " + (int)buildtime + "s" , 850, ycord);
+            if(buildtime != 0) {
+                font.draw(batch, "Next wave in " + (int)buildtime + "s" , 725, ycord - 50);
+            }
         }
       ;
 
